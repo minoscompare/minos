@@ -1,13 +1,11 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
+import nc from 'next-connect';
+import { AppApiRequest, AppApiResponse } from '@minos/lib/api/types';
+import { ncOptions } from '@minos/lib/api/nc-options';
 
-type Data = {
-  name: string
-}
+const handler = nc<AppApiRequest, AppApiResponse>(ncOptions);
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  res.status(200).json({ name: 'John Doe' })
-}
+handler.get((req, res) => {
+  res.status(200).json({ name: 'John Doe' });
+});
+
+export default handler;
