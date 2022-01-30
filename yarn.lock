@@ -1846,6 +1846,11 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
+"@prisma/engines@3.8.0-43.34df67547cf5598f5a6cd3eb45f14ee70c3fb86f":
+  version "3.8.0-43.34df67547cf5598f5a6cd3eb45f14ee70c3fb86f"
+  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-3.8.0-43.34df67547cf5598f5a6cd3eb45f14ee70c3fb86f.tgz#4479099b99f6a082ce5843ee7208943ccedd127f"
+  integrity sha512-bHYubuItSN/DGYo36aDu7xJiJmK52JOSHs4MK+KbceAtwS20BCWadRgtpQ3iZ2EXfN/B1T0iCXlNraaNwnpU2w==
+
 "@rollup/plugin-babel@^5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-babel/-/plugin-babel-5.3.0.tgz#9cb1c5146ddd6a4968ad96f209c50c62f92f9879"
@@ -8507,6 +8512,13 @@ pretty-hrtime@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz#b7e3ea42435a4c9b2759d99e0f201eb195802ee1"
   integrity sha1-t+PqQkNaTJsnWdmeDyAesZWALuE=
+
+prisma@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/prisma/-/prisma-3.8.1.tgz#44395cef7cbb1ea86216cb84ee02f856c08a7873"
+  integrity sha512-Q8zHwS9m70TaD7qI8u+8hTAmiTpK+IpvRYF3Rgb/OeWGQJOMgZCFFvNCiSfoLEQ95wilK7ctW3KOpc9AuYnRUA==
+  dependencies:
+    "@prisma/engines" "3.8.0-43.34df67547cf5598f5a6cd3eb45f14ee70c3fb86f"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
