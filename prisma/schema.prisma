@@ -10,18 +10,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum CpuBrand {
+  INTEL
+  AMD
+}
+
+enum LaunchQuarter {
+  Q1
+  Q2
+  Q3
+  Q4
+}
+
 model Cpu {
-  id          String   @id @default(cuid())
-  brand       String
-  name        String
-  launchDate  DateTime
-  cores       Int
-  frequency   Int
-  cache       Int
-  tdp         Int
-  lithography Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String        @id @default(cuid())
+  brand         CpuBrand
+  name          String
+  launchQuarter LaunchQuarter
+  launchYear    Int
+  cores         Int
+  threads       Int
+  frequency     Float
+  cache         Int
+  tdp           Int
+  lithography   Int
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 model Gpu {
