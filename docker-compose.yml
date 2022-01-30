@@ -8,8 +8,8 @@ services:
       - 5432:5432
     environment:
       POSTGRES_DB: postgres
-      POSTGRES_USER: hephaestus
-      POSTGRES_PASSWORD: hephaestus
+      POSTGRES_USER: minos
+      POSTGRES_PASSWORD: minos
       POSTGRES_HOST_AUTH_METHOD: trust
 volumes:
   db-data:
