@@ -21,15 +21,19 @@ on Windows for a better developer experience.
 ## Setup
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/minoscompare/minos
    cd minos
    ```
-1. Install dependencies
+
+2. Install dependencies
+
    ```bash
    yarn
    ```
-1. Start docker containers
+
+3. Start docker containers
 
    ```bash
    docker-compose up
@@ -42,7 +46,13 @@ on Windows for a better developer experience.
 
    :::
 
-1. Start the development server
+4. Sync database schema with Postgres
+
+   ```bash
+   npx prisma db push
+   ```
+
+5. Start the development server
    ```bash
    yarn dev
    ```
