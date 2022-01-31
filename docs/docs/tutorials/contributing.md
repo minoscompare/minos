@@ -20,11 +20,29 @@ on Windows for a better developer experience.
 
 ## Setup
 
+1. Clone the repository
+   ```bash
+   git clone https://github.com/minoscompare/minos
+   cd minos
+   ```
 1. Install dependencies
    ```bash
    yarn
    ```
-2. Start the development server
+1. Start docker containers
+
+   ```bash
+   docker-compose up
+   ```
+
+   :::note Detach Daemon
+
+   You can run `docker-compose up -d` to detach your console from the daemon and run `docker-compose down` to shutdown
+   the containers.
+
+   :::
+
+1. Start the development server
    ```bash
    yarn dev
    ```
