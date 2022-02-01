@@ -14,9 +14,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to Minoscompare!
-        </h1>
+        <h1 className={styles.title}>Welcome to Minoscompare!</h1>
 
         <p className={styles.description}>
           Standard <a href="https://next.js.org">Next.js</a> utility links
@@ -40,7 +38,7 @@ const Home: NextPage = () => {
             <h2>Examples &rarr;</h2>
             <p>Discover and deploy boilerplate example Next.js projects.</p>
           </a>
-    
+
           <a
             href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
             className={styles.card}
@@ -51,14 +49,15 @@ const Home: NextPage = () => {
             </p>
           </a>
 
-          <a href="/componentSearch" className={styles.card}>
-            <h2>Search Components &rarr;</h2>
-            <p>
-              Search for computer components to compare{' '}
-              (Currently just a blank page)
-            </p>
-          </a>
-
+          <Link href="/componentSearch">
+            <a className={styles.card}>
+              <h2>Search Components &rarr;</h2>
+              <p>
+                Search for computer components to compare (Currently just a
+                blank page)
+              </p>
+            </a>
+          </Link>
         </div>
       </main>
 
