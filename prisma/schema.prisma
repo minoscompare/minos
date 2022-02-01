@@ -15,6 +15,11 @@ enum CpuBrand {
   AMD
 }
 
+enum GpuBrand {
+  NVIDIA
+  AMD
+}
+
 enum LaunchQuarter {
   Q1
   Q2
@@ -40,7 +45,7 @@ model Cpu {
 
 model Gpu {
   id         String   @id @default(cuid())
-  brand      String
+  brand      GpuBrand
   name       String
   launchDate DateTime
   createdAt  DateTime @default(now())
