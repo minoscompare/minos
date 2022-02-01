@@ -49,7 +49,7 @@ const Home: NextPage = () => {
             </p>
           </a>
 
-          <Link href="/componentSearch">
+          <Link href="/components/search">
             <a className={styles.card}>
               <h2>Search Components &rarr;</h2>
               <p>
