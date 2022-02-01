@@ -4,7 +4,7 @@ import { Options } from 'next-connect';
 import { isHttpError } from 'http-errors';
 import { ApiError } from 'next/dist/server/api-utils';
 
-export const ncOptions: Options<AppApiRequest, AppApiResponse> = {
+const ncOptions: Options<AppApiRequest, AppApiResponse> = {
   onError: (err, _req, res) => {
     if (isHttpError(err) || err instanceof ApiError) {
       res.status(err.statusCode).json({
