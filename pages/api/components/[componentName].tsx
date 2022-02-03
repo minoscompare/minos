@@ -6,7 +6,7 @@ const handler = createHandler();
 handler.get((req, res) => {
         
     // Gets request data
-    const query = req.query;
+    const query = req.query.componentName;
     const method = req.method;
 
     // Sends the result

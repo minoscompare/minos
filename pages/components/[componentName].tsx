@@ -19,9 +19,9 @@ interface ComponentDataProps {
 const ComponentPage : NextPage<ComponentDataProps> = ({propsData}) => {
 
     // Gets the API data
-    const pageQuery = propsData.reqQuery;
-    const pageAPIMethod = propsData.reqMethod;
-    const apiResponseMessage = propsData.reqMessage;
+    const pageQuery = JSON.stringify(propsData.reqQuery);
+    const pageAPIMethod = JSON.stringify(propsData.reqMethod);
+    const apiResponseMessage = JSON.stringify(propsData.reqMessage);
 
     // Returns page HTML
     return (
@@ -53,7 +53,12 @@ const ComponentPage : NextPage<ComponentDataProps> = ({propsData}) => {
 
 // GetStaticProps
 export const getServerSideProps : GetServerSideProps = async(context) => {
-    const query  = context.params;
+    let query = null
+    if(context.params) 
+    {
+        query = context.params.componentName;
+    }
+
     const res = await fetch(`http://localhost:3000/api/components/${query}`);
     const data = (await res.json()) as ComponentData;
 
