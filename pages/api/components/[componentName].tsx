@@ -1,4 +1,4 @@
-import createHandler from '@minos/lib/api/route-factory';
+import createHandler from '@minos/lib/api/create-handler';
 
 // Creates an API handler
 const handler = createHandler();
