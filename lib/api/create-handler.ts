@@ -22,7 +22,7 @@ const ncOptions: Options<AppApiRequest, AppApiResponse> = {
     }
   },
   onNoMatch: (_req, res) => {
-    res.status(404).json({ status: 404, message: 'Route not found' });
+    res.status(404).json({ status: 405, message: 'Method not allowed' });
   },
 };
 
