@@ -42,6 +42,9 @@ model Cpu {
   lithography   Int
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  // A brand-name combination must be unique (i.e. cannot have two INTEL i7-6700K at the same time)
+
+  @@unique([brand, name])
 }
 
 enum GpuReseller {
@@ -59,6 +62,8 @@ model Gpu {
   launchYear    Int
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+
+  @@unique([brand, name, reseller])
 }
 
 // enum UserRole {
