@@ -16,8 +16,9 @@ enum CpuBrand {
 }
 
 enum GpuBrand {
-  NVIDIA
+  INTEL
   AMD
+  NVIDIA
 }
 
 enum LaunchQuarter {
@@ -43,23 +44,31 @@ model Cpu {
   updatedAt     DateTime      @updatedAt
 }
 
+enum GpuReseller {
+  GIGABYTE
+  EVGA
+  ASUS_ROG
+}
+
 model Gpu {
-  id         String   @id @default(cuid())
-  brand      GpuBrand
-  name       String
-  launchDate DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id            String        @id @default(cuid())
+  brand         GpuBrand
+  name          String
+  reseller      GpuReseller
+  launchQuarter LaunchQuarter
+  launchYear    Int
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
-enum UserRole {
-  USER
-  ADMIN
-}
+// enum UserRole {
+//   USER
+//   ADMIN
+// }
 
-model User {
-  id        String   @id @default(cuid())
-  role      UserRole @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+// model User {
+//   id        String   @id @default(cuid())
+//   role      UserRole @default(USER)
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
