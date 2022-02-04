@@ -21,7 +21,6 @@ const CpuPatchBodySchema = CpuSchema.partial();
 // NOTE: Patch is currently not working correctly!
 handler.use(validateBodySchema(CpuPatchBodySchema)).patch(async (req, res) => {
   const id = req.query.id as string;
-
   const data = req.body as FromSchema<typeof CpuPatchBodySchema>;
 
   const cpu = await prisma.cpu.update({ where: { id }, data });
