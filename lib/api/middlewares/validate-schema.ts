@@ -1,6 +1,6 @@
 import { Middleware } from 'next-connect';
 import { ZodSchema } from 'zod';
-import { AppApiRequest, AppApiResponse } from '../types';
+import { AppApiRequest, AppApiResponse } from '@minos/lib/api/types';
 
 export function validateBodySchema(
   schema: ZodSchema<any>

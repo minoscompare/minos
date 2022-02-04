@@ -1,5 +1,5 @@
 import createHandler from '@minos/lib/api/create-handler';
-import { validateBodySchema } from '@minos/lib/api/middleware/validate-schema';
+import { validateBodySchema } from '@minos/lib/api/middlewares/validate-schema';
 import { CpuSchema, FromSchema } from '@minos/lib/api/schemas';
 import prisma from '@minos/lib/prisma';
 
