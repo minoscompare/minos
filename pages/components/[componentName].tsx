@@ -77,15 +77,6 @@ export const getStaticPaths : GetStaticPaths = async () => {
         paths: 
         [
             { params:  { componentName: "Test Component 1"} },
-            { params:  { componentName: "Test Component 2"} },
-            { params:  { componentName: "Test Component 3"} },
-            { params:  { componentName: "Test Component 4"} },
-            { params:  { componentName: "Test Component 5"} },
-            { params:  { componentName: "Test Component 6"} },
-            { params:  { componentName: "Test Component 7"} },
-            { params:  { componentName: "Test Component 8"} },
-            { params:  { componentName: "Test Component 9"} },
-            { params:  { componentName: "Test Component 10"} },
         ],
     fallback: false
   };
