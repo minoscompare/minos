@@ -2,7 +2,7 @@ import type { InferGetStaticPropsType, NextPage } from 'next';
 import Head from 'next/head';
 import styles from '@minos/ui/styles/Home.module.css';
 import Link from 'next/link';
-import { GetServerSideProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 
 // Props Interface
 interface ComponentData {
@@ -51,8 +51,8 @@ const ComponentPage : NextPage<ComponentDataProps> = ({propsData}) => {
 }
 
 
-// GetStaticProps
-export const getServerSideProps : GetServerSideProps = async(context) => {
+// GetStaticProps/Paths
+export const getStaticProps : GetStaticProps = async(context) => {
     let query = null
     if(context.params) 
     {
@@ -68,6 +68,28 @@ export const getServerSideProps : GetServerSideProps = async(context) => {
         }
     };
 };
+
+export const getStaticPaths : GetStaticPaths = async () => {
+    
+    // Note: This currently returns a preset list of paths.
+    //       In the future, have it get the list of paths from the database.
+    return {
+        paths: 
+        [
+            { params:  { componentName: "Test Component 1"} },
+            { params:  { componentName: "Test Component 2"} },
+            { params:  { componentName: "Test Component 3"} },
+            { params:  { componentName: "Test Component 4"} },
+            { params:  { componentName: "Test Component 5"} },
+            { params:  { componentName: "Test Component 6"} },
+            { params:  { componentName: "Test Component 7"} },
+            { params:  { componentName: "Test Component 8"} },
+            { params:  { componentName: "Test Component 9"} },
+            { params:  { componentName: "Test Component 10"} },
+        ],
+    fallback: false
+  };
+}
 
 
 // Export Functional Component
