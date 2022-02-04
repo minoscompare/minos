@@ -16,8 +16,9 @@ enum CpuBrand {
 }
 
 enum GpuBrand {
-  NVIDIA
+  INTEL
   AMD
+  NVIDIA
 }
 
 enum LaunchQuarter {
@@ -41,25 +42,38 @@ model Cpu {
   lithography   Int
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  // A brand-name combination must be unique (i.e. cannot have two INTEL i7-6700K at the same time)
+
+  @@unique([brand, name])
+}
+
+enum GpuReseller {
+  GIGABYTE
+  EVGA
+  ASUS_ROG
 }
 
 model Gpu {
-  id         String   @id @default(cuid())
-  brand      GpuBrand
-  name       String
-  launchDate DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id            String        @id @default(cuid())
+  brand         GpuBrand
+  name          String
+  reseller      GpuReseller
+  launchQuarter LaunchQuarter
+  launchYear    Int
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@unique([brand, name, reseller])
 }
 
-enum UserRole {
-  USER
-  ADMIN
-}
+// enum UserRole {
+//   USER
+//   ADMIN
+// }
 
-model User {
-  id        String   @id @default(cuid())
-  role      UserRole @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+// model User {
+//   id        String   @id @default(cuid())
+//   role      UserRole @default(USER)
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
