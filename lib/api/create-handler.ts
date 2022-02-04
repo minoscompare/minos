@@ -17,8 +17,13 @@ const ncOptions: Options<AppApiRequest, AppApiResponse> = {
     }
 
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
-      if (err.code == 'P2002') {
-        return res.status(409).json({ message: err.message });
+      switch (err.code) {
+        case 'P2002':
+          // Conflict
+          return res.status(409).json({ message: 'Resource already exists' });
+        case 'P2025':
+          // Not found
+          return res.status(404).json({ message: 'Resource does not exist' });
       }
       // else, continue
     }
