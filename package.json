@@ -22,7 +22,8 @@
     "next-superjson": "^0.0.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "superjson": "^1.8.0"
+    "superjson": "^1.8.0",
+    "zod": "^3.11.6"
   },
   "devDependencies": {
     "@types/http-errors": "^1.8.2",

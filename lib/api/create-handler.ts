@@ -3,6 +3,7 @@ import { AppApiRequest, AppApiResponse } from '@minos/lib/api/types';
 import { Options } from 'next-connect';
 import { isHttpError } from 'http-errors';
 import { ApiError } from 'next/dist/server/api-utils';
+import { ZodError } from 'zod';
 
 const ncOptions: Options<AppApiRequest, AppApiResponse> = {
   onError: (err, _req, res) => {
@@ -11,18 +12,21 @@ const ncOptions: Options<AppApiRequest, AppApiResponse> = {
         status: err.statusCode,
         message: err.message,
       });
+    } else if (err instanceof ZodError) {
+      res.status(422).json({ errors: err.issues });
+      return err.format();
     } else {
       console.error(err);
       if (process.env.NODE_ENV === 'production') {
         // In production, don't send a stack trace
-        res.status(400).json({ status: 400, message: 'Internal server error' });
+        res.status(400).json({ message: 'Internal server error' });
       } else {
-        res.status(400).json({ status: 400, message: err.toString() });
+        res.status(400).json({ message: err.toString() });
       }
     }
   },
   onNoMatch: (_req, res) => {
-    res.status(405).json({ status: 405, message: 'Method not allowed' });
+    res.status(405).json({ message: 'Method not allowed' });
   },
 };
 

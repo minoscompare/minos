@@ -1,0 +1,12 @@
+import { Middleware } from 'next-connect';
+import { ZodSchema } from 'zod';
+import { AppApiRequest, AppApiResponse } from '../types';
+
+export function validateBodySchema(
+  schema: ZodSchema<any>
+): Middleware<AppApiRequest, AppApiResponse> {
+  return (req, res, next) => {
+    schema.parse(req.body); // throws ZodError if fails
+    next();
+  };
+}
