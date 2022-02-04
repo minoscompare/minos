@@ -42,8 +42,8 @@ model Cpu {
   launchYear    Int
   cores         Int
   threads       Int
-  frequency     Float
-  cache         Int
+  frequency     Float // Could change to int with 4 digits, float precision not needed
+  cache         Int // Might need to separate into L1, L2, and L3 cache
   tdp           Int
   lithography   Int
   createdAt     DateTime      @default(now())
