@@ -4,6 +4,8 @@ import styles from '@minos/ui/styles/Home.module.css';
 import Link from 'next/link';
 
 const ComponentSearch: NextPage = () => {
+  //TODO: For testing, add an auto-generated list of all the components that link to their respective components pages.
+  
   return (
     <div className={styles.container}>
       <Head>
