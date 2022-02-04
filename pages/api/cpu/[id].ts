@@ -7,7 +7,7 @@ const handler = createHandler();
 
 const CpuPutBodySchema = CpuSchema;
 
-handler.use(validateBodySchema(CpuPutBodySchema)).put(async (req, res) => {
+handler.put(validateBodySchema(CpuPutBodySchema), async (req, res) => {
   const id = req.query.id as string;
   const data = req.body as FromSchema<typeof CpuPutBodySchema>;
 
@@ -18,8 +18,7 @@ handler.use(validateBodySchema(CpuPutBodySchema)).put(async (req, res) => {
 
 const CpuPatchBodySchema = CpuSchema.partial();
 
-// NOTE: Patch is currently not working correctly!
-handler.use(validateBodySchema(CpuPatchBodySchema)).patch(async (req, res) => {
+handler.patch(validateBodySchema(CpuPatchBodySchema), async (req, res) => {
   const id = req.query.id as string;
   const data = req.body as FromSchema<typeof CpuPatchBodySchema>;
 

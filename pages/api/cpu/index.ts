@@ -13,7 +13,7 @@ handler.get(async (req, res) => {
 
 const CpuPostBodySchema = CpuSchema;
 
-handler.use(validateBodySchema(CpuPostBodySchema)).post(async (req, res) => {
+handler.post(validateBodySchema(CpuPostBodySchema), async (req, res) => {
   const data = req.body as FromSchema<typeof CpuPostBodySchema>;
 
   const cpu = await prisma.cpu.create({ data });
