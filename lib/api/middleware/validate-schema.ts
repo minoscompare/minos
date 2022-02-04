@@ -5,7 +5,7 @@ import { AppApiRequest, AppApiResponse } from '../types';
 export function validateBodySchema(
   schema: ZodSchema<any>
 ): Middleware<AppApiRequest, AppApiResponse> {
-  return (req, res, next) => {
+  return (req, _res, next) => {
     schema.parse(req.body); // throws ZodError if fails
     next();
   };

@@ -5,6 +5,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator zod {
+  provider    = "zod-prisma"
+  output      = "../lib/api/schemas/generated"
+  modelSuffix = "GeneratedSchema"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -29,7 +35,7 @@ enum LaunchQuarter {
 }
 
 model Cpu {
-  id            String        @id @default(cuid())
+  id            String        @id @default(uuid())
   brand         CpuBrand
   name          String
   launchQuarter LaunchQuarter
@@ -54,7 +60,7 @@ enum GpuReseller {
 }
 
 model Gpu {
-  id            String        @id @default(cuid())
+  id            String        @id @default(uuid())
   brand         GpuBrand
   name          String
   reseller      GpuReseller
@@ -72,7 +78,7 @@ model Gpu {
 // }
 
 // model User {
-//   id        String   @id @default(cuid())
+//   id        String   @id @default(uuid())
 //   role      UserRole @default(USER)
 //   createdAt DateTime @default(now())
 //   updatedAt DateTime @updatedAt

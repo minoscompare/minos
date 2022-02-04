@@ -4,6 +4,7 @@ import { Options } from 'next-connect';
 import { isHttpError } from 'http-errors';
 import { ApiError } from 'next/dist/server/api-utils';
 import { ZodError } from 'zod';
+import { Prisma } from '@prisma/client';
 
 const ncOptions: Options<AppApiRequest, AppApiResponse> = {
   onError: (err, _req, res) => {
@@ -14,7 +15,11 @@ const ncOptions: Options<AppApiRequest, AppApiResponse> = {
       });
     } else if (err instanceof ZodError) {
       res.status(422).json({ errors: err.issues });
-      return err.format();
+    } else if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code == 'P2002'
+    ) {
+      res.status(409).json({ message: err.message });
     } else {
       console.error(err);
       if (process.env.NODE_ENV === 'production') {

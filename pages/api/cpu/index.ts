@@ -1,10 +1,8 @@
 import createHandler from '@minos/lib/api/create-handler';
 import { validateBodySchema } from '@minos/lib/api/middleware/validate-schema';
-import { AppApiRequest, AppApiResponse } from '@minos/lib/api/types';
+import { CpuSchema } from '@minos/lib/api/schemas';
 import prisma from '@minos/lib/prisma';
-import { z } from 'zod';
 
-// creates an api handler
 const handler = createHandler();
 
 handler.get(async (req, res) => {
@@ -14,9 +12,11 @@ handler.get(async (req, res) => {
 });
 
 handler
-  .use(validateBodySchema(z.object({ message: z.string() })))
-  .post((req, res) => {
-    res.status(200).json({ message: 'Not implemented' });
+  .use(validateBodySchema(CpuSchema.omit({ id: true })))
+  .post(async (req, res) => {
+    const cpu = await prisma.cpu.create({ data: req.body });
+
+    res.status(200).json({ data: cpu });
   });
 
 export default handler;
