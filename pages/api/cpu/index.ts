@@ -1,6 +1,6 @@
 import createHandler from '@minos/lib/api/create-handler';
 import { validateBodySchema } from '@minos/lib/api/middleware/validate-schema';
-import { CpuSchema } from '@minos/lib/api/schemas';
+import { CpuSchema, FromSchema } from '@minos/lib/api/schemas';
 import prisma from '@minos/lib/prisma';
 
 const handler = createHandler();
@@ -11,12 +11,14 @@ handler.get(async (req, res) => {
   res.status(200).json({ data: cpus });
 });
 
-handler
-  .use(validateBodySchema(CpuSchema.omit({ id: true })))
-  .post(async (req, res) => {
-    const cpu = await prisma.cpu.create({ data: req.body });
+const CpuPostBodySchema = CpuSchema;
 
-    res.status(200).json({ data: cpu });
-  });
+handler.use(validateBodySchema(CpuPostBodySchema)).post(async (req, res) => {
+  const data = req.body as FromSchema<typeof CpuPostBodySchema>;
+
+  const cpu = await prisma.cpu.create({ data });
+
+  res.status(200).json({ data: cpu });
+});
 
 export default handler;

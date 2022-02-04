@@ -9,10 +9,7 @@ import { Prisma } from '@prisma/client';
 const ncOptions: Options<AppApiRequest, AppApiResponse> = {
   onError: (err, _req, res) => {
     if (isHttpError(err) || err instanceof ApiError) {
-      return res.status(err.statusCode).json({
-        status: err.statusCode,
-        message: err.message,
-      });
+      return res.status(err.statusCode).json({ message: err.message });
     }
 
     if (err instanceof ZodError) {
