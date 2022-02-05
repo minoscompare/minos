@@ -38,4 +38,12 @@ handler.patch(validateBodySchema(CpuPatchBodySchema), async (req, res) => {
   res.status(200).json({ data: cpu });
 });
 
+handler.delete(async (req, res) => {
+  const id = req.query.id as string;
+
+  await prisma.cpu.delete({ where: { id } });
+
+  res.status(200).json({ data: [] });
+});
+
 export default handler;
