@@ -35,20 +35,20 @@ enum LaunchQuarter {
 }
 
 model Cpu {
-  id            String        @id @default(uuid())
+  id            String         @id @default(uuid())
   brand         CpuBrand
   name          String
   family        String
-  launchQuarter LaunchQuarter
-  launchYear    Int
+  launchQuarter LaunchQuarter?
+  launchYear    Int?
   cores         Int
   threads       Int
   frequency     Float // Could change to int with 4 digits, float precision not needed
-  cache         Int // Might need to separate into L1, L2, and L3 cache
-  tdp           Int
-  lithography   Int
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  cache         Int? // Might need to separate into L1, L2, and L3 cache
+  tdp           Int?
+  lithography   Int?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   // A brand-name combination must be unique (i.e. cannot have two INTEL i7-6700K at the same time)
 
   @@unique([brand, name])
