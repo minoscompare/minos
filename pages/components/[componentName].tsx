@@ -53,6 +53,8 @@ const ComponentPage : NextPage<ComponentDataProps> = ({propsData}) => {
 
 // GetStaticProps/Paths
 export const getStaticProps : GetStaticProps = async(context) => {
+
+    //TODO: Fetch properties for the given path from the database.
     let query = null
     if(context.params) 
     {
@@ -71,8 +73,12 @@ export const getStaticProps : GetStaticProps = async(context) => {
 
 export const getStaticPaths : GetStaticPaths = async () => {
     
-    // Note: This currently returns a preset list of paths.
-    //       In the future, have it get the list of paths from the database.
+    //TODO: Have this find the paths of all components in api/gpu and api/cpu,
+    //      and return them.
+    //      Store an array of the returned JSON objects, then save an array of their
+    //      IDs, and return that.
+    //      Note: Maybe this could be some sort of static function, because it'll be
+    //      called in other places too (getting the array of components)
     return {
         paths: 
         [
