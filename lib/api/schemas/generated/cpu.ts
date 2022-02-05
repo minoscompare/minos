@@ -5,6 +5,7 @@ export const CpuGeneratedSchema = z.object({
   id: z.string(),
   brand: z.nativeEnum(CpuBrand),
   name: z.string(),
+  family: z.string(),
   launchQuarter: z.nativeEnum(LaunchQuarter),
   launchYear: z.number().int(),
   cores: z.number().int(),

@@ -32,9 +32,9 @@ const ncOptions: Options<AppApiRequest, AppApiResponse> = {
 
     if (process.env.NODE_ENV === 'production') {
       // In production, don't send a stack trace
-      return res.status(400).json({ message: 'Internal server error' });
+      return res.status(500).json({ message: 'Internal server error' });
     } else {
-      return res.status(400).json({ message: err.toString() });
+      return res.status(500).json({ message: err.toString() });
     }
   },
   onNoMatch: (_req, res) => {

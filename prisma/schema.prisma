@@ -38,6 +38,7 @@ model Cpu {
   id            String        @id @default(uuid())
   brand         CpuBrand
   name          String
+  family        String
   launchQuarter LaunchQuarter
   launchYear    Int
   cores         Int
