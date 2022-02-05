@@ -1,12 +1,26 @@
 import createHandler from '@minos/lib/api/create-handler';
-import { validateBodySchema } from '@minos/lib/api/middlewares/validate-schema';
+import {
+  validateBodySchema,
+  validateQuerySchema,
+} from '@minos/lib/api/middlewares/validate-schema';
 import { CpuSchema, FromSchema } from '@minos/lib/api/schemas';
+import { PaginationSchema } from '@minos/lib/api/schemas/query';
 import prisma from '@minos/lib/prisma';
 
 const handler = createHandler();
 
-handler.get(async (req, res) => {
-  const cpus = await prisma.cpu.findMany();
+const CpuGetQuerySchema = PaginationSchema;
+
+handler.get(validateQuerySchema(CpuGetQuerySchema), async (req, res) => {
+  const query = req.query as FromSchema<typeof CpuGetQuerySchema>;
+
+  const page = Number(query.page);
+  const perPage = Number(query.perPage);
+
+  const cpus = await prisma.cpu.findMany({
+    skip: (page - 1) * perPage,
+    take: perPage,
+  });
 
   res.status(200).json({ data: cpus });
 });
