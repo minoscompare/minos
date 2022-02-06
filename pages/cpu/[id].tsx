@@ -1,4 +1,4 @@
-import type { InferGetStaticPropsType, NextPage } from 'next';
+import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '@minos/ui/styles/Home.module.css';
 import Link from 'next/link';
@@ -7,15 +7,11 @@ import { Cpu } from '@prisma/client';
 import prisma from '@minos/lib/prisma';
 
 interface CpuPageProps {
-  cpu?: Cpu;
+  cpu: Cpu;
 }
 
 // Functional Component
 const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
-  // Gets the API data
-  if (!cpu) {
-  }
-
   // Returns page HTML
   return (
     <div className={styles.container}>
@@ -44,7 +40,7 @@ export const getStaticProps: GetStaticProps<CpuPageProps> = async (context) => {
   const id = context.params?.id;
 
   if (!id) {
-    return { redirect: { destination: '/404' }, props: {} };
+    return { notFound: true };
   }
 
   let cpu: Cpu;
@@ -53,8 +49,7 @@ export const getStaticProps: GetStaticProps<CpuPageProps> = async (context) => {
       res.json()
     );
   } catch (err) {
-    console.error(err);
-    return { redirect: { destination: '/404' }, props: {} };
+    return { notFound: true };
   }
 
   return { props: { cpu } };
