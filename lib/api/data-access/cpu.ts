@@ -7,7 +7,7 @@ export function prismaCpuToAppCpu(cpu: PrismaCpu): Minos.Cpu {
     items: [
       { name: '# of Cores', value: cpu.cores.toString() },
       { name: '# of Threads', value: cpu.threads.toString() },
-      { name: 'Base Frequency', value: `${cpu.frequency} GHz` },
+      { name: 'Base Frequency', value: `${cpu.frequency * 10e-2} GHz` },
       { name: 'L1 Cache', value: cpu.cacheL1 ? `${cpu.cacheL1} MB` : null },
       { name: 'L2 Cache', value: cpu.cacheL2 ? `${cpu.cacheL2} MB` : null },
       { name: 'L3 Cache', value: cpu.cacheL2 ? `${cpu.cacheL2} MB` : null },
