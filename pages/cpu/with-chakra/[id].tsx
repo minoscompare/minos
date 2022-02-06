@@ -22,6 +22,7 @@ import {
   VisuallyHidden,
   List,
   ListItem,
+  useColorMode,
 } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { MdLocalShipping } from 'react-icons/md';
@@ -31,6 +32,7 @@ interface CpuPageProps {
 }
 
 const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Container>
       <Stack spacing={{ base: 6, md: 10 }}>
@@ -45,7 +47,7 @@ const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
           <Text
             color={useColorModeValue('gray.900', 'gray.400')}
             fontWeight={300}
-            fontSize={'2xl'}
+            fontSize="2xl"
           >
             {cpu.family}
           </Text>
@@ -54,57 +56,60 @@ const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
           <Text
             fontSize={{ base: '16px', lg: '18px' }}
             color={useColorModeValue('yellow.500', 'yellow.300')}
-            fontWeight={'500'}
-            textTransform={'uppercase'}
-            mb={'4'}
+            fontWeight="500"
+            textTransform="uppercase"
+            mb="4"
           >
             Specifications
           </Text>
           <List spacing={2}>
             <ListItem>
-              <Text as={'span'} fontWeight={'bold'}>
+              <Text as="span" fontWeight="bold">
                 # of Cores:
               </Text>{' '}
               {cpu.cores}
             </ListItem>
             <ListItem>
-              <Text as={'span'} fontWeight={'bold'}>
+              <Text as="span" fontWeight="bold">
                 # of Threads:
               </Text>{' '}
               {cpu.threads}
             </ListItem>
             <ListItem>
-              <Text as={'span'} fontWeight={'bold'}>
+              <Text as="span" fontWeight="bold">
                 Launch Date:
               </Text>{' '}
               {cpu.launchQuarter} {cpu.launchYear}
             </ListItem>
             <ListItem>
-              <Text as={'span'} fontWeight={'bold'}>
+              <Text as="span" fontWeight="bold">
                 Base Frequency:
               </Text>{' '}
               {cpu.frequency} GHz
             </ListItem>
             <ListItem>
-              <Text as={'span'} fontWeight={'bold'}>
+              <Text as="span" fontWeight="bold">
                 Cache:
               </Text>{' '}
               {cpu.cache} MB
             </ListItem>
             <ListItem>
-              <Text as={'span'} fontWeight={'bold'}>
+              <Text as="span" fontWeight="bold">
                 TDP:
               </Text>{' '}
               {cpu.tdp} W
             </ListItem>
             <ListItem>
-              <Text as={'span'} fontWeight={'bold'}>
+              <Text as="span" fontWeight="bold">
                 Lithography
               </Text>{' '}
               {cpu.lithography} nm
             </ListItem>
           </List>
         </Box>
+        <Button onClick={toggleColorMode}>
+          Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+        </Button>
       </Stack>
     </Container>
   );
