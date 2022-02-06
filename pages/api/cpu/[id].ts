@@ -1,4 +1,9 @@
 import createHandler from '@minos/lib/api/create-handler';
+import {
+  deleteCpuById,
+  getCpuById,
+  updateCpuById,
+} from '@minos/lib/api/data-access/cpu';
 import { validateBodySchema } from '@minos/lib/api/middlewares/validate-schema';
 import { CpuSchema, FromSchema } from '@minos/lib/api/schemas';
 import prisma from '@minos/lib/prisma';
@@ -7,9 +12,9 @@ import createHttpError from 'http-errors';
 const handler = createHandler();
 
 handler.get(async (req, res) => {
-  const id = req.query.id as string;
+  const id = parseInt(req.query.id as string, 10);
 
-  const cpu = await prisma.cpu.findUnique({ where: { id } });
+  const cpu = await getCpuById(prisma, id);
 
   if (!cpu) throw new createHttpError.NotFound();
 
@@ -19,10 +24,10 @@ handler.get(async (req, res) => {
 const CpuPutBodySchema = CpuSchema;
 
 handler.put(validateBodySchema(CpuPutBodySchema), async (req, res) => {
-  const id = req.query.id as string;
+  const id = parseInt(req.query.id as string, 10);
   const data = req.body as FromSchema<typeof CpuPutBodySchema>;
 
-  const cpu = await prisma.cpu.update({ where: { id }, data });
+  const cpu = await updateCpuById(prisma, id, data);
 
   res.status(200).json({ data: cpu });
 });
@@ -30,20 +35,20 @@ handler.put(validateBodySchema(CpuPutBodySchema), async (req, res) => {
 const CpuPatchBodySchema = CpuSchema.partial();
 
 handler.patch(validateBodySchema(CpuPatchBodySchema), async (req, res) => {
-  const id = req.query.id as string;
+  const id = parseInt(req.query.id as string, 10);
   const data = req.body as FromSchema<typeof CpuPatchBodySchema>;
 
-  const cpu = await prisma.cpu.update({ where: { id }, data });
+  const cpu = await updateCpuById(prisma, id, data);
 
   res.status(200).json({ data: cpu });
 });
 
 handler.delete(async (req, res) => {
-  const id = req.query.id as string;
+  const id = parseInt(req.query.id as string, 10);
 
-  await prisma.cpu.delete({ where: { id } });
+  await deleteCpuById(prisma, id);
 
-  res.status(200).json({ data: [] });
+  res.status(200).json({});
 });
 
 export default handler;

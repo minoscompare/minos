@@ -9,7 +9,7 @@ export namespace Minos {
 
   export interface CpuSpecsCategory {
     categoryName: string;
-    items: { name: string; value: string }[];
+    items: { name: string; value: string | null }[];
   }
 
   export interface Cpu {

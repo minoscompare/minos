@@ -21,12 +21,6 @@ enum CpuBrand {
   AMD
 }
 
-enum GpuBrand {
-  Intel
-  AMD
-  NVIDIA
-}
-
 enum LaunchQuarter {
   Q1
   Q2
@@ -35,23 +29,47 @@ enum LaunchQuarter {
 }
 
 model Cpu {
+  /// CPU unique identifier
   id            Int            @id @default(autoincrement())
+  /// Brand Name
   brand         CpuBrand
+  /// Model Name
   name          String
+  /// Family Name
   family        String
+  /// Launch Quarter
   launchQuarter LaunchQuarter?
+  /// Launch Year
   launchYear    Int?
+  /// Number of Cores
   cores         Int
+  /// Number of Threads
   threads       Int
-  frequency     Float // Could change to int with 4 digits, float precision not needed
-  cache         Int? // Might need to separate into L1, L2, and L3 cache
+  /// Frequency in GHz * 100,
+  /// floating point number stored as an int with 2 digits after decimal point
+  /// (i.e. 3.61 GHz is stored as 361)
+  frequency     Int
+  /// L1 Cache in KB
+  cacheL1       Int?
+  /// L2 Cache in KB
+  cacheL2       Int?
+  /// L3 Cache in KB
+  cacheL3       Int?
+  /// TDP in Watts (W)
   tdp           Int?
+  /// Lithography in nm
   lithography   Int?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  // A brand-name combination must be unique (i.e. cannot have two INTEL i7-6700K at the same time)
 
+  // A brand-name combination must be unique (i.e. cannot have two INTEL i7-6700K at the same time)
   @@unique([brand, name])
+}
+
+enum GpuBrand {
+  Intel
+  AMD
+  NVIDIA
 }
 
 enum GpuReseller {

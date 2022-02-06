@@ -1,4 +1,5 @@
 import createHandler from '@minos/lib/api/create-handler';
+import { createCpu, getManyCpus } from '@minos/lib/api/data-access/cpu';
 import {
   validateBodySchema,
   validateQuerySchema,
@@ -17,7 +18,7 @@ handler.get(validateQuerySchema(CpuGetQuerySchema), async (req, res) => {
   const page = Number(query.page);
   const perPage = Number(query.perPage);
 
-  const cpus = await prisma.cpu.findMany({
+  const cpus = await getManyCpus(prisma, {
     skip: (page - 1) * perPage,
     take: perPage,
   });
@@ -29,7 +30,8 @@ const CpuPostBodySchema = CpuSchema;
 
 handler.post(validateBodySchema(CpuPostBodySchema), async (req, res) => {
   const data = req.body as FromSchema<typeof CpuPostBodySchema>;
-  const cpu = await prisma.cpu.create({ data });
+
+  const cpu = await createCpu(prisma, data);
 
   res.status(200).json({ data: cpu });
 });
