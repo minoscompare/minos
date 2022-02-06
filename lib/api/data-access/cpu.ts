@@ -45,7 +45,7 @@ export function prismaCpuToAppCpu(cpu: PrismaCpu): Minos.Cpu {
   return {
     id: cpu.id,
     brand: cpu.brand,
-    model: cpu.name,
+    name: cpu.name,
     fullName: `${cpu.brand} ${cpu.name}`,
     family: cpu.family,
     specs: [essentials, extras],

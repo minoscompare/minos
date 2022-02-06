@@ -11,7 +11,7 @@ export namespace Minos {
   export interface Cpu {
     id: number;
     brand: CpuBrand;
-    model: string;
+    name: string;
     fullName: string;
     family: string;
     specs: CpuSpecsCategory[];
