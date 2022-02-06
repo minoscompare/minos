@@ -26,6 +26,7 @@ import {
 } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { MdLocalShipping } from 'react-icons/md';
+import NavBar from '@minos/lib/pagecomponents/navbar';
 
 interface CpuPageProps {
   cpu: Cpu;
@@ -36,6 +37,7 @@ const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
   return (
     <Container>
       <Stack spacing={{ base: 6, md: 10 }}>
+        <NavBar/>
         <Box as="header">
           <Heading
             lineHeight={1.1}

@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '@minos/ui/styles/Home.module.css';
-import Link from 'next/link';
+import NextLink from 'next/link';
 
 const Home: NextPage = () => {
   return (
@@ -26,38 +26,14 @@ const Home: NextPage = () => {
             <p>Find in-depth information about Next.js features and API.</p>
           </a>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-
-          <Link href="/components/search">
+          <NextLink href="/cpu/search">
             <a className={styles.card}>
-              <h2>Search Components &rarr;</h2>
+              <h2>Search CPUs &rarr;</h2>
               <p>
-                Search for computer components to compare (Currently just a
-                blank page)
+                Search for CPUs in the database.
               </p>
             </a>
-          </Link>
+          </NextLink>
         </div>
       </main>
 
