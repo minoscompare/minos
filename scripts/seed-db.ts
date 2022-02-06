@@ -1,6 +1,7 @@
+import 'dotenv/config';
 import { Cpu, PrismaClient } from '@prisma/client';
-import intel from './intel-cpus.json';
-import amd from './amd-cpus.json';
+import intel from './data/intel-cpus.json';
+import amd from './data/amd-cpus.json';
 
 const prisma = new PrismaClient();
 
@@ -14,4 +15,4 @@ async function main() {
   });
 }
 
-main();
+main().catch((err) => console.error(err));
