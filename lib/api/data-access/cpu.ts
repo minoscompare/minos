@@ -1,5 +1,5 @@
+import { Minos } from '@minos/lib/types';
 import { Cpu as PrismaCpu, Prisma, PrismaClient } from '@prisma/client';
-import { Minos } from '../types';
 
 export function prismaCpuToAppCpu(cpu: PrismaCpu): Minos.Cpu {
   const essentials: Minos.CpuSpecsCategory = {
