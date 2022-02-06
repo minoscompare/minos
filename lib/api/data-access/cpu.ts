@@ -1,9 +1,4 @@
-import {
-  Cpu as PrismaCpu,
-  CpuBrand,
-  Prisma,
-  PrismaClient,
-} from '@prisma/client';
+import { Cpu as PrismaCpu, Prisma, PrismaClient } from '@prisma/client';
 import { Minos } from '../types';
 
 export function prismaCpuToAppCpu(cpu: PrismaCpu): Minos.Cpu {
