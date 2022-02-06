@@ -17,12 +17,12 @@ datasource db {
 }
 
 enum CpuBrand {
-  INTEL
+  Intel
   AMD
 }
 
 enum GpuBrand {
-  INTEL
+  Intel
   AMD
   NVIDIA
 }
@@ -35,7 +35,7 @@ enum LaunchQuarter {
 }
 
 model Cpu {
-  id            String         @id @default(uuid())
+  id            Int            @id @default(autoincrement())
   brand         CpuBrand
   name          String
   family        String
@@ -61,7 +61,7 @@ enum GpuReseller {
 }
 
 model Gpu {
-  id            String        @id @default(uuid())
+  id            Int           @id @default(autoincrement())
   brand         GpuBrand
   name          String
   reseller      GpuReseller

@@ -2,7 +2,7 @@ import * as z from "zod"
 import { GpuBrand, GpuReseller, LaunchQuarter } from "@prisma/client"
 
 export const GpuGeneratedSchema = z.object({
-  id: z.string(),
+  id: z.number().int(),
   brand: z.nativeEnum(GpuBrand),
   name: z.string(),
   reseller: z.nativeEnum(GpuReseller),

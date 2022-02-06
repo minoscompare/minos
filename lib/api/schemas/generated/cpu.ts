@@ -2,7 +2,7 @@ import * as z from "zod"
 import { CpuBrand, LaunchQuarter } from "@prisma/client"
 
 export const CpuGeneratedSchema = z.object({
-  id: z.string(),
+  id: z.number().int(),
   brand: z.nativeEnum(CpuBrand),
   name: z.string(),
   family: z.string(),
