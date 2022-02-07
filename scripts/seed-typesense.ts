@@ -23,34 +23,25 @@ const cpuSchema: CollectionCreateSchema = {
     { name: 'brand', type: 'string', facet: true },
     { name: 'name', type: 'string', facet: false },
     { name: 'family', type: 'string', facet: true },
-    { name: 'launchQuarter', type: 'string', facet: true, optional: true },
-    { name: 'launchYear', type: 'int32', facet: true, optional: true },
+    { name: 'launch_quarter', type: 'string', facet: true, optional: true },
+    { name: 'launch_year', type: 'int32', facet: true, optional: true },
     { name: 'cores', type: 'int32', facet: true },
     { name: 'threads', type: 'int32', facet: true },
     { name: 'frequency', type: 'float', facet: false },
-    { name: 'cache', type: 'int32', facet: false, optional: true },
+    { name: 'cache_l1', type: 'int32', facet: false, optional: true },
+    { name: 'cache_l2', type: 'int32', facet: false, optional: true },
+    { name: 'cache_l3', type: 'int32', facet: false, optional: true },
     { name: 'tdp', type: 'int32', facet: false, optional: true },
     { name: 'lithography', type: 'int32', facet: false, optional: true },
   ],
 };
 
 async function main() {
-  const cpus = await prisma.cpu.findMany({
-    select: {
-      id: true,
-      brand: true,
-      name: true,
-      family: true,
-      launchQuarter: true,
-      launchYear: true,
-      cores: true,
-      threads: true,
-      frequency: true,
-      cache: true,
-      tdp: true,
-      lithography: true,
-    },
-  });
+  const cpus = (await prisma.cpu.findMany()).map((cpu) => ({
+    ...cpu,
+    id: cpu.id.toString(),
+    frequency: cpu.frequency * 10e-2,
+  }));
 
   let reindexNeeded = false;
 
