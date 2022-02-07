@@ -20,7 +20,7 @@ services:
     volumes:
       - typesense-data:/data
     environment:
-      TYPESENSE_API_KEY: minos
+      TYPESENSE_API_KEY: minos-admin
 volumes:
   db-data:
   typesense-data:
