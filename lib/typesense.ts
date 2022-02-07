@@ -3,9 +3,9 @@ import Typesense, { Client } from 'typesense';
 const options = {
   nodes: [
     {
-      host: process.env.TYPESENSE_HOST!,
-      port: Number(process.env.TYPESENSE_PORT!),
-      protocol: process.env.TYPESENSE_PROTOCOL!,
+      host: process.env.NEXT_PUBLIC_TYPESENSE_HOST!,
+      port: Number(process.env.NEXT_PUBLIC_TYPESENSE_PORT!),
+      protocol: process.env.NEXT_PUBLIC_TYPESENSE_PROTOCOL!,
     },
   ],
   apiKey: process.env.TYPESENSE_ADMIN_API_KEY!,

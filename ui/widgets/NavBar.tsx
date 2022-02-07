@@ -10,9 +10,14 @@ import {
   useColorModeValue,
   Stack,
   useColorMode,
+  VStack,
+  Portal,
+  Text,
 } from '@chakra-ui/react';
 import { MdBrightness4, MdBrightness7, MdClose, MdMenu } from 'react-icons/md';
 import NextLink from 'next/link';
+import { SearchBox, InstantSearch, Hits } from 'react-instantsearch-dom';
+import { searchClient } from '@minos/lib/client/typesense';
 
 interface NavLinkProps {
   children: ReactNode;
@@ -64,9 +69,24 @@ export default function NavBar() {
               ))}
             </HStack>
           </HStack>
-          <Button onClick={toggleColorMode}>
-            {colorMode === 'light' ? <MdBrightness4 /> : <MdBrightness7 />}
-          </Button>
+          <HStack>
+            <InstantSearch indexName="cpu" searchClient={searchClient}>
+              <SearchBox />
+              <Portal>hi</Portal>
+              {/* <Box>
+                <Hits
+                  hitComponent={({ hit }) => (
+                    <Text>
+                      {hit.brand} {hit.name}
+                    </Text>
+                  )}
+                />
+              </Box> */}
+            </InstantSearch>
+            <Button onClick={toggleColorMode}>
+              {colorMode === 'light' ? <MdBrightness4 /> : <MdBrightness7 />}
+            </Button>
+          </HStack>
         </Flex>
 
         {isOpen ? (
