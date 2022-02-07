@@ -1,18 +1,9 @@
 import React from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import {
-  Link,
-  Button,
-  Text,
-  Stack,
-  Box,
-  useColorMode,
-  useColorModeValue,
-  Center,
-} from '@chakra-ui/react';
+import { Button, Stack, Box, useColorMode, Center } from '@chakra-ui/react';
 
-function NavBar() {
+function Navbar() {
   // Gets router for page routing
   const router = useRouter();
 
@@ -41,4 +32,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default Navbar;

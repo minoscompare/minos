@@ -13,7 +13,7 @@ import {
   ListItem,
   useColorMode,
 } from '@chakra-ui/react';
-import NavBar from '@minos/lib/pagecomponents/navbar';
+import NavBar from '@minos/ui/widgets/Navbar';
 import { Minos } from '@minos/lib/types';
 
 interface CpuPageProps {

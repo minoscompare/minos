@@ -3,8 +3,8 @@ import Head from 'next/head';
 import styles from '@minos/ui/styles/Home.module.css';
 import NextLink from 'next/link';
 import { GetServerSideProps } from 'next';
-import ItemLinkList from '@minos/lib/pagecomponents/itemlinklist';
-import { SearchListItem } from '@minos/lib/pagecomponents/itemlinklist';
+import ItemLinkList from '@minos/ui/widgets/ItemLinkList';
+import { SearchListItem } from '@minos/ui/widgets/ItemLinkList';
 import prisma from '@minos/lib/prisma';
 import {
   Box,
@@ -27,7 +27,7 @@ import {
   useColorMode,
   Center,
 } from '@chakra-ui/react';
-import NavBar from '@minos/lib/pagecomponents/navbar';
+import NavBar from '@minos/ui/widgets/Navbar';
 
 // Props interface
 interface PageProps {
