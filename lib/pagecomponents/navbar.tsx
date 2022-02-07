@@ -1,53 +1,44 @@
 import React from 'react';
-import NextLink from 'next/link'
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import {
-	Link, 
-	Button, 
-	Text, 
-	Stack, 
-	Box,
-	useColorMode,
-	useColorModeValue,
-	Center
-} from '@chakra-ui/react'
+  Link,
+  Button,
+  Text,
+  Stack,
+  Box,
+  useColorMode,
+  useColorModeValue,
+  Center,
+} from '@chakra-ui/react';
 
-function NavBar ()
-{
-	// Gets router for page routing
-	const router = useRouter();
+function NavBar() {
+  // Gets router for page routing
+  const router = useRouter();
 
-	// Gets colour mode
-	const { colorMode, toggleColorMode } = useColorMode();
+  // Gets colour mode
+  const { colorMode, toggleColorMode } = useColorMode();
 
-	// Returns page HTML (Navigation bar at top of page)
-	return (
-		<Center>
-			<Box>
-				<Stack direction="row" wrap="wrap" spacing="15px" >
-					<NextLink href="/">
-						<Button>
-							Main Menu
-						</Button>
-					</NextLink>
-					<NextLink href="/cpu/search">
-						<Button>
-							Search CPUs
-						</Button>
-					</NextLink>
-					<Button isDisabled={true}>
-						Search GPUs
-					</Button>
-					<Button isDisabled={true}>
-						Open Comparison Page
-					</Button>
-					<Button onClick={toggleColorMode}>
-						Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
-					</Button>
-				</Stack>
-			</Box>
-		</Center>
-	);
+  // Returns page HTML (Navigation bar at top of page)
+  return (
+    <Center>
+      <Box>
+        <Stack direction="row" wrap="wrap" spacing="15px">
+          <NextLink href="/">
+            <Button>Main Menu</Button>
+          </NextLink>
+          <NextLink href="/cpu/search">
+            <Button>Search CPUs</Button>
+          </NextLink>
+          <Button isDisabled={true}>Search GPUs</Button>
+          <Button isDisabled={true}>Open Comparison Page</Button>
+          <Button onClick={toggleColorMode}>
+            Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+          </Button>
+        </Stack>
+      </Box>
+    </Center>
+  );
 }
 
 export default NavBar;

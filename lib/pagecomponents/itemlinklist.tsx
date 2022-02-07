@@ -1,17 +1,13 @@
 import React from 'react';
-import NextLink from 'next/link'
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import {
-	Link, 
-	Button, 
-	Text, 
-	Stack, 
-	Box,
-	useColorModeValue,
+  Button,
+  Text,
+  Stack,
+  useColorModeValue,
   Spacer,
-  space
-} from '@chakra-ui/react'
-import { ST } from 'next/dist/shared/lib/utils';
+} from '@chakra-ui/react';
 
 export interface SearchListItem {
   name: string;
@@ -22,8 +18,7 @@ interface ComponentProps {
   listItems: SearchListItem[];
 }
 
-function ItemLinkList (props: ComponentProps)
-{
+function ItemLinkList(props: ComponentProps) {
   // Gets a router to route links
   const router = useRouter();
 
@@ -32,35 +27,28 @@ function ItemLinkList (props: ComponentProps)
     <Stack>
       {props.listItems.map((item) => {
         return (
-
-          <Stack 
-            spacing={10} 
-            direction="row" 
-            align="center"
-          >
-
+          <Stack spacing={10} direction="row" align="center">
             <Text fontWeight="bold" fontSize="6x1">
               {item.name}
             </Text>
-            <Spacer/>
+            <Spacer />
             <NextLink href={item.url}>
-              <Button 
-                colorScheme={useColorModeValue("blue", "gray")} 
-                variant="solid" 
+              <Button
+                colorScheme={useColorModeValue('blue', 'gray')}
+                variant="solid"
               >
                 View Details
               </Button>
             </NextLink>
 
             <Button
-              colorScheme={useColorModeValue("orange", "yellow")} 
-              isActive={false} 
-              isDisabled={true} 
+              colorScheme={useColorModeValue('orange', 'yellow')}
+              isActive={false}
+              isDisabled={true}
               variant="outline"
             >
               Add to Comparison
             </Button>
-
           </Stack>
         );
       })}
