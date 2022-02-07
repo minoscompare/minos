@@ -19,6 +19,7 @@ import { MdBrightness4, MdBrightness7, MdClose, MdMenu } from 'react-icons/md';
 import NextLink from 'next/link';
 import { SearchBox, InstantSearch, Hits } from 'react-instantsearch-dom';
 import { searchClient } from '@minos/lib/client/typesense';
+import OmniSearch from './OmniSearch';
 
 interface NavLinkProps {
   children: ReactNode;
@@ -50,7 +51,8 @@ const Links = [
 ];
 
 export default function NavBar() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const menu = useDisclosure();
+  const search = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -59,10 +61,10 @@ export default function NavBar() {
         <Flex h={16} alignItems="center" justifyContent="space-between">
           <IconButton
             size="md"
-            icon={isOpen ? <MdClose /> : <MdMenu />}
+            icon={menu.isOpen ? <MdClose /> : <MdMenu />}
             aria-label="Open Menu"
             display={{ md: 'none' }}
-            onClick={isOpen ? onClose : onOpen}
+            onClick={menu.isOpen ? menu.onClose : menu.onOpen}
           />
           <HStack spacing={8} alignItems="center">
             <Box>Minos</Box>
@@ -75,9 +77,14 @@ export default function NavBar() {
             </HStack>
           </HStack>
           <HStack>
+            <OmniSearch />
             <InstantSearch indexName="cpu" searchClient={searchClient}>
               <SearchBox />
-              <Portal>hi</Portal>
+              <Portal>
+                <Box position="absolute" top={0} right={0}>
+                  hi
+                </Box>
+              </Portal>
               {/* <Box>
                 <Hits
                   hitComponent={({ hit }) => (
@@ -94,7 +101,7 @@ export default function NavBar() {
           </HStack>
         </Flex>
 
-        {isOpen ? (
+        {menu.isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as="nav" spacing={4}>
               {Links.map(({ name, href }) => (
