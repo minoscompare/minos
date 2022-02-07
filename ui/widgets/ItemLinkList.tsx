@@ -1,6 +1,5 @@
 import React from 'react';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 import {
   Button,
   Text,
@@ -10,6 +9,7 @@ import {
 } from '@chakra-ui/react';
 
 export interface SearchListItem {
+  key: string;
   name: string;
   url: string;
 }
@@ -19,30 +19,25 @@ interface ComponentProps {
 }
 
 function ItemLinkList(props: ComponentProps) {
-  // Gets a router to route links
-  const router = useRouter();
-
-  // Returns page HTML (Unordered list with elements)
+  const detailsColor = useColorModeValue('blue', 'gray');
+  const compareColor = useColorModeValue('orange', 'yellow');
   return (
     <Stack>
       {props.listItems.map((item) => {
         return (
-          <Stack spacing={10} direction="row" align="center">
+          <Stack key={item.key} spacing={10} direction="row" align="center">
             <Text fontWeight="bold" fontSize="6x1">
               {item.name}
             </Text>
             <Spacer />
             <NextLink href={item.url}>
-              <Button
-                colorScheme={useColorModeValue('blue', 'gray')}
-                variant="solid"
-              >
+              <Button colorScheme={detailsColor} variant="solid">
                 View Details
               </Button>
             </NextLink>
 
             <Button
-              colorScheme={useColorModeValue('orange', 'yellow')}
+              colorScheme={compareColor}
               isActive={false}
               isDisabled={true}
               variant="outline"

@@ -11,16 +11,16 @@ services:
       POSTGRES_USER: minos
       POSTGRES_PASSWORD: minos
       POSTGRES_HOST_AUTH_METHOD: trust
-  typesense:
-    image: typesense/typesense:0.22.2
-    entrypoint: sh -c "/opt/typesense-server --data-dir=/data --enable-cors"
-    restart: on-failure
-    ports:
-      - 8108:8108
-    volumes:
-      - typesense-data:/data
-    environment:
-      TYPESENSE_API_KEY: minos
+  # typesense:
+  #   image: typesense/typesense:0.22.2
+  #   entrypoint: sh -c "/opt/typesense-server --data-dir=/data --enable-cors"
+  #   restart: on-failure
+  #   ports:
+  #     - 8108:8108
+  #   volumes:
+  #     - typesense-data:/data
+  #   environment:
+  #     TYPESENSE_API_KEY: minos
 volumes:
   db-data:
-  typesense-data:
+  # typesense-data:
