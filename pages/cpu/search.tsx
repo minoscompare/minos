@@ -6,7 +6,7 @@ import ItemLinkList from '@minos/ui/widgets/ItemLinkList';
 import { SearchListItem } from '@minos/ui/widgets/ItemLinkList';
 import prisma from '@minos/lib/prisma';
 import { Box, Link, Container, Stack, Text, Heading } from '@chakra-ui/react';
-import Navbar from '@minos/ui/widgets/Navbar';
+import Navbar from '@minos/ui/widgets/NavBar';
 
 // Props interface
 interface PageProps {
