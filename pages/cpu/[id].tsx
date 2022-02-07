@@ -5,12 +5,10 @@ import {
   Box,
   Stack,
   Text,
-  Button,
   Heading,
   useColorModeValue,
   List,
   ListItem,
-  useColorMode,
 } from '@chakra-ui/react';
 import { Minos } from '@minos/lib/types';
 import { Layout } from '@minos/ui/components/Layout';
@@ -20,7 +18,6 @@ interface CpuPageProps {
 }
 
 const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
-  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Layout title="Search CPUs">
       <Stack spacing={{ base: 6, md: 10 }}>
@@ -63,9 +60,6 @@ const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
               ))}
           </List>
         </Box>
-        <Button onClick={toggleColorMode}>
-          Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
-        </Button>
       </Stack>
     </Layout>
   );
