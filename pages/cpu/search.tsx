@@ -14,8 +14,6 @@ interface PageProps {
 
 // Main page function
 const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
-  //TODO: For testing, add an auto-generated list of all the components that link to their respective components pages.
-
   return (
     <Layout title="Search CPUs">
       <Stack spacing={{ base: 6, md: 10 }}>
