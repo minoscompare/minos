@@ -1,12 +1,11 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import NextLink from 'next/link';
 import { GetServerSideProps } from 'next';
 import ItemLinkList from '@minos/ui/widgets/ItemLinkList';
 import { SearchListItem } from '@minos/ui/widgets/ItemLinkList';
 import prisma from '@minos/lib/prisma';
-import { Box, Link, Container, Stack, Text, Heading } from '@chakra-ui/react';
-import Navbar from '@minos/ui/widgets/NavBar';
+import { Box, Link, Stack, Text, Heading } from '@chakra-ui/react';
+import { Layout } from '@minos/ui/components/Layout';
 
 // Props interface
 interface PageProps {
@@ -14,17 +13,11 @@ interface PageProps {
 }
 
 // Main page function
-const ComponentSearch: NextPage<PageProps> = (props: PageProps) => {
+const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
   //TODO: For testing, add an auto-generated list of all the components that link to their respective components pages.
 
   return (
-    <Container maxW="container.xl">
-      <Head>
-        <title>Search CPUs</title>
-        <meta name="description" content="From minoscompare" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Navbar />
+    <Layout title="Search CPUs">
       <Stack spacing={{ base: 6, md: 10 }}>
         <Box as="header">
           <Heading
@@ -45,7 +38,7 @@ const ComponentSearch: NextPage<PageProps> = (props: PageProps) => {
           <ItemLinkList listItems={props.componentLinks} />
         </Box>
       </Stack>
-    </Container>
+    </Layout>
   );
 };
 
@@ -68,4 +61,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 // Exports the page function
-export default ComponentSearch;
+export default CpuSearch;

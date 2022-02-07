@@ -3,7 +3,6 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import prisma from '@minos/lib/prisma';
 import {
   Box,
-  Container,
   Stack,
   Text,
   Button,
@@ -13,8 +12,8 @@ import {
   ListItem,
   useColorMode,
 } from '@chakra-ui/react';
-import NavBar from '@minos/ui/widgets/NavBar';
 import { Minos } from '@minos/lib/types';
+import { Layout } from '@minos/ui/components/Layout';
 
 interface CpuPageProps {
   cpu: Minos.Cpu;
@@ -23,9 +22,8 @@ interface CpuPageProps {
 const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
-    <Container>
+    <Layout title="Search CPUs">
       <Stack spacing={{ base: 6, md: 10 }}>
-        <NavBar />
         <Box as="header">
           <Heading
             lineHeight={1.1}
@@ -69,7 +67,7 @@ const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
           Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
         </Button>
       </Stack>
-    </Container>
+    </Layout>
   );
 };
 
