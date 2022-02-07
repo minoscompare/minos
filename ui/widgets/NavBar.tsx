@@ -10,6 +10,7 @@ import {
   useColorModeValue,
   Stack,
   useColorMode,
+  Input,
 } from '@chakra-ui/react';
 import { MdBrightness4, MdBrightness7, MdClose, MdMenu } from 'react-icons/md';
 import NextLink from 'next/link';
@@ -37,7 +38,11 @@ function NavLink({ children, href }: NavLinkProps) {
   );
 }
 
-const Links = [{ name: 'Search CPUs', href: '/cpu/search' }];
+const Links = [
+  { name: 'Home', href: '/' },
+  { name: 'Search CPUs', href: '/cpu/search' },
+  { name: 'Search GPUs', href: '/gpu/search' },
+];
 
 export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
