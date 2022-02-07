@@ -1,33 +1,12 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import styles from '@minos/ui/styles/Home.module.css';
 import NextLink from 'next/link';
 import { GetServerSideProps } from 'next';
 import ItemLinkList from '@minos/ui/widgets/ItemLinkList';
 import { SearchListItem } from '@minos/ui/widgets/ItemLinkList';
 import prisma from '@minos/lib/prisma';
-import {
-  Box,
-  chakra,
-  Link,
-  Container,
-  Stack,
-  Text,
-  Image,
-  Flex,
-  VStack,
-  Button,
-  Heading,
-  SimpleGrid,
-  StackDivider,
-  useColorModeValue,
-  VisuallyHidden,
-  List,
-  ListItem,
-  useColorMode,
-  Center,
-} from '@chakra-ui/react';
-import NavBar from '@minos/ui/widgets/Navbar';
+import { Box, Link, Container, Stack, Text, Heading } from '@chakra-ui/react';
+import Navbar from '@minos/ui/widgets/Navbar';
 
 // Props interface
 interface PageProps {
@@ -45,7 +24,7 @@ const ComponentSearch: NextPage<PageProps> = (props: PageProps) => {
         <meta name="description" content="From minoscompare" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar />
+      <Navbar />
       <Stack spacing={{ base: 6, md: 10 }}>
         <Box as="header">
           <Heading
@@ -76,16 +55,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     take: 100,
     select: { id: true, name: true, brand: true },
   });
-  let components: SearchListItem[] = [];
 
-  for (let i = 0; i < cpus.length; i++) {
-    components.push({
-      name: cpus[i].brand + ' ' + cpus[i].name,
-      url: '/cpu/with-chakra/' + cpus[i].id,
-    });
-  }
-
-  return { props: { componentLinks: components } };
+  return {
+    props: {
+      componentLinks: cpus.map((cpu) => ({
+        key: cpu.id.toString(),
+        name: `${cpu.brand} ${cpu.name}`,
+        url: `/cpu/${cpu.id}`,
+      })),
+    },
+  };
 };
 
 // Exports the page function
