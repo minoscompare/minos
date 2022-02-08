@@ -17,9 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { MdBrightness4, MdBrightness7, MdClose, MdMenu } from 'react-icons/md';
 import NextLink from 'next/link';
-import { SearchBox, InstantSearch, Hits } from 'react-instantsearch-dom';
-import { searchClient } from '@minos/lib/client/typesense';
-import OmniSearch from './OmniSearch';
+import ComponentsSearchBar from './ComponentsSearchBar';
 
 interface NavLinkProps {
   children: ReactNode;
@@ -51,8 +49,7 @@ const Links = [
 ];
 
 export default function NavBar() {
-  const menu = useDisclosure();
-  const search = useDisclosure();
+  const drawer = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -61,10 +58,10 @@ export default function NavBar() {
         <Flex h={16} alignItems="center" justifyContent="space-between">
           <IconButton
             size="md"
-            icon={menu.isOpen ? <MdClose /> : <MdMenu />}
+            icon={drawer.isOpen ? <MdClose /> : <MdMenu />}
             aria-label="Open Menu"
             display={{ md: 'none' }}
-            onClick={menu.isOpen ? menu.onClose : menu.onOpen}
+            onClick={drawer.isOpen ? drawer.onClose : drawer.onOpen}
           />
           <HStack spacing={8} alignItems="center">
             <Box>Minos</Box>
@@ -77,31 +74,15 @@ export default function NavBar() {
             </HStack>
           </HStack>
           <HStack>
-            <OmniSearch />
-            <InstantSearch indexName="cpu" searchClient={searchClient}>
-              <SearchBox />
-              <Portal>
-                <Box position="absolute" top={0} right={0}>
-                  hi
-                </Box>
-              </Portal>
-              {/* <Box>
-                <Hits
-                  hitComponent={({ hit }) => (
-                    <Text>
-                      {hit.brand} {hit.name}
-                    </Text>
-                  )}
-                />
-              </Box> */}
-            </InstantSearch>
+            <ComponentsSearchBar />
+
             <Button onClick={toggleColorMode}>
               {colorMode === 'light' ? <MdBrightness4 /> : <MdBrightness7 />}
             </Button>
           </HStack>
         </Flex>
 
-        {menu.isOpen ? (
+        {drawer.isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as="nav" spacing={4}>
               {Links.map(({ name, href }) => (

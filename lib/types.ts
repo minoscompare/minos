@@ -1,4 +1,4 @@
-import { CpuBrand as PrismaCpuBrand } from '@prisma/client';
+import { CpuBrand as PrismaCpuBrand, LaunchQuarter } from '@prisma/client';
 
 export namespace Minos {
   export type CpuBrand = PrismaCpuBrand;
@@ -17,5 +17,21 @@ export namespace Minos {
     specs: CpuSpecsCategory[];
     createdAt: string;
     updatedAt: string;
+  }
+
+  export interface CpuTypesenseDoc {
+    id: number;
+    brand: CpuBrand;
+    name: string;
+    family: string;
+    launch_quarter: LaunchQuarter;
+    launch_year: number;
+    cores: number;
+    threads: number;
+    cache_l1: number;
+    cache_l2: number;
+    cache_l3: number;
+    tdp: number;
+    lithography: number;
   }
 }
