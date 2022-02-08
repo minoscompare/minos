@@ -1,7 +1,9 @@
 import { useRef, KeyboardEventHandler, ComponentClass } from 'react';
 import {
   Box,
+  Button,
   CircularProgress,
+  HStack,
   Input,
   InputGroup,
   InputRightElement,
@@ -9,7 +11,6 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  Text,
   useColorModeValue,
   useDisclosure,
   useOutsideClick,
@@ -29,13 +30,14 @@ const CustomHits = connectHits<Minos.CpuTypesenseDoc>(({ hits }) => (
   <>
     {hits.map((hit) => (
       <Box key={hit.id} flex={1} mx={3} my={2}>
-        <NextLink href={`/cpu/${hit.id}`}>
-          <Link>
-            <Text isTruncated>
+        <HStack>
+          <NextLink href={`/cpu/${hit.id}`}>
+            <Link flex={1} isTruncated>
               {hit.brand} {hit.name}
-            </Text>
-          </Link>
-        </NextLink>
+            </Link>
+          </NextLink>
+          <Button size="xs">Compare</Button>
+        </HStack>
       </Box>
     ))}
   </>
