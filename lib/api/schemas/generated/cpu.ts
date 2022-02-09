@@ -37,7 +37,7 @@ export const CpuGeneratedSchema = z.object({
   /**
    * Frequency in GHz * 100,
    * floating point number stored as an int with 2 digits after decimal point
-   * i.e. 3.61 is stored as 361
+   * (i.e. 3.61 GHz is stored as 361)
    */
   frequency: z.number().int(),
   /**

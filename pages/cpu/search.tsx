@@ -4,16 +4,38 @@ import { GetServerSideProps } from 'next';
 import ItemLinkList from '@minos/ui/widgets/ItemLinkList';
 import { SearchListItem } from '@minos/ui/widgets/ItemLinkList';
 import prisma from '@minos/lib/prisma';
-import { Box, Link, Stack, Text, Heading } from '@chakra-ui/react';
+import { Box, Link, Stack, Text, Heading, Spacer } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 
 // Props interface
 interface PageProps {
   componentLinks: SearchListItem[];
+  currentPageIndex: number;
+}
+
+// Helper Function
+function getArrayPage(
+  array: SearchListItem[],
+  pageIndex: number,
+  perPage: number
+) {
+  let newArray = [];
+
+  for (let i = 0; i < perPage; i++) {
+    newArray.push(array[pageIndex * perPage + i]);
+  }
+
+  return newArray;
 }
 
 // Main page function
 const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
+  let pageLinks = getArrayPage(
+    props.componentLinks,
+    props.currentPageIndex,
+    10
+  );
+
   return (
     <Layout title="Search CPUs">
       <Stack spacing={{ base: 6, md: 10 }}>
@@ -33,9 +55,10 @@ const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
         </Box>
         <Box>
           Select from following list:
-          <ItemLinkList listItems={props.componentLinks} />
+          <ItemLinkList listItems={pageLinks} />
         </Box>
       </Stack>
+      <br />
     </Layout>
   );
 };
@@ -54,6 +77,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         name: `${cpu.brand} ${cpu.name}`,
         url: `/cpu/${cpu.id}`,
       })),
+      currentPageIndex: 1,
     },
   };
 };
