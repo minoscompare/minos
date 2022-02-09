@@ -26,10 +26,9 @@ function ItemLinkList(props: ComponentProps) {
       {props.listItems.map((item) => {
         return (
           <Stack key={item.key} spacing={10} direction="row" align="center">
-            <Text fontWeight="bold" fontSize="6x1">
+            <Text fontWeight="bold" fontSize="6x1" isTruncated flex={1}>
               {item.name}
             </Text>
-            <Spacer />
             <NextLink href={item.url}>
               <Button colorScheme={detailsColor} variant="solid">
                 View Details
@@ -40,7 +39,7 @@ function ItemLinkList(props: ComponentProps) {
               colorScheme={compareColor}
               isActive={false}
               isDisabled={true}
-              variant="outline"
+              variant="solid"
             >
               Add to Comparison
             </Button>
