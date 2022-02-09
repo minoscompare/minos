@@ -6,7 +6,7 @@ import { SearchListItem } from '@minos/ui/widgets/ItemLinkList';
 import prisma from '@minos/lib/prisma';
 import { Box, Center, Stack, Text, Heading, Button } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
-import clamp from '@minos/lib/mathFuncs';
+import { clamp } from '@minos/lib/mathFuncs';
 import { useState } from 'react';
 
 // Props interface
