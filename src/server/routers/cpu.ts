@@ -1,4 +1,4 @@
-import { createRouter } from '@minos/server/trpc';
+import { createRouter } from '@minos/server/trpc/create-router';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import {

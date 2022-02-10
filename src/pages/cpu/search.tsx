@@ -8,8 +8,8 @@ import { clamp } from 'lodash';
 import { useState } from 'react';
 
 // Utility Functions
-function getArrayPage(
-  array: SearchListItem[],
+function getArrayPage<T>(
+  array: SearchListItem<T>[],
   pageIndex: number,
   perPage: number,
 ) {
@@ -113,6 +113,7 @@ export const getServerSideProps = async () => {
     props: {
       componentLinks: cpus.map((cpu) => ({
         key: cpu.id.toString(),
+        id: cpu.id,
         name: `${cpu.brand} ${cpu.name}`,
         url: `/cpu/${cpu.id}`,
       })),

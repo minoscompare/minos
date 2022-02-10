@@ -2,8 +2,8 @@
  * This file contains tRPC's HTTP response handler
  */
 import * as trpcNext from '@trpc/server/adapters/next';
-import { appRouter } from '@minos/server/trpc';
-import { createContext } from '@minos/server/trpc';
+import { appRouter } from '@minos/server/routers/_app';
+import { createContext } from '@minos/server/trpc/context';
 
 export default trpcNext.createNextApiHandler({
   router: appRouter,

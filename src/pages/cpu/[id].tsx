@@ -11,7 +11,7 @@ import {
   ListItem,
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
-import { createAppSSGHelpers } from '@minos/server/trpc';
+import { createAppSSGHelpers } from '@minos/server/trpc/helpers';
 import { trpc } from '@minos/utils/trpc';
 import NextError from 'next/error';
 

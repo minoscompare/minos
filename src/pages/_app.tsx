@@ -3,10 +3,12 @@ import { loggerLink } from '@trpc/client/links/loggerLink';
 import { withTRPC } from '@trpc/next';
 import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
-import { AppRouter } from '@minos/server/trpc';
+import { AppRouter } from '@minos/server/routers/_app';
+import transformer from '@minos/server/trpc/transformer';
 import theme from '@minos/ui/theme';
 import Head from 'next/head';
-import { transformer } from '@minos/server/trpc';
+import { sleep } from 'react-query/types/core/utils';
+// import { transformer } from '@minos/server/trpc';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -80,16 +82,16 @@ export default withTRPC<AppRouter>({
   /**
    * Set headers or status code when doing SSR
    */
-  responseMeta({ clientErrors }) {
-    if (clientErrors.length) {
-      // propagate http first error from API calls
-      return {
-        status: clientErrors[0].data?.httpStatus ?? 500,
-      };
-    }
+  // responseMeta({ clientErrors }) {
+  //   if (clientErrors.length) {
+  //     // propagate http first error from API calls
+  //     return {
+  //       status: clientErrors[0].data?.httpStatus ?? 500,
+  //     };
+  //   }
 
-    // for app caching with SSR see https://trpc.io/docs/caching
+  //   // for app caching with SSR see https://trpc.io/docs/caching
 
-    return {};
-  },
+  //   return {};
+  // },
 })(MyApp);
