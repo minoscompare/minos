@@ -1,0 +1,25 @@
+version: '3.6'
+services:
+  postgres_db:
+    image: postgres:13
+    ports:
+      - '5632:5432' # expose pg on port 5632 to not collide with pg from elswhere
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+  typesense:
+    image: typesense/typesense:0.22.2
+    entrypoint: sh -c "/opt/typesense-server --data-dir=/data --enable-cors"
+    restart: on-failure
+    ports:
+      - 8108:8108
+    volumes:
+      - typesense-data:/data
+    environment:
+      TYPESENSE_API_KEY: minos-admin
+volumes:
+  db-data:
+  typesense-data:

@@ -1,34 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Prisma + tRPC
 
-## Getting Started
+## Features
 
-First, run the development server:
+- 🧙‍♂️ E2E typesafety with [tRPC](https://trpc.io)
+- ⚡ Full-stack React with Next.js
+- ⚡ Database with Prisma
+- ⚙️ VSCode extensions
+- 🎨 ESLint + Prettier
+- 💚 CI setup using GitHub Actions:
+  - ✅ E2E testing with [Playwright](https://playwright.dev/)
+  - ✅ Linting
 
+
+## Setup
+
+**yarn:**
 ```bash
-npm run dev
-# or
-yarn dev
+yarn create next-app --example https://github.com/trpc/trpc --example-path examples/next-prisma-starter trpc-prisma-starter
+cd trpc-prisma-starter
+yarn
+yarn dx
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**npm:**
+```bash
+npx create-next-app --example https://github.com/trpc/trpc --example-path examples/next-prisma-starter trpc-prisma-starter
+cd trpc-prisma-starter
+yarn
+yarn dx
+```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Requirements
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- Node >= 14
+- Docker (for running Postgres)
 
-## Learn More
+## Development
 
-To learn more about Next.js, take a look at the following resources:
+### Start project
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+yarn create next-app --example https://github.com/trpc/trpc --example-path examples/next-prisma-starter trpc-prisma-starter
+cd trpc-prisma-starter
+yarn
+yarn dx
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Commands
 
-## Deploy on Vercel
+```bash
+yarn build      # runs `prisma generate` + `prisma migrate` + `next build`
+yarn db-nuke    # resets local db
+yarn dx         # starts postgres db + runs migrations + seeds + starts next.js 
+yarn test-dev   # runs e2e tests on dev
+yarn test-start # runs e2e tests on `next start` - build required before
+yarn test:unit  # runs normal jest unit tests
+yarn test:e2e   # runs e2e tests
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Files of note
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<table>
+  <thead>
+    <tr>
+      <th>Path</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="./prisma/schema.prisma"><code>./prisma/schema.prisma</code></a></td>
+      <td>Prisma schema</td>
+    </tr>
+    <tr>
+      <td><a href="./src/api/trpc/[trpc].tsx"><code>./src/api/trpc/[trpc].tsx</code></a></td>
+      <td>tRPC response handler</td>
+    </tr>
+    <tr>
+      <td><a href="./src/routers"><code>./src/routers</code></a></td>
+      <td>Your app's different tRPC-routers</td>
+    </tr>
+  </tbody>
+</table>
+
+
+---
+
+Created by [@alexdotjs](https://twitter.com/alexdotjs).

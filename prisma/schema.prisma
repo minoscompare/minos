@@ -5,14 +5,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator zod {
-  provider    = "zod-prisma"
-  output      = "../lib/api/schemas/generated"
-  modelSuffix = "GeneratedSchema"
-}
-
 datasource db {
-  provider = "postgresql"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
