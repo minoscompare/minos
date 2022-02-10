@@ -2,8 +2,6 @@
   "name": "minos",
   "private": true,
   "scripts": {
-    "cull-database": "ts-node -O {\\\"module\\\":\\\"CommonJS\\\"} scripts/cull-database.ts",
-    "scan-data": "ts-node -O {\\\"module\\\":\\\"CommonJS\\\"} scripts/scan-data.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
