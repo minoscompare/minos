@@ -2,6 +2,7 @@
   "name": "minos",
   "private": true,
   "scripts": {
+    "scan-data": "ts-node -O {\\\"module\\\":\\\"CommonJS\\\"} scripts/scan-data.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
