@@ -9,12 +9,115 @@ import {
   Th,
   Tbody,
   Td,
+  Center,
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import { MdArrowCircleDown, MdArrowCircleUp } from 'react-icons/md';
+import { useState } from 'react';
+import { Minos } from '@minos/lib/types';
+import prisma from '@minos/lib/prisma';
 
 // Main page function
 const CpuComparison: NextPage = () => {
+  // Sets state management
+  const [comparedList, setComparedList] = useState(Array<Minos.Cpu>());
+
+  // (Placeholder) sets the compared CPUs statically for now, TODO add dynamic storing of cpus from global state
+  if (comparedList.length == 0) {
+    setComparedList([
+      {
+        brand: 'AMD',
+        id: 0,
+        name: '3320 EE',
+        family: 'AMD Opteron™',
+        updatedAt: '0',
+        createdAt: '0',
+        fullName: 'AMD Opteron™ 3320 EE',
+        specs: [],
+      },
+      {
+        brand: 'Intel',
+        id: 1,
+        name: 'i7 423455647',
+        family: 'Intel Pentium',
+        updatedAt: '0',
+        createdAt: '0',
+        fullName: 'Intel Pentium i7 423455647',
+        specs: [],
+      },
+      {
+        brand: 'Intel',
+        id: 1,
+        name: 'i7 423455647',
+        family: 'Intel Pentium',
+        updatedAt: '0',
+        createdAt: '0',
+        fullName: 'Intel Pentium i7 423455647',
+        specs: [],
+      },
+      {
+        brand: 'Intel',
+        id: 1,
+        name: 'i7 423455647',
+        family: 'Intel Pentium',
+        updatedAt: '0',
+        createdAt: '0',
+        fullName: 'Intel Pentium i7 423455647',
+        specs: [],
+      },
+      {
+        brand: 'Intel',
+        id: 1,
+        name: 'i7 423455647',
+        family: 'Intel Pentium',
+        updatedAt: '0',
+        createdAt: '0',
+        fullName: 'Intel Pentium i7 423455647',
+        specs: [],
+      },
+      {
+        brand: 'Intel',
+        id: 1,
+        name: 'i7 423455647',
+        family: 'Intel Pentium',
+        updatedAt: '0',
+        createdAt: '0',
+        fullName: 'Intel Pentium i7 423455647',
+        specs: [],
+      },
+      {
+        brand: 'Intel',
+        id: 1,
+        name: 'i7 423455647',
+        family: 'Intel Pentium',
+        updatedAt: '0',
+        createdAt: '0',
+        fullName: 'Intel Pentium i7 423455647',
+        specs: [],
+      },
+      {
+        brand: 'Intel',
+        id: 1,
+        name: 'i7 423455647',
+        family: 'Intel Pentium',
+        updatedAt: '0',
+        createdAt: '0',
+        fullName: 'Intel Pentium i7 423455647',
+        specs: [],
+      },
+      {
+        brand: 'Intel',
+        id: 1,
+        name: 'i7 423455647',
+        family: 'Intel Pentium',
+        updatedAt: '0',
+        createdAt: '0',
+        fullName: 'Intel Pentium i7 423455647',
+        specs: [],
+      },
+    ]);
+  }
+
   // Returns HTML
   return (
     <Layout title="Compare CPUs">
@@ -28,92 +131,41 @@ const CpuComparison: NextPage = () => {
             Comparison Page
           </Heading>
         </Box>
-        <Table>
-          <Thead>
-            <Tr>
-              <Th>Field</Th>
-              <Th>1 (AMD 3320 EE)</Th>
-              <Th>2 (Intel X1010) </Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <Td>Brand</Td>
-              <Td>AMD</Td>
-              <Td>Intel</Td>
-            </Tr>
-            <Tr>
-              <Td>Name</Td>
-              <Td>3320 EE</Td>
-              <Td>X1010</Td>
-            </Tr>
-            <Tr>
-              <Td>Family</Td>
-              <Td>AMD Opteron™</Td>
-              <Td>Intel® Quark™ SoC X1000 Series</Td>
-            </Tr>
-            <Tr>
-              <Td>Launch Quarter</Td>
-              <Td>Q1</Td>
-              <Td>Q3</Td>
-            </Tr>
-            <Tr>
-              <Td>Launch Year</Td>
-              <Td textColor="green.600">
-                <MdArrowCircleUp />
-                Lower
-              </Td>
-              <Td textColor="red.600">
-                <MdArrowCircleDown />
-                Higher
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>Cores</Td>
-              <Td textColor="red.600">
-                <MdArrowCircleDown />
-                Less
-              </Td>
-              <Td textColor="green.600">
-                <MdArrowCircleUp />
-                More
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>Threads</Td>
-              <Td textColor="red.600">
-                <MdArrowCircleDown />
-                Less
-              </Td>
-              <Td textColor="green.600">
-                <MdArrowCircleUp />
-                More
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>Frequency</Td>
-              <Td textColor="red.600">
-                <MdArrowCircleDown />
-                Lower
-              </Td>
-              <Td textColor="green.600">
-                <MdArrowCircleUp />
-                Higher
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>Lithography</Td>
-              <Td textColor="green.600">
-                <MdArrowCircleUp />
-                More
-              </Td>
-              <Td textColor="red.600">
-                <MdArrowCircleDown />
-                Less
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
+        <Center>
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>Field</Th>
+                {comparedList.map((cpu: Minos.Cpu) => {
+                  return <Th key={cpu.id}>{cpu.fullName}</Th>;
+                })}
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <Td>Brand</Td>
+                {comparedList.map((cpu: Minos.Cpu) => {
+                  return <Td key={cpu.id}>{cpu.brand}</Td>;
+                })}
+              </Tr>
+              <Tr>
+                <Td>Name</Td>
+                {comparedList.map((cpu: Minos.Cpu) => {
+                  return <Td key={cpu.id}>{cpu.name}</Td>;
+                })}
+              </Tr>
+              <Tr>
+                <Td>Family</Td>
+                {comparedList.map((cpu: Minos.Cpu) => {
+                  return <Td key={cpu.id}>{cpu.family}</Td>;
+                })}
+              </Tr>
+              <Tr>
+                <Td>...Remaining fields TODO</Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </Center>
       </Stack>
     </Layout>
   );
