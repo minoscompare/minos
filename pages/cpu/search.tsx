@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import NextLink from 'next/link';
 import { GetServerSideProps } from 'next';
 import ItemLinkList from '@minos/ui/widgets/ItemLinkList';
 import { SearchListItem } from '@minos/ui/widgets/ItemLinkList';
@@ -67,7 +66,7 @@ const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
             fontWeight={500}
             fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
           >
-            Component List
+            CPU List
           </Heading>
         </Box>
         <Center>
@@ -98,7 +97,7 @@ const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
           </Stack>
         </Center>
         <Box width="2xl">
-          Select a component
+          Select a CPU:
           <ItemLinkList listItems={pageLinks} />
         </Box>
       </Stack>

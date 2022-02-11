@@ -20,7 +20,7 @@ interface ComponentProps {
 
 function ItemLinkList(props: ComponentProps) {
   const detailsColor = useColorModeValue('blue', 'gray');
-  const compareColor = useColorModeValue('orange', 'yellow');
+  const compareColor = useColorModeValue('purple', 'gray');
   return (
     <Stack>
       {props.listItems.map((item) => {
@@ -35,14 +35,11 @@ function ItemLinkList(props: ComponentProps) {
               </Button>
             </NextLink>
 
-            <Button
-              colorScheme={compareColor}
-              isActive={false}
-              isDisabled={true}
-              variant="solid"
-            >
-              Add to Comparison
-            </Button>
+            <NextLink href={'/components/compare'}>
+              <Button colorScheme={compareColor} variant="solid">
+                Add to Comparison
+              </Button>
+            </NextLink>
           </Stack>
         );
       })}

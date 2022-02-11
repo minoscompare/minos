@@ -36,7 +36,9 @@ const CustomHits = connectHits<Minos.CpuTypesenseDoc>(({ hits }) => (
               {hit.brand} {hit.name}
             </Link>
           </NextLink>
-          <Button size="xs">Compare</Button>
+          <NextLink href="/components/compare">
+            <Button size="xs">Compare</Button>
+          </NextLink>
         </HStack>
       </Box>
     ))}
