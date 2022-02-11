@@ -29,9 +29,9 @@ function ItemLinkList(props: ComponentProps) {
   const [comparedPaths, setComparedPaths] = useAtom(comparedCPUPaths);
 
   function addComparedPath(path: string) {
-    if (comparedPaths.length > 1) {
+    if (comparedPaths.length > 2) {
       console.log(
-        'WARNING: DO NOT ADD MORE THAN 2 ITEMS TO THE COMPARISON, IT CAN CRASH YOUR BROWSER.'
+        'WARNING: DO NOT ADD MORE THAN 3 ITEMS TO THE COMPARISON, IT CAN CRASH YOUR BROWSER.'
       );
       return;
     }

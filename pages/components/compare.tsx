@@ -55,6 +55,7 @@ const CpuComparison: NextPage = () => {
     }
   }
 
+  // UseEffect hook - updates the compared list of CPUs with fetched data
   useEffect(() => {
     const fetchData = async (url: string) => {
       let foundCPU = await fetch(`${url}`)

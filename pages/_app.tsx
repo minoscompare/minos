@@ -7,6 +7,7 @@ import { Minos } from '@minos/lib/types';
 
 // Creates atoms (state management)
 export const comparedCPUPaths = atom(Array<string>());
+export const comparedCPUs = atom(Array<Minos.Cpu>());
 
 // App function
 function MyApp({ Component, pageProps }: AppProps) {
