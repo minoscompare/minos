@@ -13,10 +13,34 @@ import {
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import { MdArrowCircleDown, MdArrowCircleUp } from 'react-icons/md';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { Minos } from '@minos/lib/types';
 import prisma from '@minos/lib/prisma';
 
+// Spec Displaying Function
+function displayCpuSpecRows(cpuList: Minos.Cpu[]) {
+  if (cpuList.length != 0) {
+    return cpuList[0].specs
+
+      .flatMap((category) => category.items)
+      .map((field) => (
+        <>
+          <Tr key={field.name}>
+            <Td>{field.name}</Td>
+            {cpuList.map((cpu) => (
+              <Td key={field.name + cpu.id}>
+                {
+                  cpu.specs
+                    .flatMap((thisCpuCat) => thisCpuCat.items)
+                    .find((item) => item.name == field.name)?.value
+                }
+              </Td>
+            ))}
+          </Tr>
+        </>
+      ));
+  }
+}
 // Main page function
 const CpuComparison: NextPage = () => {
   // Sets state management
@@ -33,7 +57,15 @@ const CpuComparison: NextPage = () => {
         updatedAt: '0',
         createdAt: '0',
         fullName: 'AMD Opteron™ 3320 EE',
-        specs: [],
+        specs: [
+          {
+            categoryName: 'Category 1',
+            items: [
+              { name: 'Test', value: '1' },
+              { name: 'Test 2', value: '2' },
+            ],
+          },
+        ],
       },
       {
         brand: 'Intel',
@@ -43,77 +75,15 @@ const CpuComparison: NextPage = () => {
         updatedAt: '0',
         createdAt: '0',
         fullName: 'Intel Pentium i7 423455647',
-        specs: [],
-      },
-      {
-        brand: 'Intel',
-        id: 1,
-        name: 'i7 423455647',
-        family: 'Intel Pentium',
-        updatedAt: '0',
-        createdAt: '0',
-        fullName: 'Intel Pentium i7 423455647',
-        specs: [],
-      },
-      {
-        brand: 'Intel',
-        id: 1,
-        name: 'i7 423455647',
-        family: 'Intel Pentium',
-        updatedAt: '0',
-        createdAt: '0',
-        fullName: 'Intel Pentium i7 423455647',
-        specs: [],
-      },
-      {
-        brand: 'Intel',
-        id: 1,
-        name: 'i7 423455647',
-        family: 'Intel Pentium',
-        updatedAt: '0',
-        createdAt: '0',
-        fullName: 'Intel Pentium i7 423455647',
-        specs: [],
-      },
-      {
-        brand: 'Intel',
-        id: 1,
-        name: 'i7 423455647',
-        family: 'Intel Pentium',
-        updatedAt: '0',
-        createdAt: '0',
-        fullName: 'Intel Pentium i7 423455647',
-        specs: [],
-      },
-      {
-        brand: 'Intel',
-        id: 1,
-        name: 'i7 423455647',
-        family: 'Intel Pentium',
-        updatedAt: '0',
-        createdAt: '0',
-        fullName: 'Intel Pentium i7 423455647',
-        specs: [],
-      },
-      {
-        brand: 'Intel',
-        id: 1,
-        name: 'i7 423455647',
-        family: 'Intel Pentium',
-        updatedAt: '0',
-        createdAt: '0',
-        fullName: 'Intel Pentium i7 423455647',
-        specs: [],
-      },
-      {
-        brand: 'Intel',
-        id: 1,
-        name: 'i7 423455647',
-        family: 'Intel Pentium',
-        updatedAt: '0',
-        createdAt: '0',
-        fullName: 'Intel Pentium i7 423455647',
-        specs: [],
+        specs: [
+          {
+            categoryName: 'Category 1',
+            items: [
+              { name: 'Test', value: '1' },
+              { name: 'Test 2', value: '2' },
+            ],
+          },
+        ],
       },
     ]);
   }
@@ -137,7 +107,7 @@ const CpuComparison: NextPage = () => {
               <Tr>
                 <Th>Field</Th>
                 {comparedList.map((cpu: Minos.Cpu) => {
-                  return <Th key={cpu.id}>{cpu.fullName}</Th>;
+                  return <Th key={'CpuHeader' + cpu.id}>{cpu.fullName}</Th>;
                 })}
               </Tr>
             </Thead>
@@ -145,24 +115,22 @@ const CpuComparison: NextPage = () => {
               <Tr>
                 <Td>Brand</Td>
                 {comparedList.map((cpu: Minos.Cpu) => {
-                  return <Td key={cpu.id}>{cpu.brand}</Td>;
+                  return <Td key={'CpuBrand' + cpu.id}>{cpu.brand}</Td>;
                 })}
               </Tr>
               <Tr>
                 <Td>Name</Td>
                 {comparedList.map((cpu: Minos.Cpu) => {
-                  return <Td key={cpu.id}>{cpu.name}</Td>;
+                  return <Td key={'CpuName' + cpu.id}>{cpu.name}</Td>;
                 })}
               </Tr>
               <Tr>
                 <Td>Family</Td>
                 {comparedList.map((cpu: Minos.Cpu) => {
-                  return <Td key={cpu.id}>{cpu.family}</Td>;
+                  return <Td key={'CpuFamily' + cpu.id}>{cpu.family}</Td>;
                 })}
               </Tr>
-              <Tr>
-                <Td>...Remaining fields TODO</Td>
-              </Tr>
+              {displayCpuSpecRows(comparedList)}
             </Tbody>
           </Table>
         </Center>
