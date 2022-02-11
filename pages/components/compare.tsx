@@ -13,15 +13,16 @@ import {
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import { MdArrowCircleDown, MdArrowCircleUp } from 'react-icons/md';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { Minos } from '@minos/lib/types';
 import prisma from '@minos/lib/prisma';
+import { useAtom } from 'jotai';
+import { comparedCPUPaths } from '../_app';
 
 // Spec Displaying Function
 function displayCpuSpecRows(cpuList: Minos.Cpu[]) {
   if (cpuList.length != 0) {
     return cpuList[0].specs
-
       .flatMap((category) => category.items)
       .map((field) => (
         <>
@@ -41,52 +42,32 @@ function displayCpuSpecRows(cpuList: Minos.Cpu[]) {
       ));
   }
 }
+
 // Main page function
 const CpuComparison: NextPage = () => {
-  // Sets state management
+  // State management
   const [comparedList, setComparedList] = useState(Array<Minos.Cpu>());
+  const [comparedPaths, setComparedPaths] = useAtom(comparedCPUPaths);
 
-  // (Placeholder) sets the compared CPUs statically for now, TODO add dynamic storing of cpus from global state
-  if (comparedList.length == 0) {
-    setComparedList([
-      {
-        brand: 'AMD',
-        id: 0,
-        name: '3320 EE',
-        family: 'AMD Opteron™',
-        updatedAt: '0',
-        createdAt: '0',
-        fullName: 'AMD Opteron™ 3320 EE',
-        specs: [
-          {
-            categoryName: 'Category 1',
-            items: [
-              { name: 'Test', value: '1' },
-              { name: 'Test 2', value: '2' },
-            ],
-          },
-        ],
-      },
-      {
-        brand: 'Intel',
-        id: 1,
-        name: 'i7 423455647',
-        family: 'Intel Pentium',
-        updatedAt: '0',
-        createdAt: '0',
-        fullName: 'Intel Pentium i7 423455647',
-        specs: [
-          {
-            categoryName: 'Category 1',
-            items: [
-              { name: 'Test', value: '1' },
-              { name: 'Test 2', value: '2' },
-            ],
-          },
-        ],
-      },
-    ]);
+  function addToComparedList(newCPU: Minos.Cpu) {
+    if (!comparedList.map((cpu) => cpu.id).includes(newCPU.id)) {
+      setComparedList([...comparedList, newCPU]);
+    }
   }
+
+  useEffect(() => {
+    const fetchData = async (url: string) => {
+      let foundCPU = await fetch(`${url}`)
+        .then((res) => res.json())
+        .then((res) => res.data);
+
+      if (!comparedList.map((cpu) => cpu.id).includes(foundCPU.id)) {
+        addToComparedList(foundCPU);
+      }
+    };
+
+    comparedPaths.map((url) => fetchData(url).catch(console.error));
+  });
 
   // Returns HTML
   return (

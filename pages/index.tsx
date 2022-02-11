@@ -51,6 +51,14 @@ const Home: NextPage = () => {
               </VStack>
             </Button>
           </NextLink>
+          <NextLink href="/components/compare">
+            <Button h="20" variant="solid">
+              <VStack>
+                <Text>Compare Page&rarr;</Text>
+                <Text>View current comparisons.</Text>
+              </VStack>
+            </Button>
+          </NextLink>
           <Link href="https://github.com/minoscompare" w="100%">
             <Button h="20" w="100%" variant="solid" rightIcon={<MdLink />}>
               Github

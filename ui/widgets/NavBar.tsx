@@ -45,7 +45,7 @@ function NavLink({ children, href }: NavLinkProps) {
 const Links = [
   { name: 'Home', href: '/' },
   { name: 'Search CPUs', href: '/cpu/search' },
-  { name: 'Search GPUs', href: '/gpu/search' },
+  { name: 'View Comparison', href: '/components/compare' },
 ];
 
 export default function NavBar() {

@@ -7,6 +7,8 @@ import { Box, Center, Stack, Text, Heading, Button } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import { clamp } from '@minos/lib/mathFuncs';
 import { useState } from 'react';
+import { useAtom } from 'jotai';
+import { comparedCPUPaths } from '../_app';
 
 // Props interface
 interface PageProps {
@@ -47,7 +49,7 @@ function updatePage(
 
 // Main page function
 const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
-  // Sets constants
+  // Sets constants and state management
   const maxPageIndex = getMaxPageIndex(
     props.componentLinks.length,
     props.pageSize
@@ -118,7 +120,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       componentLinks: cpus.map((cpu) => ({
         key: cpu.id.toString(),
         name: `${cpu.brand} ${cpu.name}`,
-        url: `/cpu/${cpu.id}`,
+        pageURL: `/cpu/${cpu.id}`,
+        apiURL: `/api/cpu/${cpu.id}`,
       })),
       pageSize: 10,
     },

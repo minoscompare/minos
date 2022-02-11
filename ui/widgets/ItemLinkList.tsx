@@ -7,11 +7,16 @@ import {
   useColorModeValue,
   Spacer,
 } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { Minos } from '@minos/lib/types';
+import { useAtom } from 'jotai';
+import { comparedCPUPaths } from 'pages/_app';
 
 export interface SearchListItem {
   key: string;
   name: string;
-  url: string;
+  apiURL: string;
+  pageURL: string;
 }
 
 interface ComponentProps {
@@ -21,6 +26,20 @@ interface ComponentProps {
 function ItemLinkList(props: ComponentProps) {
   const detailsColor = useColorModeValue('blue', 'gray');
   const compareColor = useColorModeValue('purple', 'gray');
+  const [comparedPaths, setComparedPaths] = useAtom(comparedCPUPaths);
+
+  function addComparedPath(path: string) {
+    if (comparedPaths.length > 1) {
+      console.log(
+        'WARNING: DO NOT ADD MORE THAN 2 ITEMS TO THE COMPARISON, IT CAN CRASH YOUR BROWSER.'
+      );
+      return;
+    }
+    if (!comparedPaths.includes(path)) {
+      setComparedPaths([...comparedPaths, path]);
+    }
+  }
+
   return (
     <Stack>
       {props.listItems.map((item) => {
@@ -29,17 +48,20 @@ function ItemLinkList(props: ComponentProps) {
             <Text fontWeight="bold" fontSize="6x1" isTruncated flex={1}>
               {item.name}
             </Text>
-            <NextLink href={item.url}>
+            <NextLink href={item.pageURL}>
               <Button colorScheme={detailsColor} variant="solid">
                 View Details
               </Button>
             </NextLink>
-
-            <NextLink href={'/components/compare'}>
-              <Button colorScheme={compareColor} variant="solid">
-                Add to Comparison
-              </Button>
-            </NextLink>
+            useEffect \{' '}
+            <Button
+              colorScheme={compareColor}
+              variant="solid"
+              onClick={() => addComparedPath(item.apiURL)}
+            >
+              Add to Comparison
+            </Button>
+            \{' '}
           </Stack>
         );
       })}
