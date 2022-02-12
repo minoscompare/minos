@@ -10,6 +10,7 @@ import {
   Tbody,
   Td,
   Center,
+  Button,
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import { MdArrowCircleDown, MdArrowCircleUp } from 'react-icons/md';
@@ -17,7 +18,8 @@ import { ReactElement, useEffect, useState } from 'react';
 import { Minos } from '@minos/lib/types';
 import prisma from '@minos/lib/prisma';
 import { useAtom } from 'jotai';
-import { comparedCPUPaths } from '../_app';
+import { comparedCPUs } from '../_app';
+import { useRouter } from 'next/router';
 
 // Spec Displaying Function
 function displayCpuSpecRows(cpuList: Minos.Cpu[]) {
@@ -46,29 +48,21 @@ function displayCpuSpecRows(cpuList: Minos.Cpu[]) {
 // Main page function
 const CpuComparison: NextPage = () => {
   // State management
-  const [comparedList, setComparedList] = useState(Array<Minos.Cpu>());
-  const [comparedPaths, setComparedPaths] = useAtom(comparedCPUPaths);
+  const [comparedData, setComparedData] = useAtom(comparedCPUs);
 
-  function addToComparedList(newCPU: Minos.Cpu) {
-    if (!comparedList.map((cpu) => cpu.id).includes(newCPU.id)) {
-      setComparedList([...comparedList, newCPU]);
+  // Routing
+  const router = useRouter();
+
+  // Function for removing components
+  function removeComponent(cpuID: number) {
+    let newComparedData = comparedData;
+    let index = newComparedData.map((cpu) => cpu.id).indexOf(cpuID);
+    if (index > -1) {
+      newComparedData.splice(index, 1);
     }
+    setComparedData(newComparedData);
+    router.push(window.location.pathname);
   }
-
-  // UseEffect hook - updates the compared list of CPUs with fetched data
-  useEffect(() => {
-    const fetchData = async (url: string) => {
-      let foundCPU = await fetch(`${url}`)
-        .then((res) => res.json())
-        .then((res) => res.data);
-
-      if (!comparedList.map((cpu) => cpu.id).includes(foundCPU.id)) {
-        addToComparedList(foundCPU);
-      }
-    };
-
-    comparedPaths.map((url) => fetchData(url).catch(console.error));
-  });
 
   // Returns HTML
   return (
@@ -88,31 +82,43 @@ const CpuComparison: NextPage = () => {
             <Thead>
               <Tr>
                 <Th>Field</Th>
-                {comparedList.map((cpu: Minos.Cpu) => {
+                {comparedData.map((cpu: Minos.Cpu) => {
                   return <Th key={'CpuHeader' + cpu.id}>{cpu.fullName}</Th>;
+                })}
+              </Tr>
+              <Tr>
+                <Th></Th>
+                {comparedData.map((cpu: Minos.Cpu) => {
+                  return (
+                    <Th key={'CpuRemoveButton' + cpu.id}>
+                      <Button onClick={() => removeComponent(cpu.id)}>
+                        Remove
+                      </Button>
+                    </Th>
+                  );
                 })}
               </Tr>
             </Thead>
             <Tbody>
               <Tr>
                 <Td>Brand</Td>
-                {comparedList.map((cpu: Minos.Cpu) => {
+                {comparedData.map((cpu: Minos.Cpu) => {
                   return <Td key={'CpuBrand' + cpu.id}>{cpu.brand}</Td>;
                 })}
               </Tr>
               <Tr>
                 <Td>Name</Td>
-                {comparedList.map((cpu: Minos.Cpu) => {
+                {comparedData.map((cpu: Minos.Cpu) => {
                   return <Td key={'CpuName' + cpu.id}>{cpu.name}</Td>;
                 })}
               </Tr>
               <Tr>
                 <Td>Family</Td>
-                {comparedList.map((cpu: Minos.Cpu) => {
+                {comparedData.map((cpu: Minos.Cpu) => {
                   return <Td key={'CpuFamily' + cpu.id}>{cpu.family}</Td>;
                 })}
               </Tr>
-              {displayCpuSpecRows(comparedList)}
+              {displayCpuSpecRows(comparedData)}
             </Tbody>
           </Table>
         </Center>

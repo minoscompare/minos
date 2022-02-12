@@ -6,7 +6,6 @@ import { Provider as JotaiProvider, atom, useAtom } from 'jotai';
 import { Minos } from '@minos/lib/types';
 
 // Creates atoms (state management)
-export const comparedCPUPaths = atom(Array<string>());
 export const comparedCPUs = atom(Array<Minos.Cpu>());
 
 // App function

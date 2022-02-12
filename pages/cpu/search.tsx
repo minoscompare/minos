@@ -8,7 +8,7 @@ import { Layout } from '@minos/ui/components/Layout';
 import { clamp } from '@minos/lib/mathFuncs';
 import { useState } from 'react';
 import { useAtom } from 'jotai';
-import { comparedCPUPaths } from '../_app';
+import { prismaCpuToAppCpu } from '@minos/lib/api/data-access/cpu';
 
 // Props interface
 interface PageProps {
@@ -111,9 +111,7 @@ const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
 // GetStaticProps to get the list of components before building the page
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // This gets ALL THE CPUS in the database, not very performant.
-  const cpus = await prisma.cpu.findMany({
-    select: { id: true, name: true, brand: true },
-  });
+  const cpus = await prisma.cpu.findMany();
 
   return {
     props: {
@@ -122,6 +120,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         name: `${cpu.brand} ${cpu.name}`,
         pageURL: `/cpu/${cpu.id}`,
         apiURL: `/api/cpu/${cpu.id}`,
+        cpuData: prismaCpuToAppCpu(cpu),
       })),
       pageSize: 10,
     },

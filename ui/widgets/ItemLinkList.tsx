@@ -10,13 +10,14 @@ import {
 import { useEffect } from 'react';
 import { Minos } from '@minos/lib/types';
 import { useAtom } from 'jotai';
-import { comparedCPUPaths } from 'pages/_app';
+import { comparedCPUs } from 'pages/_app';
 
 export interface SearchListItem {
   key: string;
   name: string;
   apiURL: string;
   pageURL: string;
+  cpuData: Minos.Cpu;
 }
 
 interface ComponentProps {
@@ -24,19 +25,16 @@ interface ComponentProps {
 }
 
 function ItemLinkList(props: ComponentProps) {
+  // Sets color scheme data
   const detailsColor = useColorModeValue('blue', 'gray');
   const compareColor = useColorModeValue('purple', 'gray');
-  const [comparedPaths, setComparedPaths] = useAtom(comparedCPUPaths);
 
-  function addComparedPath(path: string) {
-    if (comparedPaths.length > 2) {
-      console.log(
-        'WARNING: DO NOT ADD MORE THAN 3 ITEMS TO THE COMPARISON, IT CAN CRASH YOUR BROWSER.'
-      );
-      return;
-    }
-    if (!comparedPaths.includes(path)) {
-      setComparedPaths([...comparedPaths, path]);
+  // Gets atoms and set functions
+  const [comparedData, setComparedData] = useAtom(comparedCPUs);
+
+  function addComparedData(addedCPU: Minos.Cpu) {
+    if (!comparedData.map((cpu) => cpu.id).includes(addedCPU.id)) {
+      setComparedData([...comparedData, addedCPU]);
     }
   }
 
@@ -57,7 +55,12 @@ function ItemLinkList(props: ComponentProps) {
             <Button
               colorScheme={compareColor}
               variant="solid"
-              onClick={() => addComparedPath(item.apiURL)}
+              isDisabled={comparedData
+                .map((cpu) => cpu.id)
+                .includes(item.cpuData.id)}
+              onClick={() => {
+                addComparedData(item.cpuData);
+              }}
             >
               Add to Comparison
             </Button>
