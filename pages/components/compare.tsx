@@ -20,6 +20,12 @@ import prisma from '@minos/lib/prisma';
 import { useAtom } from 'jotai';
 import { comparedCPUs } from '../_app';
 import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
+
+// Props interface
+interface PageProps {
+  comparedCPUListTemporaryName: Minos.Cpu[];
+}
 
 // Spec Displaying Function
 function displayCpuSpecRows(cpuList: Minos.Cpu[]) {
@@ -127,4 +133,33 @@ const CpuComparison: NextPage = () => {
   );
 };
 
+// GetServerSideProps to get the list of compared components before page render
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Fetches data for the cpus passed in context parameters
+  let cpuIDs: string[] = [];
+  let cpus: Minos.Cpu[] = [];
+
+  if (context.params && Array.isArray(context.params[0])) {
+    cpuIDs = context.params[0] as string[];
+  }
+
+  // Fetches the CPUs at the given paths
+  for (let i = 0; i < cpuIDs.length; i++) {
+    try {
+      cpuIDs.push(
+        await fetch(`http://localhost:3000/api/cpu/${id}`)
+          .then((res) => res.json())
+          .then((res) => res.data)
+      );
+    } catch (err) {
+      return { notFound: true };
+    }
+  }
+
+  return {
+    props: {
+      comparedCPUListTemporaryName: cpus,
+    },
+  };
+};
 export default CpuComparison;

@@ -108,9 +108,10 @@ const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
   );
 };
 
-// GetStaticProps to get the list of components before building the page
+// GetServerSideProps to get the list of components before building the page
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // This gets ALL THE CPUS in the database, not very performant.
+  //TODO: Get ONLY name, brand, ID.
   const cpus = await prisma.cpu.findMany();
 
   return {
