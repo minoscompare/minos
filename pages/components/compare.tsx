@@ -11,6 +11,7 @@ import {
   Td,
   Center,
   Button,
+  propNames,
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import { MdArrowCircleDown, MdArrowCircleUp } from 'react-icons/md';
@@ -18,18 +19,18 @@ import { ReactElement, useEffect, useState } from 'react';
 import { Minos } from '@minos/lib/types';
 import prisma from '@minos/lib/prisma';
 import { useAtom } from 'jotai';
-import { comparedCPUs } from '../_app';
+import { comparedCPUIds } from '../_app';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 
 // Props interface
 interface PageProps {
-  comparedCPUListTemporaryName: Minos.Cpu[];
+  comparedCPUData: Minos.Cpu[];
 }
 
 // Spec Displaying Function
 function displayCpuSpecRows(cpuList: Minos.Cpu[]) {
-  if (cpuList.length != 0) {
+  if (cpuList && cpuList.length != 0) {
     return cpuList[0].specs
       .flatMap((category) => category.items)
       .map((field) => (
@@ -52,29 +53,45 @@ function displayCpuSpecRows(cpuList: Minos.Cpu[]) {
 }
 
 // Main page function
-const CpuComparison: NextPage = () => {
+const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
   // State management
-  const [comparedData, setComparedData] = useAtom(comparedCPUs);
+  const [comparedIDs, setComparedIDs] = useAtom(comparedCPUIds);
 
   // Routing
   const router = useRouter();
 
-  // Function for removing components
-  function removeComponent(cpuID: number) {
-    let newComparedData = comparedData;
-    let index = newComparedData.map((cpu) => cpu.id).indexOf(cpuID);
-    if (index > -1) {
-      newComparedData.splice(index, 1);
-    }
-    setComparedData(newComparedData);
-    router.push(window.location.pathname);
+  function updatePageQuery(newComparedIDs: string[]) {
+    router.push({
+      pathname: window.location.pathname,
+      query: {
+        comparedIDs: newComparedIDs,
+      },
+    });
   }
+
+  // Function for removing components
+  function removeComparedID(cpuID: string) {
+    let newComparedIDs = comparedIDs;
+    let index = newComparedIDs.indexOf(cpuID);
+    if (index > -1) {
+      newComparedIDs.splice(index, 1);
+    }
+    setComparedIDs(newComparedIDs);
+    updatePageQuery(comparedIDs);
+  }
+
+  useEffect(() => {
+    if (props.comparedCPUData.length == 0 && comparedIDs.length != 0) {
+      console.log('a');
+      updatePageQuery(comparedIDs);
+    }
+  });
 
   // Returns HTML
   return (
     <Layout title="Compare CPUs">
       <Stack spacing={{ base: 6, md: 10 }} direction="column">
-        <Box as="header">
+        <Box as="header" key="HeaderBox">
           <Heading
             lineHeight={1.1}
             fontWeight={500}
@@ -88,16 +105,18 @@ const CpuComparison: NextPage = () => {
             <Thead>
               <Tr>
                 <Th>Field</Th>
-                {comparedData.map((cpu: Minos.Cpu) => {
+                {props.comparedCPUData?.map((cpu: Minos.Cpu) => {
                   return <Th key={'CpuHeader' + cpu.id}>{cpu.fullName}</Th>;
                 })}
               </Tr>
               <Tr>
                 <Th></Th>
-                {comparedData.map((cpu: Minos.Cpu) => {
+                {props.comparedCPUData?.map((cpu: Minos.Cpu) => {
                   return (
                     <Th key={'CpuRemoveButton' + cpu.id}>
-                      <Button onClick={() => removeComponent(cpu.id)}>
+                      <Button
+                        onClick={() => removeComparedID(cpu.id.toString())}
+                      >
                         Remove
                       </Button>
                     </Th>
@@ -108,23 +127,23 @@ const CpuComparison: NextPage = () => {
             <Tbody>
               <Tr>
                 <Td>Brand</Td>
-                {comparedData.map((cpu: Minos.Cpu) => {
+                {props.comparedCPUData?.map((cpu: Minos.Cpu) => {
                   return <Td key={'CpuBrand' + cpu.id}>{cpu.brand}</Td>;
                 })}
               </Tr>
               <Tr>
                 <Td>Name</Td>
-                {comparedData.map((cpu: Minos.Cpu) => {
+                {props.comparedCPUData?.map((cpu: Minos.Cpu) => {
                   return <Td key={'CpuName' + cpu.id}>{cpu.name}</Td>;
                 })}
               </Tr>
               <Tr>
                 <Td>Family</Td>
-                {comparedData.map((cpu: Minos.Cpu) => {
+                {props.comparedCPUData?.map((cpu: Minos.Cpu) => {
                   return <Td key={'CpuFamily' + cpu.id}>{cpu.family}</Td>;
                 })}
               </Tr>
-              {displayCpuSpecRows(comparedData)}
+              {displayCpuSpecRows(props.comparedCPUData)}
             </Tbody>
           </Table>
         </Center>
@@ -139,15 +158,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let cpuIDs: string[] = [];
   let cpus: Minos.Cpu[] = [];
 
-  if (context.params && Array.isArray(context.params[0])) {
-    cpuIDs = context.params[0] as string[];
+  if (context.query && context.query.comparedIDs) {
+    if (Array.isArray(context.query.comparedIDs)) {
+      cpuIDs = context.query.comparedIDs;
+    } else {
+      cpuIDs.push(context.query.comparedIDs);
+    }
   }
 
   // Fetches the CPUs at the given paths
   for (let i = 0; i < cpuIDs.length; i++) {
     try {
-      cpuIDs.push(
-        await fetch(`http://localhost:3000/api/cpu/${id}`)
+      cpus.push(
+        await fetch(`http://localhost:3000/api/cpu/${cpuIDs[i]}`)
           .then((res) => res.json())
           .then((res) => res.data)
       );
@@ -158,7 +181,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      comparedCPUListTemporaryName: cpus,
+      comparedCPUData: cpus,
     },
   };
 };

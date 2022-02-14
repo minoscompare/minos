@@ -10,14 +10,13 @@ import {
 import { useEffect } from 'react';
 import { Minos } from '@minos/lib/types';
 import { useAtom } from 'jotai';
-import { comparedCPUs } from 'pages/_app';
+import { comparedCPUs, comparedCPUIds } from 'pages/_app';
 
 export interface SearchListItem {
-  key: string;
+  id: string;
   name: string;
   apiURL: string;
   pageURL: string;
-  cpuData: Minos.Cpu;
 }
 
 interface ComponentProps {
@@ -30,11 +29,12 @@ function ItemLinkList(props: ComponentProps) {
   const compareColor = useColorModeValue('purple', 'gray');
 
   // Gets atoms and set functions
-  const [comparedData, setComparedData] = useAtom(comparedCPUs);
+  const [comparedIDs, setComparedIDs] = useAtom(comparedCPUIds);
 
-  function addComparedData(addedCPU: Minos.Cpu) {
-    if (!comparedData.map((cpu) => cpu.id).includes(addedCPU.id)) {
-      setComparedData([...comparedData, addedCPU]);
+  function addComparedID(addedID: string) {
+    if (!comparedIDs.includes(addedID)) {
+      setComparedIDs([...comparedIDs, addedID]);
+      console.log('Added ID: ' + addedID);
     }
   }
 
@@ -42,7 +42,7 @@ function ItemLinkList(props: ComponentProps) {
     <Stack>
       {props.listItems.map((item) => {
         return (
-          <Stack key={item.key} spacing={10} direction="row" align="center">
+          <Stack key={item.id} spacing={10} direction="row" align="center">
             <Text fontWeight="bold" fontSize="6x1" isTruncated flex={1}>
               {item.name}
             </Text>
@@ -55,16 +55,13 @@ function ItemLinkList(props: ComponentProps) {
             <Button
               colorScheme={compareColor}
               variant="solid"
-              isDisabled={comparedData
-                .map((cpu) => cpu.id)
-                .includes(item.cpuData.id)}
+              isDisabled={comparedIDs.includes(item.id)}
               onClick={() => {
-                addComparedData(item.cpuData);
+                addComparedID(item.id);
               }}
             >
               Add to Comparison
-            </Button>
-            \{' '}
+            </Button>{' '}
           </Stack>
         );
       })}

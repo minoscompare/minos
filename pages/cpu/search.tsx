@@ -110,18 +110,18 @@ const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
 
 // GetServerSideProps to get the list of components before building the page
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // This gets ALL THE CPUS in the database, not very performant.
-  //TODO: Get ONLY name, brand, ID.
-  const cpus = await prisma.cpu.findMany();
+  // This gets data for ALL CPUs in the database, not particularly performant.
+  const cpus = await prisma.cpu.findMany({
+    select: { id: true, name: true, brand: true },
+  });
 
   return {
     props: {
       componentLinks: cpus.map((cpu) => ({
-        key: cpu.id.toString(),
+        id: `${cpu.id}`,
         name: `${cpu.brand} ${cpu.name}`,
         pageURL: `/cpu/${cpu.id}`,
         apiURL: `/api/cpu/${cpu.id}`,
-        cpuData: prismaCpuToAppCpu(cpu),
       })),
       pageSize: 10,
     },
