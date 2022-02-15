@@ -25,25 +25,45 @@ import { Minos } from '@minos/lib/types';
 import NextLink from 'next/link';
 import { MdClose, MdSearch } from 'react-icons/md';
 import { SearchBoxExposed, SearchBoxProvided } from 'react-instantsearch-core';
+import { comparedCPUIds } from 'pages/_app';
+import { useAtom } from 'jotai';
 
-const CustomHits = connectHits<Minos.CpuTypesenseDoc>(({ hits }) => (
-  <>
-    {hits.map((hit) => (
-      <Box key={hit.id} flex={1} mx={3} my={2}>
-        <HStack>
-          <NextLink href={`/cpu/${hit.id}`}>
-            <Link flex={1} isTruncated>
-              {hit.brand} {hit.name}
-            </Link>
-          </NextLink>
-          <NextLink href="/components/compare">
-            <Button size="xs">Compare</Button>
-          </NextLink>
-        </HStack>
-      </Box>
-    ))}
-  </>
-));
+const CustomHits = connectHits<Minos.CpuTypesenseDoc>(({ hits }) => {
+  // Gets CPU Ids atom and creates a function to modify them
+  const [comparedIDs, setComparedIDs] = useAtom(comparedCPUIds);
+
+  function addComparedID(newID: string) {
+    if (!comparedIDs.includes(newID)) {
+      setComparedIDs([...comparedIDs, newID]);
+    }
+  }
+
+  // Returns HTML
+  return (
+    <>
+      {hits.map((hit) => (
+        <Box key={hit.id} flex={1} mx={3} my={2}>
+          <HStack>
+            <NextLink href={`/cpu/${hit.id}`}>
+              <Link flex={1} isTruncated>
+                {hit.brand} {hit.name}
+              </Link>
+            </NextLink>
+            <NextLink href="/components/compare">
+              <Button
+                size="xs"
+                isDisabled={comparedIDs.includes(hit.id.toString())}
+                onClick={() => addComparedID(hit.id.toString())}
+              >
+                Compare
+              </Button>
+            </NextLink>
+          </HStack>
+        </Box>
+      ))}
+    </>
+  );
+});
 
 interface CustomSearchBoxProps {
   onClose: () => void;

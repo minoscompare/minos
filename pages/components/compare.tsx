@@ -39,11 +39,9 @@ function displayCpuSpecRows(cpuList: Minos.Cpu[]) {
             <Td>{field.name}</Td>
             {cpuList.map((cpu) => (
               <Td key={field.name + cpu.id}>
-                {
-                  cpu.specs
-                    .flatMap((thisCpuCat) => thisCpuCat.items)
-                    .find((item) => item.name == field.name)?.value
-                }
+                {cpu.specs
+                  .flatMap((thisCpuCat) => thisCpuCat.items)
+                  .find((item) => item.name == field.name)?.value ?? '(?)'}
               </Td>
             ))}
           </Tr>
