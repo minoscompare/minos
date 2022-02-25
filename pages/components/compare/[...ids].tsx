@@ -111,13 +111,13 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
             <Thead>
               <Tr>
                 <Th>Field</Th>
-                {props.comparedCPUData?.map((cpu) => {
+                {props.comparedCPUData.map((cpu) => {
                   return <Th key={'CpuHeader' + cpu.id}>{cpu.fullName}</Th>;
                 })}
               </Tr>
               <Tr>
                 <Th></Th>
-                {props.comparedCPUData?.map((cpu) => {
+                {props.comparedCPUData.map((cpu) => {
                   return (
                     <Th key={'CpuRemoveButton' + cpu.id}>
                       <Button
@@ -133,19 +133,19 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
             <Tbody>
               <Tr>
                 <Td>Brand</Td>
-                {props.comparedCPUData?.map((cpu) => {
+                {props.comparedCPUData.map((cpu) => {
                   return <Td key={'CpuBrand' + cpu.id}>{cpu.brand}</Td>;
                 })}
               </Tr>
               <Tr>
                 <Td>Name</Td>
-                {props.comparedCPUData?.map((cpu) => {
+                {props.comparedCPUData.map((cpu) => {
                   return <Td key={'CpuName' + cpu.id}>{cpu.model}</Td>;
                 })}
               </Tr>
               <Tr>
                 <Td>Family</Td>
-                {props.comparedCPUData?.map((cpu) => {
+                {props.comparedCPUData.map((cpu) => {
                   return <Td key={'CpuFamily' + cpu.id}>{cpu.family}</Td>;
                 })}
               </Tr>
