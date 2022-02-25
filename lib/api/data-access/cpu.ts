@@ -1,56 +1,61 @@
 import { Minos } from '@minos/lib/types';
-import { Cpu as PrismaCpu, Prisma, PrismaClient } from '@prisma/client';
+import {
+  Cpu as PrismaCpu,
+  CpuBrand,
+  Prisma,
+  PrismaClient,
+} from '@prisma/client';
 
-export function prismaCpuToAppCpu(cpu: PrismaCpu): Minos.Cpu {
-  const essentials: Minos.CpuSpecsCategory = {
-    categoryName: 'Essentials',
-    items: [
-      { name: '# of Cores', value: cpu.cores.toString() },
-      { name: '# of Threads', value: cpu.threads.toString() },
-      { name: 'Base Frequency', value: `${cpu.frequency * 10e-2} GHz` },
-      { name: 'L1 Cache', value: cpu.cacheL1 ? `${cpu.cacheL1} MB` : null },
-      { name: 'L2 Cache', value: cpu.cacheL2 ? `${cpu.cacheL2} MB` : null },
-      { name: 'L3 Cache', value: cpu.cacheL2 ? `${cpu.cacheL2} MB` : null },
-      { name: 'TDP', value: cpu.tdp ? `${cpu.tdp} W` : null },
-    ],
+interface MinosCpu {
+  id: number;
+  brand: CpuBrand;
+  model: string;
+  fullName: string;
+  family: string;
+  specs: {
+    cores: string | null;
+    threads: string | null;
+    frequency: string | null;
+    cacheL1: string | null;
+    cacheL2: string | null;
+    cacheL3: string | null;
+    tdp: string | null;
+    launchDate: string | null;
+    launchYear: string | null;
+    launchQuarter: string | null;
+    lithography: string | null;
   };
+  createdAt: string;
+  updatedAt: string;
+}
 
-  const extras: Minos.CpuSpecsCategory = {
-    categoryName: 'Extras',
-    items: [],
-  };
-
-  if (cpu.launchQuarter && cpu.launchYear) {
-    extras.items.push({
-      name: 'Launch Date',
-      value: `${cpu.launchQuarter} ${cpu.launchYear}`,
-    });
-  } else if (cpu.launchYear) {
-    extras.items.push({
-      name: 'Launch Date',
-      value: cpu.launchYear.toString(),
-    });
-  } else {
-    extras.items.push({
-      name: 'Launch Date',
-      value: null,
-    });
-  }
-
-  extras.items.push({
-    name: 'Lithography',
-    value: cpu.lithography ? `${cpu.lithography} nm` : null,
-  });
-
+export function prismaCpuToMinosCpu(cpu: PrismaCpu): MinosCpu {
   return {
     id: cpu.id,
     brand: cpu.brand,
-    name: cpu.name,
+    model: cpu.name,
     fullName: `${cpu.brand} ${cpu.name}`,
     family: cpu.family,
-    specs: [essentials, extras],
+    specs: {
+      cores: cpu.cores.toString(),
+      threads: cpu.threads.toString(),
+      frequency: `${cpu.frequency * 10e-2} GHz`,
+      cacheL1: cpu.cacheL1 ? `${cpu.cacheL1} MB` : null,
+      cacheL2: cpu.cacheL2 ? `${cpu.cacheL2} MB` : null,
+      cacheL3: cpu.cacheL3 ? `${cpu.cacheL3} MB` : null,
+      tdp: cpu.tdp ? `${cpu.tdp} W` : null,
+      lithography: cpu.lithography ? `${cpu.lithography} nm` : null,
+      launchDate:
+        cpu.launchQuarter && cpu.launchYear
+          ? `${cpu.launchQuarter} ${cpu.launchYear}`
+          : cpu.launchYear
+          ? cpu.launchYear.toString()
+          : null,
+      launchQuarter: cpu.launchQuarter ? cpu.launchQuarter.toString() : null,
+      launchYear: cpu.launchYear ? cpu.launchYear.toString() : null,
+    },
     createdAt: cpu.createdAt.toISOString(),
-    updatedAt: cpu.updatedAt.toISOString(),
+    updatedAt: cpu.createdAt.toISOString(),
   };
 }
 
@@ -59,7 +64,7 @@ export async function createCpu(
   data: Prisma.CpuCreateInput
 ) {
   const cpu = await prisma.cpu.create({ data });
-  return prismaCpuToAppCpu(cpu);
+  return prismaCpuToMinosCpu(cpu);
 }
 
 export async function getCpuById(prisma: PrismaClient, id: number) {
@@ -69,7 +74,7 @@ export async function getCpuById(prisma: PrismaClient, id: number) {
     return null;
   }
 
-  return prismaCpuToAppCpu(cpu);
+  return prismaCpuToMinosCpu(cpu);
 }
 
 export async function getManyCpus(
@@ -77,7 +82,7 @@ export async function getManyCpus(
   args: Prisma.CpuFindManyArgs
 ) {
   const cpus = await prisma.cpu.findMany(args);
-  return cpus.map(prismaCpuToAppCpu);
+  return cpus.map(prismaCpuToMinosCpu);
 }
 
 export async function updateCpuById(
@@ -86,7 +91,7 @@ export async function updateCpuById(
   data: Prisma.CpuUpdateInput
 ) {
   const cpu = await prisma.cpu.update({ where: { id }, data });
-  return prismaCpuToAppCpu(cpu);
+  return prismaCpuToMinosCpu(cpu);
 }
 
 export async function updateCpu(
@@ -94,7 +99,7 @@ export async function updateCpu(
   args: Prisma.CpuUpdateArgs
 ) {
   const cpu = await prisma.cpu.update(args);
-  return prismaCpuToAppCpu(cpu);
+  return prismaCpuToMinosCpu(cpu);
 }
 
 export async function deleteCpuById(prisma: PrismaClient, id: number) {
