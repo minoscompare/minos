@@ -50,7 +50,7 @@ function NavBarLinks() {
     <>
       <NavLink href="/">Home</NavLink>
       <NavLink href="/cpu/serach">Search CPUs</NavLink>
-      <NavLink href={`/components/compare/${comparedCpuIds.join('/')}`}>
+      <NavLink href={`/cpu/compare/${comparedCpuIds.join('/')}`}>
         View Comparison
       </NavLink>
     </>

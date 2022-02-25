@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { NextPage } from 'next';
 import {
   Box,
@@ -14,8 +15,6 @@ import {
   propNames,
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
-import { MdArrowCircleDown, MdArrowCircleUp } from 'react-icons/md';
-import { ReactElement, useEffect, useState } from 'react';
 import prisma from '@minos/lib/prisma';
 import { useAtom } from 'jotai';
 import { comparedCPUIds } from '../../_app';
@@ -72,7 +71,7 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
   const router = useRouter();
 
   function updatePageQuery(newComparedIDs: string[]) {
-    router.push(`/components/compare/${newComparedIDs.join('/')}`);
+    router.push(`/cpu/compare/${newComparedIDs.join('/')}`);
   }
 
   // Function for removing components
