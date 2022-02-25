@@ -16,38 +16,51 @@ import {
 import { Layout } from '@minos/ui/components/Layout';
 import { MdArrowCircleDown, MdArrowCircleUp } from 'react-icons/md';
 import { ReactElement, useEffect, useState } from 'react';
-import { Minos } from '@minos/lib/types';
 import prisma from '@minos/lib/prisma';
 import { useAtom } from 'jotai';
-import { comparedCPUIds } from '../_app';
+import { comparedCPUIds } from '../../_app';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
+import { MinosCpu } from '@minos/lib/types';
+import { getCpuById } from '@minos/lib/api/data-access/cpu';
+
+interface CpuSpecRowProps {
+  name: string;
+  valueKey: keyof MinosCpu['specs'];
+  cpus: MinosCpu[];
+}
+
+function CpuSpecRow({ name, valueKey, cpus }: CpuSpecRowProps) {
+  return (
+    <Tr>
+      <Td>{name}</Td>
+      {cpus.map((cpu) => (
+        <Td key={name + cpu.id}>{cpu.specs[valueKey] ?? 'Unknown'}</Td>
+      ))}
+    </Tr>
+  );
+}
 
 // Props interface
 interface PageProps {
-  comparedCPUData: Minos.Cpu[];
+  comparedCPUData: MinosCpu[];
 }
 
 // Spec Displaying Function
-function displayCpuSpecRows(cpuList: Minos.Cpu[]) {
-  if (cpuList && cpuList.length != 0) {
-    return cpuList[0].specs
-      .flatMap((category) => category.items)
-      .map((field) => (
-        <>
-          <Tr key={field.name}>
-            <Td>{field.name}</Td>
-            {cpuList.map((cpu) => (
-              <Td key={field.name + cpu.id}>
-                {cpu.specs
-                  .flatMap((thisCpuCat) => thisCpuCat.items)
-                  .find((item) => item.name == field.name)?.value ?? '(?)'}
-              </Td>
-            ))}
-          </Tr>
-        </>
-      ));
-  }
+function displayCpuSpecRows(cpuList: MinosCpu[]) {
+  return (
+    <>
+      <CpuSpecRow name="# of Cores" valueKey="cores" cpus={cpuList} />
+      <CpuSpecRow name="# of Threads" valueKey="threads" cpus={cpuList} />
+      <CpuSpecRow name="Base Frequency" valueKey="frequency" cpus={cpuList} />
+      <CpuSpecRow name="L1 Cache" valueKey="cacheL1" cpus={cpuList} />
+      <CpuSpecRow name="L2 Cache" valueKey="cacheL2" cpus={cpuList} />
+      <CpuSpecRow name="L3 Cache" valueKey="cacheL3" cpus={cpuList} />
+      <CpuSpecRow name="TDP" valueKey="tdp" cpus={cpuList} />
+      <CpuSpecRow name="Launch Date" valueKey="launchDate" cpus={cpuList} />
+      <CpuSpecRow name="Lithography" valueKey="lithography" cpus={cpuList} />
+    </>
+  );
 }
 
 // Main page function
@@ -59,12 +72,7 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
   const router = useRouter();
 
   function updatePageQuery(newComparedIDs: string[]) {
-    router.push({
-      pathname: window.location.pathname,
-      query: {
-        comparedIDs: newComparedIDs,
-      },
-    });
+    router.push(`/components/compare/${newComparedIDs.join('/')}`);
   }
 
   // Function for removing components
@@ -103,13 +111,13 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
             <Thead>
               <Tr>
                 <Th>Field</Th>
-                {props.comparedCPUData?.map((cpu: Minos.Cpu) => {
+                {props.comparedCPUData?.map((cpu) => {
                   return <Th key={'CpuHeader' + cpu.id}>{cpu.fullName}</Th>;
                 })}
               </Tr>
               <Tr>
                 <Th></Th>
-                {props.comparedCPUData?.map((cpu: Minos.Cpu) => {
+                {props.comparedCPUData?.map((cpu) => {
                   return (
                     <Th key={'CpuRemoveButton' + cpu.id}>
                       <Button
@@ -125,19 +133,19 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
             <Tbody>
               <Tr>
                 <Td>Brand</Td>
-                {props.comparedCPUData?.map((cpu: Minos.Cpu) => {
+                {props.comparedCPUData?.map((cpu) => {
                   return <Td key={'CpuBrand' + cpu.id}>{cpu.brand}</Td>;
                 })}
               </Tr>
               <Tr>
                 <Td>Name</Td>
-                {props.comparedCPUData?.map((cpu: Minos.Cpu) => {
-                  return <Td key={'CpuName' + cpu.id}>{cpu.name}</Td>;
+                {props.comparedCPUData?.map((cpu) => {
+                  return <Td key={'CpuName' + cpu.id}>{cpu.model}</Td>;
                 })}
               </Tr>
               <Tr>
                 <Td>Family</Td>
-                {props.comparedCPUData?.map((cpu: Minos.Cpu) => {
+                {props.comparedCPUData?.map((cpu) => {
                   return <Td key={'CpuFamily' + cpu.id}>{cpu.family}</Td>;
                 })}
               </Tr>
@@ -152,29 +160,24 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
 
 // GetServerSideProps to get the list of compared components before page render
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // Fetches data for the cpus passed in context parameters
-  let cpuIDs: string[] = [];
-  let cpus: Minos.Cpu[] = [];
+  // Get array of cpu ids from query params
+  const cpuIds = (context.query.ids ?? []) as string[];
 
-  if (context.query && context.query.comparedIDs) {
-    if (Array.isArray(context.query.comparedIDs)) {
-      cpuIDs = context.query.comparedIDs;
-    } else {
-      cpuIDs.push(context.query.comparedIDs);
-    }
+  // Creates an array of promises to fetch all individual cpus
+  const promises = cpuIds.map((id) => getCpuById(prisma, parseInt(id)));
+
+  let cpus: (MinosCpu | null)[];
+
+  try {
+    // Awaits all promises at the same time, fails if one fails
+    cpus = await Promise.all(promises);
+  } catch (err) {
+    return { notFound: true };
   }
 
-  // Fetches the CPUs at the given paths
-  for (let i = 0; i < cpuIDs.length; i++) {
-    try {
-      cpus.push(
-        await fetch(`http://localhost:3000/api/cpu/${cpuIDs[i]}`)
-          .then((res) => res.json())
-          .then((res) => res.data)
-      );
-    } catch (err) {
-      return { notFound: true };
-    }
+  // If one or more cpus are falsy (i.e. cpu does not exist), then redirect to not found
+  if (cpus.some((cpu) => !cpu)) {
+    return { notFound: true };
   }
 
   return {

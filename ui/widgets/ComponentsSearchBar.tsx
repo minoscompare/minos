@@ -21,14 +21,14 @@ import {
   connectSearchBox,
 } from 'react-instantsearch-dom';
 import { searchClient } from '@minos/lib/client/typesense';
-import { Minos } from '@minos/lib/types';
 import NextLink from 'next/link';
 import { MdClose, MdSearch } from 'react-icons/md';
 import { SearchBoxExposed, SearchBoxProvided } from 'react-instantsearch-core';
 import { comparedCPUIds } from 'pages/_app';
 import { useAtom } from 'jotai';
+import { CpuTypesenseDoc } from '@minos/lib/types';
 
-const CustomHits = connectHits<Minos.CpuTypesenseDoc>(({ hits }) => {
+const CustomHits = connectHits<CpuTypesenseDoc>(({ hits }) => {
   // Gets CPU Ids atom and creates a function to modify them
   const [comparedIDs, setComparedIDs] = useAtom(comparedCPUIds);
 

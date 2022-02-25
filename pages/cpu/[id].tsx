@@ -10,11 +10,28 @@ import {
   List,
   ListItem,
 } from '@chakra-ui/react';
-import { Minos } from '@minos/lib/types';
 import { Layout } from '@minos/ui/components/Layout';
+import { MinosCpu } from '@minos/lib/types';
+import { getCpuById } from '@minos/lib/api/data-access/cpu';
+
+interface CpuSpecProps {
+  name: string;
+  value: string | null;
+}
+
+function CpuSpec({ name, value }: CpuSpecProps) {
+  return (
+    <ListItem>
+      <Text as="span" fontWeight="bold">
+        {name}
+      </Text>{' '}
+      {value ?? 'Unknown'}
+    </ListItem>
+  );
+}
 
 interface CpuPageProps {
-  cpu: Minos.Cpu;
+  cpu: MinosCpu;
 }
 
 const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
@@ -48,16 +65,15 @@ const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
             Specifications
           </Text>
           <List spacing={2}>
-            {cpu.specs
-              .flatMap((category) => category.items)
-              .map(({ name, value }) => (
-                <ListItem key={name}>
-                  <Text as="span" fontWeight="bold">
-                    {name}
-                  </Text>{' '}
-                  {value ?? 'Unknown'}
-                </ListItem>
-              ))}
+            <CpuSpec name="# of Cores" value={cpu.specs.cores} />
+            <CpuSpec name="# of Threads" value={cpu.specs.threads} />
+            <CpuSpec name="Base Frequency" value={cpu.specs.frequency} />
+            <CpuSpec name="L1 Cache" value={cpu.specs.cacheL1} />
+            <CpuSpec name="L2 Cache" value={cpu.specs.cacheL2} />
+            <CpuSpec name="L3 Cache" value={cpu.specs.cacheL3} />
+            <CpuSpec name="TDP" value={cpu.specs.tdp} />
+            <CpuSpec name="Launch Date" value={cpu.specs.launchDate} />
+            <CpuSpec name="Lithography" value={cpu.specs.lithography} />
           </List>
         </Box>
       </Stack>
@@ -66,31 +82,33 @@ const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
 };
 
 export const getStaticProps: GetStaticProps<CpuPageProps> = async (context) => {
-  // Note: if done correctly, id should never be null and should always exist in db!
-  const id = context.params?.id;
+  const id = context.params?.id as string | undefined;
 
   if (!id) {
     return { notFound: true };
   }
 
-  let cpu: Minos.Cpu;
   try {
-    cpu = await fetch(`http://localhost:3000/api/cpu/${id}`)
-      .then((res) => res.json())
-      .then((res) => res.data);
+    const cpu = await getCpuById(prisma, parseInt(id));
+
+    if (!cpu) {
+      return { notFound: true };
+    }
+
+    return { props: { cpu: cpu } };
   } catch (err) {
     return { notFound: true };
   }
-
-  return { props: { cpu } };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
   // Gets **ALL** cpu ids in database (thousands of ids)
   const cpus = await prisma.cpu.findMany({ select: { id: true } });
 
+  const paths = cpus.map((cpu) => ({ params: { id: cpu.id.toString() } }));
+
   return {
-    paths: cpus.map(({ id }) => ({ params: { id: id.toString() } })),
+    paths,
     fallback: false,
   };
 };

@@ -11,7 +11,7 @@ handler.put(validateBodySchema(GpuPutBodySchema), async (req, res) => {
   const id = req.query.id as string;
   const data = req.body as FromSchema<typeof GpuPutBodySchema>;
 
-  const gpu = await prisma.gpu.update({ where: { id }, data });
+  const gpu = await prisma.gpu.update({ where: { id: parseInt(id) }, data });
 
   res.status(200).json({ data: gpu });
 });
@@ -22,7 +22,7 @@ handler.patch(validateBodySchema(GpuPatchBodySchema), async (req, res) => {
   const id = req.query.id as string;
   const data = req.body as FromSchema<typeof GpuPatchBodySchema>;
 
-  const gpu = await prisma.gpu.update({ where: { id }, data });
+  const gpu = await prisma.gpu.update({ where: { id: parseInt(id) }, data });
 
   res.status(200).json({ data: gpu });
 });

@@ -18,6 +18,8 @@ import {
 import { MdBrightness4, MdBrightness7, MdClose, MdMenu } from 'react-icons/md';
 import NextLink from 'next/link';
 import ComponentsSearchBar from './ComponentsSearchBar';
+import { comparedCPUIds } from 'pages/_app';
+import { useAtom } from 'jotai';
 
 interface NavLinkProps {
   children: ReactNode;
@@ -42,11 +44,18 @@ function NavLink({ children, href }: NavLinkProps) {
   );
 }
 
-const Links = [
-  { name: 'Home', href: '/' },
-  { name: 'Search CPUs', href: '/cpu/search' },
-  { name: 'View Comparison', href: '/components/compare' },
-];
+function NavBarLinks() {
+  const [comparedCpuIds] = useAtom(comparedCPUIds);
+  return (
+    <>
+      <NavLink href="/">Home</NavLink>
+      <NavLink href="/cpu/serach">Search CPUs</NavLink>
+      <NavLink href={`/components/compare/${comparedCpuIds.join('/')}`}>
+        View Comparison
+      </NavLink>
+    </>
+  );
+}
 
 export default function NavBar() {
   const drawer = useDisclosure();
@@ -66,11 +75,7 @@ export default function NavBar() {
           <HStack spacing={8} alignItems="center">
             <Box>Minos</Box>
             <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
-              {Links.map(({ name, href }) => (
-                <NavLink key={name} href={href}>
-                  {name}
-                </NavLink>
-              ))}
+              <NavBarLinks />
             </HStack>
           </HStack>
           <HStack>
@@ -85,11 +90,7 @@ export default function NavBar() {
         {drawer.isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as="nav" spacing={4}>
-              {Links.map(({ name, href }) => (
-                <NavLink key={name} href={href}>
-                  {name}
-                </NavLink>
-              ))}
+              <NavBarLinks />
             </Stack>
           </Box>
         ) : null}

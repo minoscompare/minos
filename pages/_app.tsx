@@ -3,11 +3,11 @@ import { ChakraProvider } from '@chakra-ui/react';
 import theme from '@minos/ui/theme';
 import Head from 'next/head';
 import { Provider as JotaiProvider, atom, useAtom } from 'jotai';
-import { Minos } from '@minos/lib/types';
+import { MinosCpu } from '@minos/lib/types';
 
 // Creates atoms (state management)
-export const comparedCPUs = atom(Array<Minos.Cpu>());
-export const comparedCPUIds = atom(Array<string>());
+export const comparedCPUs = atom<MinosCpu[]>([]);
+export const comparedCPUIds = atom<string[]>([]);
 
 // App function
 function MyApp({ Component, pageProps }: AppProps) {

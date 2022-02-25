@@ -7,8 +7,6 @@ import { Box, Center, Stack, Text, Heading, Button } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import { clamp } from '@minos/lib/mathFuncs';
 import { useState } from 'react';
-import { useAtom } from 'jotai';
-import { prismaCpuToAppCpu } from '@minos/lib/api/data-access/cpu';
 
 // Props interface
 interface PageProps {

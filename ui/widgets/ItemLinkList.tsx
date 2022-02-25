@@ -8,7 +8,6 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
-import { Minos } from '@minos/lib/types';
 import { useAtom } from 'jotai';
 import { comparedCPUs, comparedCPUIds } from 'pages/_app';
 

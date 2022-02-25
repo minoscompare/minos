@@ -1,33 +1,10 @@
-import { Minos } from '@minos/lib/types';
+import { MinosCpu } from '@minos/lib/types';
 import {
   Cpu as PrismaCpu,
   CpuBrand,
   Prisma,
   PrismaClient,
 } from '@prisma/client';
-
-interface MinosCpu {
-  id: number;
-  brand: CpuBrand;
-  model: string;
-  fullName: string;
-  family: string;
-  specs: {
-    cores: string | null;
-    threads: string | null;
-    frequency: string | null;
-    cacheL1: string | null;
-    cacheL2: string | null;
-    cacheL3: string | null;
-    tdp: string | null;
-    launchDate: string | null;
-    launchYear: string | null;
-    launchQuarter: string | null;
-    lithography: string | null;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
 
 export function prismaCpuToMinosCpu(cpu: PrismaCpu): MinosCpu {
   return {
