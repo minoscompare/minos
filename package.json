@@ -9,7 +9,7 @@
     "gen": "prisma generate",
     "sync-db": "ts-node -O {\\\"module\\\":\\\"CommonJS\\\"} scripts/sync-db.ts",
     "sync-typesense": "ts-node -O {\\\"module\\\":\\\"CommonJS\\\"} scripts/sync-typesense.ts",
-    "sync": "yarn seed-db && yarn seed-typesense"
+    "sync": "yarn sync-db && yarn sync-typesense"
   },
   "dependencies": {
     "@babel/runtime": "^7.17.0",
