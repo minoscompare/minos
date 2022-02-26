@@ -4,9 +4,12 @@ import { NextRequest, NextResponse } from 'next/server';
 // See https://nextjs.org/docs/middleware
 
 export function middleware(req: NextRequest) {
+  const url = req.nextUrl.clone();
+
   // If no cpu ids present, redirect to search page
-  if (req.nextUrl.pathname === '/cpu/compare') {
-    return NextResponse.redirect('/cpu/search');
+  if (url.pathname === '/cpu/compare') {
+    url.pathname = '/cpu/search';
+    return NextResponse.redirect(url);
   }
 
   // Else, proceed with request

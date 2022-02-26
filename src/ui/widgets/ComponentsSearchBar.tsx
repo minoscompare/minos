@@ -45,10 +45,10 @@ const CustomHits = connectHits<CpuTypesenseDoc>(({ hits }) => {
           <HStack>
             <NextLink href={`/cpu/${hit.id}`}>
               <Link flex={1} isTruncated>
-                {hit.brand} {hit.name}
+                {hit.fullName}
               </Link>
             </NextLink>
-            <NextLink href="/components/compare">
+            <NextLink href="/cpu/compare">
               <Button
                 size="xs"
                 isDisabled={comparedIDs.includes(parseInt(hit.id))}

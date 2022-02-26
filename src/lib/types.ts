@@ -28,7 +28,7 @@ export interface MinosCpu {
 export interface CpuTypesenseDoc {
   id: string;
   brand: CpuBrand;
-  name: string;
+  fullName: string;
   family: string;
   launch_quarter: LaunchQuarter;
   launch_year: number;
