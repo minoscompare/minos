@@ -79,7 +79,7 @@ async function main() {
     // Add client key
     console.log('Adding client key');
     await typesense.keys().create({
-      description: 'Search-only companies key.',
+      description: 'Search-only key.',
       actions: ['documents:search'],
       collections: ['*'],
       value: clientKey,
