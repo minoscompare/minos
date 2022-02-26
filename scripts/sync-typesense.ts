@@ -1,19 +1,14 @@
-import { Cpu } from '@prisma/client';
 import 'dotenv/config';
-import Typesense from 'typesense';
 import { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
-import got from 'got-cjs';
-
-const typesense = new Typesense.Client({
-  nodes: [
-    {
-      host: process.env.NEXT_PUBLIC_TYPESENSE_HOST!,
-      port: Number(process.env.NEXT_PUBLIC_TYPESENSE_PORT!),
-      protocol: process.env.NEXT_PUBLIC_TYPESENSE_PROTOCOL!,
-    },
-  ],
-  apiKey: process.env.TYPESENSE_ADMIN_API_KEY!,
-});
+import { CpuTypesenseDoc } from '@minos/lib/types';
+import { diffData, fetchCpus } from './helpers/fetch-data';
+import {
+  deleteTypesenseDocuments,
+  fetchTypesenseCollection,
+  typesense,
+  deleteCollectionIfChanged,
+} from './helpers/typesense';
+import { isNil, omitBy } from 'lodash';
 
 const cpuSchema: CollectionCreateSchema = {
   name: 'cpu',
@@ -26,7 +21,7 @@ const cpuSchema: CollectionCreateSchema = {
     { name: 'launchYear', type: 'int32', facet: true, optional: true },
     { name: 'cores', type: 'int32', facet: true },
     { name: 'threads', type: 'int32', facet: true },
-    { name: 'frequency', type: 'float', facet: true },
+    { name: 'frequency', type: 'int32', facet: true },
     { name: 'cacheL1', type: 'int32', facet: false, optional: true },
     { name: 'cacheL2', type: 'int32', facet: false, optional: true },
     { name: 'cacheL3', type: 'int32', facet: false, optional: true },
@@ -36,37 +31,83 @@ const cpuSchema: CollectionCreateSchema = {
 };
 
 async function main() {
-  const data = await got
-    .get(
-      'https://raw.githubusercontent.com/minoscompare/component-data/main/generated/cpus.json'
+  // Fetch cpu list from GitHub
+  const data = await fetchCpus();
+
+  // Map cpu list to typesense document
+  const incomingCpus = data
+    .map(
+      (cpu): CpuTypesenseDoc => ({
+        ...cpu,
+        id: cpu.id.toString(),
+        fullName: `${cpu.brand} ${cpu.name}`,
+      })
     )
-    .json<Cpu[]>();
-  const cpus = data.map((cpu) => ({
-    ...cpu,
-    id: cpu.id.toString(),
-    fullName: `${cpu.brand} ${cpu.name}`,
-    frequency: cpu.frequency * 10e-2,
-  }));
+    // Remove null/undefined values from object (needed for a later equality check)
+    .map((cpu) => omitBy(cpu, isNil) as unknown as CpuTypesenseDoc);
 
-  if (await typesense.collections('cpu').exists()) {
+  // Check if cpu collection exists
+  let cpuCollectionExists = await typesense.collections('cpu').exists();
+
+  // Delete collection if schema has changed
+  if (cpuCollectionExists) {
+    await deleteCollectionIfChanged(cpuSchema);
+  }
+
+  // Re-check if collection exists (as it could have been deleted)
+  cpuCollectionExists = await typesense.collections('cpu').exists();
+
+  // Array with all current cpus in typesense
+  let currentCpus: CpuTypesenseDoc[] = [];
+
+  // If collection exists, retrieve all documents
+  if (cpuCollectionExists) {
     console.log('Found existing cpu schema');
-    console.log('Deleting cpu schema');
-    await typesense.collections('cpu').delete();
+    console.log('Fetching current cpus from typesense');
+    currentCpus = await fetchTypesenseCollection('cpu');
   }
 
-  console.log('Creating cpu schema');
-  await typesense.collections().create(cpuSchema);
+  // Determines the data to be upserted or removed
+  const { dataToUpsert, dataToRemove } = diffData(currentCpus, incomingCpus);
 
-  console.log('Adding records');
-  try {
-    await typesense.collections('cpu').documents().import(cpus);
-  } catch (err) {
-    const results = (err as any).importResults as { success: true }[];
-    console.error(
-      results.map((s, i) => ({ i, ...s })).filter((s) => !s.success)
+  if (cpuCollectionExists) {
+    // If cpu collection exists, delete cpus that no longer exist on GitHub
+    console.log(`Deleting ${dataToRemove.length} cpus`);
+    await deleteTypesenseDocuments(
+      'cpu',
+      dataToRemove.map((cpu) => cpu.id)
     );
+  } else {
+    // Else, create cpu schema
+    console.log('Existing cpu schema not found');
+    console.log('Creating new cpu schema');
+    await typesense.collections().create(cpuSchema);
   }
 
+  // Insert/Update cpus that are new or have changed on GitHub
+  if (dataToUpsert.length !== 0) {
+    try {
+      console.log(`Adding/Updating ${dataToUpsert.length} cpus`);
+      await typesense
+        .collections<CpuTypesenseDoc>('cpu')
+        .documents()
+        .import(dataToUpsert, { action: 'upsert' });
+    } catch (err) {
+      // Prints error nicely
+      const results = (err as any).importResults as { success: true }[];
+      if (results) {
+        console.error(
+          results.map((s, i) => ({ i, ...s })).filter((s) => !s.success)
+        );
+      } else {
+        console.error(err);
+      }
+    }
+  } else {
+    console.log('Nothing to add/update');
+  }
+
+  // Add client key if it hasn't already been added
   const clientKey = process.env.NEXT_PUBLIC_TYPESENSE_CLIENT_API_KEY;
 
   if (!clientKey) {
@@ -76,7 +117,7 @@ async function main() {
   }
 
   try {
-    // Add client key
+    // Attempt to add client key
     console.log('Adding client key');
     await typesense.keys().create({
       description: 'Search-only key.',

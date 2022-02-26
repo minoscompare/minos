@@ -28,15 +28,17 @@ export interface MinosCpu {
 export interface CpuTypesenseDoc {
   id: string;
   brand: CpuBrand;
+  name: string;
   fullName: string;
   family: string;
-  launch_quarter: LaunchQuarter;
-  launch_year: number;
-  cores: number;
-  threads: number;
-  cache_l1: number;
-  cache_l2: number;
-  cache_l3: number;
-  tdp: number;
-  lithography: number;
+  launchQuarter: LaunchQuarter | null;
+  launchYear: number | null;
+  cores: number | null;
+  threads: number | null;
+  frequency: number | null;
+  cacheL1: number | null;
+  cacheL2: number | null;
+  cacheL3: number | null;
+  tdp: number | null;
+  lithography: number | null;
 }
