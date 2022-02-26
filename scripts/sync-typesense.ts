@@ -67,7 +67,6 @@ async function main() {
     );
   }
 
-  console.log('Checking client API Key');
   const clientKey = process.env.NEXT_PUBLIC_TYPESENSE_CLIENT_API_KEY;
 
   if (!clientKey) {
@@ -76,23 +75,18 @@ async function main() {
     );
   }
 
-  const { keys } = await typesense.keys().retrieve();
-
-  // If no keys match clientKey
-  if (
-    !keys.some(
-      (key: any) => key.value_prefix && clientKey.startsWith(key.value_prefix)
-    )
-  ) {
+  try {
     // Add client key
-    console.log('Client key not detected');
     console.log('Adding client key');
-    typesense.keys().create({
+    await typesense.keys().create({
       description: 'Search-only companies key.',
       actions: ['documents:search'],
       collections: ['*'],
       value: clientKey,
     });
+  } catch (err) {
+    // Client key already added
+    console.log('Client key already exists');
   }
 }
 
