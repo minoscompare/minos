@@ -1,6 +1,6 @@
 import Typesense, { Client } from 'typesense';
 
-const options = {
+const typesenseOptions = {
   nodes: [
     {
       host: process.env.NEXT_PUBLIC_TYPESENSE_HOST!,
@@ -14,11 +14,11 @@ const options = {
 let typesense: Client;
 
 if (process.env.NODE_ENV === 'production') {
-  typesense = new Typesense.Client(options);
+  typesense = new Typesense.Client(typesenseOptions);
 } else {
   let g = global as any;
   if (!g.prisma) {
-    g.typesense = new Typesense.Client(options);
+    g.typesense = new Typesense.Client(typesenseOptions);
   }
   typesense = g.typesense;
 }

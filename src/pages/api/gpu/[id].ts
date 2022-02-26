@@ -1,7 +1,7 @@
-import createHandler from '@minos/lib/api/create-handler';
+import createHandler from '@minos/lib/api/utils/create-handler';
 import { validateBodySchema } from '@minos/lib/api/middlewares/validate-schema';
 import { GpuSchema, FromSchema } from '@minos/lib/api/schemas';
-import prisma from '@minos/lib/prisma';
+import prisma from '@minos/lib/api/utils/prisma';
 
 const handler = createHandler();
 

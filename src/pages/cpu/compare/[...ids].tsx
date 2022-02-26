@@ -15,7 +15,7 @@ import {
   propNames,
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
-import prisma from '@minos/lib/prisma';
+import prisma from '@minos/lib/api/utils/prisma';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';

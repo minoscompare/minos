@@ -20,7 +20,7 @@ import {
   connectHits,
   connectSearchBox,
 } from 'react-instantsearch-dom';
-import { searchClient } from '@minos/lib/client/typesense';
+import { searchClient } from '@minos/lib/utils/typesense';
 import NextLink from 'next/link';
 import { MdClose, MdSearch } from 'react-icons/md';
 import { SearchBoxExposed, SearchBoxProvided } from 'react-instantsearch-core';

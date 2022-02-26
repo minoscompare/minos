@@ -1,4 +1,4 @@
-import createHandler from '@minos/lib/api/create-handler';
+import createHandler from '@minos/lib/api/utils/create-handler';
 import {
   deleteCpuById,
   getCpuById,
@@ -6,7 +6,7 @@ import {
 } from '@minos/lib/api/data-access/cpu';
 import { validateBodySchema } from '@minos/lib/api/middlewares/validate-schema';
 import { CpuSchema, FromSchema } from '@minos/lib/api/schemas';
-import prisma from '@minos/lib/prisma';
+import prisma from '@minos/lib/api/utils/prisma';
 import createHttpError from 'http-errors';
 
 const handler = createHandler();

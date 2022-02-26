@@ -2,11 +2,11 @@ import type { NextPage } from 'next';
 import { GetServerSideProps } from 'next';
 import ItemLinkList from '@minos/ui/widgets/ItemLinkList';
 import { SearchListItem } from '@minos/ui/widgets/ItemLinkList';
-import prisma from '@minos/lib/prisma';
+import prisma from '@minos/lib/api/utils/prisma';
 import { Box, Center, Stack, Text, Heading, Button } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
-import { clamp } from '@minos/lib/mathFuncs';
 import { useState } from 'react';
+import { clamp } from 'lodash';
 
 // Props interface
 interface PageProps {

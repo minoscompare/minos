@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import prisma from '@minos/lib/prisma';
+import prisma from '@minos/lib/api/utils/prisma';
 import {
   Box,
   Stack,
