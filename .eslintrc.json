@@ -1,3 +1,4 @@
 {
-  "extends": ["next", "plugin:@next/next/recommended", "prettier"]
+  "extends": ["next", "plugin:@next/next/recommended", "prettier"],
+  "ignorePatterns": ["docs/*"]
 }

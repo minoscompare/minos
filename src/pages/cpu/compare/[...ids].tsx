@@ -17,11 +17,11 @@ import {
 import { Layout } from '@minos/ui/components/Layout';
 import prisma from '@minos/lib/prisma';
 import { useAtom } from 'jotai';
-import { comparedCPUIds } from '../../_app';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { MinosCpu } from '@minos/lib/types';
 import { getCpuById } from '@minos/lib/api/data-access/cpu';
+import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 
 interface CpuSpecRowProps {
   name: string;
@@ -65,17 +65,17 @@ function displayCpuSpecRows(cpuList: MinosCpu[]) {
 // Main page function
 const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
   // State management
-  const [comparedIDs, setComparedIDs] = useAtom(comparedCPUIds);
+  const [comparedIDs, setComparedIDs] = useCompareCpus();
 
   // Routing
   const router = useRouter();
 
-  function updatePageQuery(newComparedIDs: string[]) {
+  function updatePageQuery(newComparedIDs: number[]) {
     router.push(`/cpu/compare/${newComparedIDs.join('/')}`);
   }
 
   // Function for removing components
-  function removeComparedID(cpuID: string) {
+  function removeComparedID(cpuID: number) {
     let newComparedIDs = comparedIDs;
     let index = newComparedIDs.indexOf(cpuID);
     if (index > -1) {
@@ -119,9 +119,7 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
                 {props.comparedCPUData.map((cpu) => {
                   return (
                     <Th key={'CpuRemoveButton' + cpu.id}>
-                      <Button
-                        onClick={() => removeComparedID(cpu.id.toString())}
-                      >
+                      <Button onClick={() => removeComparedID(cpu.id)}>
                         Remove
                       </Button>
                     </Th>

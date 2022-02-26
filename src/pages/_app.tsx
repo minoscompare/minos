@@ -2,12 +2,7 @@ import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from '@minos/ui/theme';
 import Head from 'next/head';
-import { Provider as JotaiProvider, atom, useAtom } from 'jotai';
-import { MinosCpu } from '@minos/lib/types';
-
-// Creates atoms (state management)
-export const comparedCPUs = atom<MinosCpu[]>([]);
-export const comparedCPUIds = atom<string[]>([]);
+import { Provider as JotaiProvider } from 'jotai';
 
 // App function
 function MyApp({ Component, pageProps }: AppProps) {

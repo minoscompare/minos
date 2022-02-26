@@ -16,8 +16,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@minos/ui/*": ["ui/*"],
-      "@minos/lib/*": ["lib/*"]
+      "@minos/*": ["src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

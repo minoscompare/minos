@@ -55,8 +55,7 @@ on Windows for a better developer experience.
 5. Seed database and typesense
 
    ```bash
-   yarn sync-db
-   yarn sync-typesense
+   yarn sync
    ```
 
 6. Start the development server

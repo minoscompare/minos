@@ -7,12 +7,10 @@ import {
   useColorModeValue,
   Spacer,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { useAtom } from 'jotai';
-import { comparedCPUs, comparedCPUIds } from 'pages/_app';
+import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 
 export interface SearchListItem {
-  id: string;
+  id: number;
   name: string;
   apiURL: string;
   pageURL: string;
@@ -28,9 +26,9 @@ function ItemLinkList(props: ComponentProps) {
   const compareColor = useColorModeValue('purple', 'gray');
 
   // Gets atoms and set functions
-  const [comparedIDs, setComparedIDs] = useAtom(comparedCPUIds);
+  const [comparedIDs, setComparedIDs] = useCompareCpus();
 
-  function addComparedID(addedID: string) {
+  function addComparedID(addedID: number) {
     if (!comparedIDs.includes(addedID)) {
       setComparedIDs([...comparedIDs, addedID]);
       console.log('Added ID: ' + addedID);

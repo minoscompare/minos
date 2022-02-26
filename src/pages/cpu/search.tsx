@@ -116,7 +116,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       componentLinks: cpus.map((cpu) => ({
-        id: `${cpu.id}`,
+        id: cpu.id,
         name: `${cpu.brand} ${cpu.name}`,
         pageURL: `/cpu/${cpu.id}`,
         apiURL: `/api/cpu/${cpu.id}`,

@@ -18,8 +18,7 @@ import {
 import { MdBrightness4, MdBrightness7, MdClose, MdMenu } from 'react-icons/md';
 import NextLink from 'next/link';
 import ComponentsSearchBar from './ComponentsSearchBar';
-import { comparedCPUIds } from 'pages/_app';
-import { useAtom } from 'jotai';
+import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 
 interface NavLinkProps {
   children: ReactNode;
@@ -45,7 +44,7 @@ function NavLink({ children, href }: NavLinkProps) {
 }
 
 function NavBarLinks() {
-  const [comparedCpuIds] = useAtom(comparedCPUIds);
+  const [comparedCpuIds] = useCompareCpus();
   return (
     <>
       <NavLink href="/">Home</NavLink>

@@ -24,15 +24,14 @@ import { searchClient } from '@minos/lib/client/typesense';
 import NextLink from 'next/link';
 import { MdClose, MdSearch } from 'react-icons/md';
 import { SearchBoxExposed, SearchBoxProvided } from 'react-instantsearch-core';
-import { comparedCPUIds } from 'pages/_app';
-import { useAtom } from 'jotai';
 import { CpuTypesenseDoc } from '@minos/lib/types';
+import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 
 const CustomHits = connectHits<CpuTypesenseDoc>(({ hits }) => {
   // Gets CPU Ids atom and creates a function to modify them
-  const [comparedIDs, setComparedIDs] = useAtom(comparedCPUIds);
+  const [comparedIDs, setComparedIDs] = useCompareCpus();
 
-  function addComparedID(newID: string) {
+  function addComparedID(newID: number) {
     if (!comparedIDs.includes(newID)) {
       setComparedIDs([...comparedIDs, newID]);
     }
@@ -52,8 +51,8 @@ const CustomHits = connectHits<CpuTypesenseDoc>(({ hits }) => {
             <NextLink href="/components/compare">
               <Button
                 size="xs"
-                isDisabled={comparedIDs.includes(hit.id.toString())}
-                onClick={() => addComparedID(hit.id.toString())}
+                isDisabled={comparedIDs.includes(parseInt(hit.id))}
+                onClick={() => addComparedID(parseInt(hit.id))}
               >
                 Compare
               </Button>
