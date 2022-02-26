@@ -22,25 +22,25 @@ const cpuSchema: CollectionCreateSchema = {
     { name: 'brand', type: 'string', facet: true },
     { name: 'fullName', type: 'string', facet: false },
     { name: 'family', type: 'string', facet: true },
-    { name: 'launch_quarter', type: 'string', facet: true, optional: true },
-    { name: 'launch_year', type: 'int32', facet: true, optional: true },
+    { name: 'launchQuarter', type: 'string', facet: true, optional: true },
+    { name: 'launchYear', type: 'int32', facet: true, optional: true },
     { name: 'cores', type: 'int32', facet: true },
     { name: 'threads', type: 'int32', facet: true },
     { name: 'frequency', type: 'float', facet: true },
-    { name: 'cache_l1', type: 'int32', facet: false, optional: true },
-    { name: 'cache_l2', type: 'int32', facet: false, optional: true },
-    { name: 'cache_l3', type: 'int32', facet: false, optional: true },
+    { name: 'cacheL1', type: 'int32', facet: false, optional: true },
+    { name: 'cacheL2', type: 'int32', facet: false, optional: true },
+    { name: 'cacheL3', type: 'int32', facet: false, optional: true },
     { name: 'tdp', type: 'int32', facet: false, optional: true },
     { name: 'lithography', type: 'int32', facet: false, optional: true },
   ],
 };
 
 async function main() {
-  const data: Cpu[] = await got
+  const data = await got
     .get(
       'https://raw.githubusercontent.com/minoscompare/component-data/main/generated/cpus.json'
     )
-    .json();
+    .json<Cpu[]>();
   const cpus = data.map((cpu) => ({
     ...cpu,
     id: cpu.id.toString(),
