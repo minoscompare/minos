@@ -52,7 +52,14 @@ on Windows for a better developer experience.
    npx prisma db push
    ```
 
-5. Start the development server
+5. Seed database and typesense
+
+   ```bash
+   yarn sync-db
+   yarn sync-typesense
+   ```
+
+6. Start the development server
    ```bash
    yarn dev
    ```
