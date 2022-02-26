@@ -1,21 +1,15 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
-import Image from 'next/image';
 import NextLink from 'next/link';
 import {
-  Container,
   Box,
   Text,
   Grid,
-  GridItem,
   Button,
   Stack,
   Heading,
-  Center,
   Link,
   VStack,
 } from '@chakra-ui/react';
-import NavBar from '@minos/ui/widgets/NavBar';
 import { Layout } from '@minos/ui/components/Layout';
 import { MdLink } from 'react-icons/md';
 
@@ -51,7 +45,7 @@ const Home: NextPage = () => {
               </VStack>
             </Button>
           </NextLink>
-          <NextLink href="/components/compare">
+          <NextLink href="/cpu/compare">
             <Button h="20" variant="solid">
               <VStack>
                 <Text>Compare Page&rarr;</Text>
