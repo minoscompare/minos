@@ -1,10 +1,7 @@
 import createHandler from '@minos/lib/api/utils/create-handler';
-import { createCpu, getManyCpus } from '@minos/lib/api/data-access/cpu';
-import {
-  validateBodySchema,
-  validateQuerySchema,
-} from '@minos/lib/api/middlewares/validate-schema';
-import { CpuSchema, FromSchema } from '@minos/lib/api/schemas';
+import { getManyCpus } from '@minos/lib/api/data-access/cpu';
+import { validateQuerySchema } from '@minos/lib/api/middlewares/validate-schema';
+import { FromSchema } from '@minos/lib/api/schemas';
 import { PaginationSchema } from '@minos/lib/api/schemas/query';
 import prisma from '@minos/lib/api/utils/prisma';
 
@@ -24,16 +21,6 @@ handler.get(validateQuerySchema(CpuGetQuerySchema), async (req, res) => {
   });
 
   res.status(200).json({ data: cpus });
-});
-
-const CpuPostBodySchema = CpuSchema;
-
-handler.post(validateBodySchema(CpuPostBodySchema), async (req, res) => {
-  const data = req.body as FromSchema<typeof CpuPostBodySchema>;
-
-  const cpu = await createCpu(prisma, data);
-
-  res.status(200).json({ data: cpu });
 });
 
 export default handler;
