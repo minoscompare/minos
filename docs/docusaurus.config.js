@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Minos',
   tagline: 'A computer component comparer',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://docs.minoscompare.com/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
