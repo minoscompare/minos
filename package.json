@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint",
     "gen": "prisma generate",
@@ -16,6 +17,7 @@
     "@chakra-ui/react": "^1.8.1",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@next/bundle-analyzer": "^12.1.0",
     "@prisma/client": "^3.10.0",
     "dotenv": "^16.0.0",
     "framer-motion": "^5",
