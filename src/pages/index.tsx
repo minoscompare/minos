@@ -17,7 +17,7 @@ const Home: NextPage = () => {
   return (
     <Layout title="Minoscompare Home">
       <Stack spacing={{ base: 6, md: 10 }}>
-        <Box as="header">
+        <Box as="header" w={[300, 400, 500]}>
           <Heading
             lineHeight={1.1}
             fontWeight={500}

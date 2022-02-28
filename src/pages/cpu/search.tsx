@@ -70,7 +70,7 @@ const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
           </Heading>
         </Box>
         <Center>
-          <Stack direction="row">
+          <Stack direction="row" w={[300, 400, 500]}>
             <Button
               size="sm"
               onClick={() =>

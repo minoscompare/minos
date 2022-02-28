@@ -104,7 +104,7 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
             Comparison Page
           </Heading>
         </Box>
-        <Center>
+        <Box w={[200, 400, 600]}>
           <Table>
             <Thead>
               <Tr>
@@ -148,7 +148,7 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
               {displayCpuSpecRows(props.comparedCPUData)}
             </Tbody>
           </Table>
-        </Center>
+        </Box>
       </Stack>
     </Layout>
   );
