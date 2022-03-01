@@ -14,6 +14,7 @@ import {
   VStack,
   Portal,
   Text,
+  Center,
 } from '@chakra-ui/react';
 import { MdBrightness4, MdBrightness7, MdClose, MdMenu } from 'react-icons/md';
 import NextLink from 'next/link';
@@ -66,7 +67,17 @@ export default function NavBar() {
         <Flex h={16} alignItems="center" justifyContent="space-between">
           <IconButton
             size="md"
-            icon={drawer.isOpen ? <MdClose /> : <MdMenu />}
+            icon={
+              drawer.isOpen ? (
+                <Center>
+                  <MdClose />
+                </Center>
+              ) : (
+                <Center>
+                  <MdMenu />
+                </Center>
+              )
+            }
             aria-label="Open Menu"
             display={{ md: 'none' }}
             onClick={drawer.isOpen ? drawer.onClose : drawer.onOpen}

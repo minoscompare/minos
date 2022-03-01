@@ -16,7 +16,7 @@ import { MdLink } from 'react-icons/md';
 const Home: NextPage = () => {
   return (
     <Layout title="Minoscompare Home">
-      <Stack spacing={{ base: 6, md: 10 }}>
+      <Stack spacing={{ base: 6, md: 10 }} padding="4">
         <Box as="header" w={[300, 400, 500]}>
           <Heading
             lineHeight={1.1}
@@ -30,7 +30,7 @@ const Home: NextPage = () => {
 
         <Grid templateColumns="repeat(2,5fr)" gap={5}>
           <NextLink href="/cpu/search">
-            <Button h="20" variant="solid">
+            <Button h="20" variant="solid" size="sm">
               <VStack>
                 <Text>Search CPUs&rarr;</Text>
                 <Text>View details or compare.</Text>
@@ -38,7 +38,7 @@ const Home: NextPage = () => {
             </Button>
           </NextLink>
           <NextLink href="/">
-            <Button h="20" isDisabled={true} variant="solid">
+            <Button h="20" isDisabled={true} variant="solid" size="sm">
               <VStack>
                 <Text>Search GPUs&rarr;</Text>
                 <Text>View details or compare.</Text>
@@ -46,7 +46,7 @@ const Home: NextPage = () => {
             </Button>
           </NextLink>
           <NextLink href="/cpu/compare">
-            <Button h="20" variant="solid">
+            <Button h="20" variant="solid" size="sm">
               <VStack>
                 <Text>Compare Page&rarr;</Text>
                 <Text>View current comparisons.</Text>
@@ -54,7 +54,13 @@ const Home: NextPage = () => {
             </Button>
           </NextLink>
           <Link href="https://github.com/minoscompare" w="100%">
-            <Button h="20" w="100%" variant="solid" rightIcon={<MdLink />}>
+            <Button
+              h="20"
+              w="100%"
+              variant="solid"
+              rightIcon={<MdLink />}
+              size="sm"
+            >
               Github
             </Button>
           </Link>

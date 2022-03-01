@@ -138,7 +138,7 @@ export default function ComponentsSearchBar() {
               <CustomSearchBox onOpen={menu.onOpen} onClose={menu.onClose} />
             </Box>
           </MenuButton>
-          <MenuList w={260}>
+          <MenuList w={[100, 260, 300, 460]}>
             <CustomHits />
           </MenuList>
         </Menu>

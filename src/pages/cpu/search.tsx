@@ -69,9 +69,8 @@ const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
             CPU List
           </Heading>
         </Box>
-
-        <Stack direction="row" w={[300, 400, 500]}>
-          <Center>
+        <Center>
+          <Stack direction="row" w={[300, 400, 500]}>
             <Button
               size="sm"
               onClick={() =>
@@ -95,8 +94,8 @@ const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
             >
               {'-->'}
             </Button>
-          </Center>
-        </Stack>
+          </Stack>
+        </Center>
         <Box width="2xl">
           Select a CPU:
           <ItemLinkList listItems={pageLinks} />

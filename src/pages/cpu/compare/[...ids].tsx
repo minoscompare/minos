@@ -104,7 +104,7 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
             Comparison Page
           </Heading>
         </Box>
-        <Box w={[200, 400, 600]}>
+        <Box w={[200, 400, 600]} alignContent="start">
           <Table>
             <Thead>
               <Tr>
