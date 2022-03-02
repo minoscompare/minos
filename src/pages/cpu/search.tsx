@@ -7,6 +7,7 @@ import { Box, Center, Stack, Text, Heading, Button } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import { useState } from 'react';
 import { clamp } from 'lodash';
+import { useCurrentCPUSearchPage } from '@minos/lib/utils/atoms/search-page';
 
 // Props interface
 interface PageProps {
