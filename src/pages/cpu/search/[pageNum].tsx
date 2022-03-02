@@ -14,6 +14,7 @@ import { useCurrentCPUSearchPage } from '@minos/lib/utils/atoms/search-page';
 interface PageProps {
   componentLinks: SearchListItem[];
   maxPage: number;
+  currentPage: number;
 }
 
 // Constants
@@ -21,16 +22,14 @@ const pageSize = 10;
 
 // Main page function
 const CpuSearchPage: NextPage<PageProps> = (props: PageProps) => {
-  // Uses current page num
-  const [currentPage, setCurrentPage] = useCurrentCPUSearchPage();
-
   // Sets router
   const router = useRouter();
 
   // Utility functions
   function updatePage(changeNum: number) {
-    setCurrentPage(
-      Math.max(Math.min(currentPage + changeNum, props.maxPage), 0)
+    const currentPage = Math.max(
+      Math.min(props.currentPage + changeNum, props.maxPage),
+      0
     );
     router.push(`${currentPage}`);
   }
@@ -54,7 +53,7 @@ const CpuSearchPage: NextPage<PageProps> = (props: PageProps) => {
               {'<--'}
             </Button>
             <Text>
-              {currentPage + 1} / {props.maxPage + 1}
+              {props.currentPage + 1} / {props.maxPage + 1}
             </Text>
             <Button size="sm" onClick={() => updatePage(1)}>
               {'-->'}
@@ -95,6 +94,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
         apiURL: `/api/cpu/${cpu.id}`,
       })),
       maxPage: maxPageIndex,
+      currentPage: pageIndex,
     },
   };
 };
