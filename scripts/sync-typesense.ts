@@ -12,6 +12,7 @@ import { isNil, omitBy } from 'lodash';
 
 const cpuSchema: CollectionCreateSchema = {
   name: 'cpu',
+  token_separators: ['-'],
   fields: [
     { name: 'id', type: 'string', facet: false },
     { name: 'brand', type: 'string', facet: true },
