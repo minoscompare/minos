@@ -32,7 +32,7 @@ const CpuSearchPage: NextPage<PageProps> = (props: PageProps) => {
     setCurrentPage(
       Math.max(Math.min(currentPage + changeNum, props.maxPage), 0)
     );
-    router.push(`cpu/search/${currentPage}`);
+    router.push(`${currentPage}`);
   }
 
   // Returns HTML
