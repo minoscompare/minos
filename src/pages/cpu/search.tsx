@@ -27,6 +27,7 @@ import { GetServerSideProps } from 'next';
 import { Layout } from '@minos/ui/components/Layout';
 import { getServerState } from 'react-instantsearch-hooks-server';
 import { Hit } from 'react-instantsearch-core';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 
 function CustomHits() {
   const hits = useHits().hits as unknown as Hit<CpuTypesenseDoc>[];
@@ -44,15 +45,48 @@ function CustomHits() {
 
 function CustomSearchBox() {
   const { query, isSearchStalled, refine } = useSearchBox();
+  const [inputValue, setInputValue] = useState(query);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    inputRef.current?.blur();
+  }
+
+  function handleReset() {
+    setInputValue('');
+    inputRef.current?.focus();
+  }
+
+  // Track when the value coming from the React state changes to synchronize
+  // it with InstantSearch.
+  useEffect(() => {
+    if (query !== inputValue) {
+      refine(inputValue);
+    }
+  }, [inputValue, refine]);
+
+  // Track when the InstantSearch query changes to synchronize it with
+  // the React state.
+  useEffect(() => {
+    // Bypass the state update if the input is focused to avoid concurrent
+    // updates when typing.
+    if (document.activeElement !== inputRef.current && query !== inputValue) {
+      setInputValue(query);
+    }
+  }, [query]);
+
   return (
-    <form noValidate action="" role="search">
+    <form noValidate action="" role="search" onSubmit={handleSubmit}>
       <InputGroup paddingInlineStart={0}>
         <Input
+          ref={inputRef}
           variant="outline"
           placeholder="Search"
           type="search"
-          value={query}
-          onChange={(event) => refine(event.currentTarget.value)}
+          value={inputValue}
+          onChange={(event) => setInputValue(event.currentTarget.value)}
         />
         <InputRightElement>
           {isSearchStalled ? (
@@ -60,7 +94,7 @@ function CustomSearchBox() {
           ) : query === '' ? (
             <MdSearch />
           ) : (
-            <MdClose onClick={() => refine('')} />
+            <MdClose onClick={handleReset} cursor="pointer" />
           )}
         </InputRightElement>
       </InputGroup>
