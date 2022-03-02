@@ -19,7 +19,7 @@ const pageSize = 10;
 
 // Main page function
 const CpuSearchPage: NextPage<PageProps> = (props: PageProps) => {
-  // Sets router
+  // Gets router
   const router = useRouter();
 
   // Utility functions
@@ -50,7 +50,7 @@ const CpuSearchPage: NextPage<PageProps> = (props: PageProps) => {
               {'<--'}
             </Button>
             <Text>
-              {props.currentPage + 1} / {props.maxPage + 1}
+              {props.currentPage + 1} / {props.maxPage}
             </Text>
             <Button size="sm" onClick={() => updatePage(1)}>
               {'-->'}
@@ -69,7 +69,7 @@ const CpuSearchPage: NextPage<PageProps> = (props: PageProps) => {
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
   const pageIndex = context.params?.pageNum as number | undefined;
-  const maxPageIndex = (await prisma.cpu.count()) / pageSize;
+  const maxPageIndex = Math.ceil((await prisma.cpu.count()) / pageSize);
 
   if (!pageIndex || pageIndex > maxPageIndex) {
     return { notFound: true };
@@ -98,10 +98,10 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   // Divides total cpu count by page size, sets paths to each possible value in that range
-  const totalPageCount = (await prisma.cpu.count()) / pageSize + 1;
+  const maxPageIndex = Math.ceil((await prisma.cpu.count()) / pageSize);
 
   let paths = [];
-  for (let i = 0; i < totalPageCount; i++) {
+  for (let i = 0; i <= maxPageIndex; i++) {
     paths.push({ params: { pageNum: i.toString() } });
   }
 
