@@ -1,63 +1,131 @@
-import type { NextPage } from 'next';
-import { GetServerSideProps } from 'next';
+import {
+  Box,
+  Button,
+  Center,
+  CircularProgress,
+  Heading,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
+import {
+  InstantSearch,
+  InstantSearchServerState,
+  InstantSearchSSRProvider,
+  useHits,
+  usePagination,
+  useSearchBox,
+} from 'react-instantsearch-hooks';
+import { history } from 'instantsearch.js/es/lib/routers/index.js';
+import { searchClient } from '@minos/lib/utils/typesense';
+import { MdClose, MdSearch } from 'react-icons/md';
+import { CpuTypesenseDoc } from '@minos/lib/types';
 import ItemLinkList from '@minos/ui/widgets/ItemLinkList';
-import { SearchListItem } from '@minos/ui/widgets/ItemLinkList';
-import prisma from '@minos/lib/api/utils/prisma';
-import { Box, Center, Stack, Text, Heading, Button } from '@chakra-ui/react';
+import { GetServerSideProps } from 'next';
 import { Layout } from '@minos/ui/components/Layout';
-import { useState } from 'react';
-import { clamp } from 'lodash';
-import { useCurrentCPUSearchPage } from '@minos/lib/utils/atoms/search-page';
+import { getServerState } from 'react-instantsearch-hooks-server';
+import { Hit } from 'react-instantsearch-core';
 
-// Props interface
-interface PageProps {
-  componentLinks: SearchListItem[];
-  pageSize: number;
-}
-
-// Utility Functions
-function getArrayPage(
-  array: SearchListItem[],
-  pageIndex: number,
-  perPage: number
-) {
-  let newArray = [];
-
-  for (let i = 0; i < perPage; i++) {
-    newArray.push(array[pageIndex * perPage + i]);
-  }
-
-  return newArray;
-}
-
-function getMaxPageIndex(arrayLen: number, pageSize: number) {
-  return Math.floor(arrayLen / pageSize) - 1;
-}
-
-function updatePage(
-  currentPageIndex: number,
-  changeAmount: number,
-  maxPageIndex: number
-) {
-  // Updates the current page to current+change, clamped between 0 and max.
-  let newPage = currentPageIndex + changeAmount;
-  newPage = clamp(newPage, 0, maxPageIndex);
-
-  return newPage;
-}
-
-// Main page function
-const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
-  // Sets constants and state management
-  const maxPageIndex = getMaxPageIndex(
-    props.componentLinks.length,
-    props.pageSize
+function CustomHits() {
+  const hits = useHits().hits as unknown as Hit<CpuTypesenseDoc>[];
+  return (
+    <ItemLinkList
+      listItems={hits.map((cpu) => ({
+        id: parseInt(cpu.id),
+        name: cpu.fullName,
+        pageURL: `/cpu/${cpu.id}`,
+        apiURL: `/api/cpu/${cpu.id}`,
+      }))}
+    />
   );
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
-  const pageLinks = getArrayPage(props.componentLinks, currentPageIndex, 10);
-  if (currentPageIndex == undefined) setCurrentPageIndex(0);
+}
 
-  // Returns HTML
+function CustomSearchBox() {
+  const { query, isSearchStalled, refine } = useSearchBox();
+  return (
+    <form noValidate action="" role="search">
+      <InputGroup paddingInlineStart={0}>
+        <Input
+          variant="outline"
+          placeholder="Search"
+          type="search"
+          value={query}
+          onChange={(event) => refine(event.currentTarget.value)}
+        />
+        <InputRightElement>
+          {isSearchStalled ? (
+            <CircularProgress isIndeterminate size="1em" />
+          ) : query === '' ? (
+            <MdSearch />
+          ) : (
+            <MdClose onClick={() => refine('')} />
+          )}
+        </InputRightElement>
+      </InputGroup>
+    </form>
+  );
+}
+
+function CustomPagination() {
+  const { currentRefinement, nbPages, refine } = usePagination();
+  const currentPage = currentRefinement + 1;
+  return (
+    <Center direction="row">
+      <Button
+        size="sm"
+        onClick={() => refine(currentRefinement - 1)}
+        disabled={currentPage === 1}
+      >
+        {'<--'}
+      </Button>
+      <Text>
+        {currentPage} / {nbPages}
+      </Text>
+      <Button
+        size="sm"
+        onClick={() => refine(currentRefinement + 1)}
+        disabled={currentPage === nbPages}
+      >
+        {'-->'}
+      </Button>
+    </Center>
+  );
+}
+
+type CpuSearchProps = {
+  searchState?: InstantSearchServerState;
+  url?: string;
+};
+
+function CpuSearch({ searchState, url }: CpuSearchProps) {
+  return (
+    <InstantSearchSSRProvider {...(searchState ?? {})}>
+      <InstantSearch
+        indexName="cpu"
+        searchClient={searchClient}
+        routing={{
+          router: history({
+            getLocation() {
+              if (typeof window === 'undefined') {
+                return new URL(url!) as unknown as Location;
+              }
+
+              return window.location;
+            },
+          }),
+        }}
+      >
+        <CustomSearchBox />
+        <CustomHits />
+        <CustomPagination />
+      </InstantSearch>
+    </InstantSearchSSRProvider>
+  );
+}
+
+function SearchPage({ searchState, url }: CpuSearchProps) {
   return (
     <Layout title="Search CPUs">
       <Stack spacing={{ base: 6, md: 10 }} direction="column">
@@ -70,62 +138,32 @@ const CpuSearch: NextPage<PageProps> = (props: PageProps) => {
             CPU List
           </Heading>
         </Box>
-        <Center>
-          <Stack direction="row" w={[300, 400, 500]}>
-            <Button
-              size="sm"
-              onClick={() =>
-                setCurrentPageIndex(
-                  updatePage(currentPageIndex, -1, maxPageIndex)
-                )
-              }
-            >
-              {'<--'}
-            </Button>
-            <Text>
-              {currentPageIndex + 1} / {maxPageIndex + 1}
-            </Text>
-            <Button
-              size="sm"
-              onClick={() =>
-                setCurrentPageIndex(
-                  updatePage(currentPageIndex, 1, maxPageIndex)
-                )
-              }
-            >
-              {'-->'}
-            </Button>
-          </Stack>
-        </Center>
+        <Center></Center>
         <Box width="2xl">
           Select a CPU:
-          <ItemLinkList listItems={pageLinks} />
+          <CpuSearch searchState={searchState} url={url} />
         </Box>
       </Stack>
       <br />
     </Layout>
   );
-};
+}
 
 // GetServerSideProps to get the list of components before building the page
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  // This gets data for ALL CPUs in the database, not particularly performant.
-  const cpus = await prisma.cpu.findMany({
-    select: { id: true, name: true, brand: true },
-  });
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const url = new URL(
+    req.headers.referer || `https://${req.headers.host}${req.url}`
+  ).toString();
+
+  const searchState = await getServerState(<CpuSearch url={url} />);
 
   return {
     props: {
-      componentLinks: cpus.map((cpu) => ({
-        id: cpu.id,
-        name: `${cpu.brand} ${cpu.name}`,
-        pageURL: `/cpu/${cpu.id}`,
-        apiURL: `/api/cpu/${cpu.id}`,
-      })),
-      pageSize: 10,
+      searchState,
+      url,
     },
   };
 };
 
 // Exports the page function
-export default CpuSearch;
+export default SearchPage;

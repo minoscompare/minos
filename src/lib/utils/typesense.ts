@@ -1,4 +1,5 @@
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
+import { SearchClient } from 'instantsearch.js';
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
@@ -22,4 +23,5 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   },
 });
 
-export const searchClient = typesenseInstantsearchAdapter.searchClient;
+export const searchClient =
+  typesenseInstantsearchAdapter.searchClient as SearchClient;
