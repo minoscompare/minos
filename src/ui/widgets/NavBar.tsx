@@ -49,7 +49,7 @@ function NavBarLinks() {
   return (
     <>
       <NavLink href="/">Home</NavLink>
-      <NavLink href="/cpu/search">Search CPUs</NavLink>
+      <NavLink href="/cpu/search/0">Search CPUs</NavLink>
       <NavLink href={`/cpu/compare/${comparedCpuIds.join('/')}`}>
         View Comparison
       </NavLink>

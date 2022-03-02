@@ -29,7 +29,7 @@ const Home: NextPage = () => {
         </Box>
 
         <Grid templateColumns="repeat(2,5fr)" gap={5}>
-          <NextLink href="/cpu/search">
+          <NextLink href="/cpu/search/0">
             <Button h="20" variant="solid" size="sm">
               <VStack>
                 <Text>Search CPUs&rarr;</Text>
