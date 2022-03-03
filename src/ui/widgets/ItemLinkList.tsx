@@ -133,11 +133,12 @@ function ItemLinkList(props: ComponentProps) {
               colorScheme={compareColor}
               variant="solid"
               isDisabled={comparedIDs.includes(item.id)}
+              aria-label="Add to comparison"
               onClick={() => {
                 addComparedID(item.id);
               }}
             >
-              Add to Comparison
+              Compare
             </Button>{' '}
           </Stack>
         );
