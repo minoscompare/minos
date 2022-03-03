@@ -20,68 +20,55 @@ import prisma from '@minos/lib/api/utils/prisma';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { MinosCpu } from '@minos/lib/types';
-import {
-  getCpuById,
-  prismaCpuToMinosCpu,
-} from '@minos/lib/api/data-access/cpu';
+import { getCpuById } from '@minos/lib/api/data-access/cpu';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 import { cpuUsage } from 'process';
-import { Cpu } from '@prisma/client';
 
 interface CpuSpecRowProps {
   name: string;
-  prismaCPUValueKey: keyof Cpu;
-  minosCPUValueKey: keyof MinosCpu['specs'];
-  cpus: Cpu[];
+  valueKey: keyof MinosCpu['specs'];
+  cpus: MinosCpu[];
   bestValue: number;
 }
 
 function findExtremePropertyValue(
-  cpus: Cpu[],
-  prismaCPUValueKey: keyof Cpu,
+  cpus: MinosCpu[],
+  valueKey: keyof MinosCpu['specs'],
   highOrLow: boolean
 ) {
   // Note: "highOrLow" represents whether to find highest or lowest value. True = highest, False = lowest.
   // Stops if the first CPU is nonexistent
-  if (cpus.length == 0 || !cpus[0] || cpus[0][prismaCPUValueKey] == null) {
+  if (cpus.length == 0 || !cpus[0] || cpus[0].specs[valueKey] == null) {
     return 0;
   } else {
-    let extremeValue = parseInt(cpus[0][prismaCPUValueKey] as string);
+    let extremeValue = parseInt(cpus[0].specs[valueKey] as string);
     for (let i = 0; i < cpus.length; i++) {
       // Ignores this CPU if it's null
-      if (cpus[i][prismaCPUValueKey] == null) {
+      if (cpus[i].specs[valueKey] == null) {
         continue;
       }
 
       // Sets the extreme value according to whether to get highest or lowest
       if (highOrLow) {
         extremeValue = Math.max(
-          parseInt(cpus[i][prismaCPUValueKey] as string),
+          parseInt(cpus[i].specs[valueKey] as string),
           extremeValue
         );
       } else {
         extremeValue = Math.min(
-          parseInt(cpus[i][prismaCPUValueKey] as string),
+          parseInt(cpus[i].specs[valueKey] as string),
           extremeValue
         );
       }
     }
 
     // Returns the extreme value found
-    console.log(
-      `Extreme Value: ${extremeValue}, valueKey: ${prismaCPUValueKey}`
-    );
+    console.log(`Extreme Value: ${extremeValue}, valueKey: ${valueKey}`);
     return extremeValue;
   }
 }
 
-function CpuSpecRow({
-  name,
-  prismaCPUValueKey,
-  minosCPUValueKey,
-  cpus,
-  bestValue,
-}: CpuSpecRowProps) {
+function CpuSpecRow({ name, valueKey, cpus, bestValue }: CpuSpecRowProps) {
   return (
     <Tr>
       <Td>{name}</Td>
@@ -89,17 +76,17 @@ function CpuSpecRow({
         <Td
           key={name + cpu.id}
           color={
-            parseInt(cpu[prismaCPUValueKey] as string) == bestValue
+            parseInt(cpu.specs[valueKey] as string) == bestValue
               ? 'green.400'
               : 'red.300'
           }
           fontWeight={
-            parseInt(cpu[prismaCPUValueKey] as string) == bestValue
+            parseInt(cpu.specs[valueKey] as string) == bestValue
               ? 'bold'
               : 'hairline'
           }
         >
-          {prismaCpuToMinosCpu(cpu).specs[minosCPUValueKey] ?? 'Unknown'}
+          {cpu.specs[valueKey] ?? 'Unknown'}
         </Td>
       ))}
     </Tr>
@@ -108,73 +95,64 @@ function CpuSpecRow({
 
 // Props interface
 interface PageProps {
-  comparedCPUData: Cpu[];
+  comparedCPUData: MinosCpu[];
 }
 
 // Spec Displaying Function
-function displayCpuSpecRows(cpuList: Cpu[]) {
+function displayCpuSpecRows(cpuList: MinosCpu[]) {
   return (
     <>
       <CpuSpecRow
         name="# of Cores"
-        prismaCPUValueKey="cores"
-        minosCPUValueKey="cores"
+        valueKey="cores"
         cpus={cpuList}
         bestValue={findExtremePropertyValue(cpuList, 'cores', true)}
       />
       <CpuSpecRow
         name="# of Threads"
-        prismaCPUValueKey="threads"
-        minosCPUValueKey="threads"
+        valueKey="threads"
         cpus={cpuList}
         bestValue={findExtremePropertyValue(cpuList, 'threads', true)}
       />
       <CpuSpecRow
         name="Base Frequency"
-        prismaCPUValueKey="frequency"
-        minosCPUValueKey="frequency"
+        valueKey="frequency"
         cpus={cpuList}
         bestValue={findExtremePropertyValue(cpuList, 'frequency', true)}
       />
       <CpuSpecRow
         name="L1 Cache"
-        prismaCPUValueKey="cacheL1"
-        minosCPUValueKey="cacheL1"
+        valueKey="cacheL1"
         cpus={cpuList}
         bestValue={0}
       />
       <CpuSpecRow
         name="L2 Cache"
-        prismaCPUValueKey="cacheL2"
-        minosCPUValueKey="cacheL2"
+        valueKey="cacheL2"
         cpus={cpuList}
         bestValue={0}
       />
       <CpuSpecRow
         name="L3 Cache"
-        prismaCPUValueKey="cacheL3"
-        minosCPUValueKey="cacheL3"
+        valueKey="cacheL3"
         cpus={cpuList}
         bestValue={0}
       />
       <CpuSpecRow
         name="TDP"
-        prismaCPUValueKey="tdp"
-        minosCPUValueKey="tdp"
+        valueKey="tdp"
         cpus={cpuList}
         bestValue={findExtremePropertyValue(cpuList, 'tdp', true)}
       />
       <CpuSpecRow
         name="Launch Date"
-        prismaCPUValueKey="launchYear"
-        minosCPUValueKey="launchDate"
+        valueKey="launchDate"
         cpus={cpuList}
-        bestValue={findExtremePropertyValue(cpuList, 'launchYear', true)}
+        bestValue={findExtremePropertyValue(cpuList, 'launchDate', true)}
       />
       <CpuSpecRow
         name="Lithography"
-        prismaCPUValueKey="lithography"
-        minosCPUValueKey="lithography"
+        valueKey="lithography"
         cpus={cpuList}
         bestValue={findExtremePropertyValue(cpuList, 'lithography', false)}
       />
@@ -234,11 +212,7 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
               <Tr>
                 <Th>Field</Th>
                 {props.comparedCPUData.map((cpu) => {
-                  return (
-                    <Th key={'CpuHeader' + cpu.id}>
-                      {prismaCpuToMinosCpu(cpu).fullName}
-                    </Th>
-                  );
+                  return <Th key={'CpuHeader' + cpu.id}>{cpu.fullName}</Th>;
                 })}
               </Tr>
               <Tr>
@@ -267,7 +241,7 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
               <Tr>
                 <Td>Name</Td>
                 {props.comparedCPUData.map((cpu) => {
-                  return <Td key={'CpuName' + cpu.id}>{cpu.name}</Td>;
+                  return <Td key={'CpuName' + cpu.id}>{cpu.model}</Td>;
                 })}
               </Tr>
               <Tr>
@@ -291,13 +265,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const cpuIds = (context.query.ids ?? []) as string[];
 
   // Creates an array of promises to fetch all individual cpus
-  const promises = cpuIds.map((id) =>
-    prisma.cpu.findUnique({
-      where: { id: parseInt(id) },
-    })
-  );
+  const promises = cpuIds.map((id) => getCpuById(prisma, parseInt(id)));
 
-  let cpus: (Cpu | null)[];
+  let cpus: (MinosCpu | null)[];
 
   try {
     // Awaits all promises at the same time, fails if one fails
