@@ -13,6 +13,7 @@ import {
   Center,
   Button,
   propNames,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import prisma from '@minos/lib/api/utils/prisma';
@@ -21,19 +22,72 @@ import { GetServerSideProps } from 'next';
 import { MinosCpu } from '@minos/lib/types';
 import { getCpuById } from '@minos/lib/api/data-access/cpu';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
+import { cpuUsage } from 'process';
 
 interface CpuSpecRowProps {
   name: string;
   valueKey: keyof MinosCpu['specs'];
   cpus: MinosCpu[];
+  bestValue: number;
 }
 
-function CpuSpecRow({ name, valueKey, cpus }: CpuSpecRowProps) {
+function findExtremePropertyValue(
+  cpus: MinosCpu[],
+  valueKey: keyof MinosCpu['specs'],
+  highOrLow: boolean
+) {
+  // Note: "highOrLow" represents whether to find highest or lowest value. True = highest, False = lowest.
+  // Stops if the first CPU is nonexistent
+  if (cpus.length == 0 || !cpus[0] || cpus[0].specs[valueKey] == null) {
+    return 0;
+  } else {
+    let extremeValue = parseInt(cpus[0].specs[valueKey] as string);
+    for (let i = 0; i < cpus.length; i++) {
+      // Ignores this CPU if it's null
+      if (cpus[i].specs[valueKey] == null) {
+        continue;
+      }
+
+      // Sets the extreme value according to whether to get highest or lowest
+      if (highOrLow) {
+        extremeValue = Math.max(
+          parseInt(cpus[i].specs[valueKey] as string),
+          extremeValue
+        );
+      } else {
+        extremeValue = Math.min(
+          parseInt(cpus[i].specs[valueKey] as string),
+          extremeValue
+        );
+      }
+    }
+
+    // Returns the extreme value found
+    console.log(`Extreme Value: ${extremeValue}, valueKey: ${valueKey}`);
+    return extremeValue;
+  }
+}
+
+function CpuSpecRow({ name, valueKey, cpus, bestValue }: CpuSpecRowProps) {
   return (
     <Tr>
       <Td>{name}</Td>
       {cpus.map((cpu) => (
-        <Td key={name + cpu.id}>{cpu.specs[valueKey] ?? 'Unknown'}</Td>
+        <Td
+          key={name + cpu.id}
+          color={
+            parseInt(cpu.specs[valueKey] as string) == bestValue
+              ? 'green.400'
+              : 'red.300'
+          }
+          fontWeight={
+            parseInt(cpu.specs[valueKey] as string) == bestValue
+              ? 'bold'
+              : 'hairline'
+          }
+        >
+          {cpu.specs[valueKey] ?? 'Unknown'}
+        </Td>
       ))}
     </Tr>
   );
@@ -48,21 +102,69 @@ interface PageProps {
 function displayCpuSpecRows(cpuList: MinosCpu[]) {
   return (
     <>
-      <CpuSpecRow name="# of Cores" valueKey="cores" cpus={cpuList} />
-      <CpuSpecRow name="# of Threads" valueKey="threads" cpus={cpuList} />
-      <CpuSpecRow name="Base Frequency" valueKey="frequency" cpus={cpuList} />
-      <CpuSpecRow name="L1 Cache" valueKey="cacheL1" cpus={cpuList} />
-      <CpuSpecRow name="L2 Cache" valueKey="cacheL2" cpus={cpuList} />
-      <CpuSpecRow name="L3 Cache" valueKey="cacheL3" cpus={cpuList} />
-      <CpuSpecRow name="TDP" valueKey="tdp" cpus={cpuList} />
-      <CpuSpecRow name="Launch Date" valueKey="launchDate" cpus={cpuList} />
-      <CpuSpecRow name="Lithography" valueKey="lithography" cpus={cpuList} />
+      <CpuSpecRow
+        name="# of Cores"
+        valueKey="cores"
+        cpus={cpuList}
+        bestValue={findExtremePropertyValue(cpuList, 'cores', true)}
+      />
+      <CpuSpecRow
+        name="# of Threads"
+        valueKey="threads"
+        cpus={cpuList}
+        bestValue={findExtremePropertyValue(cpuList, 'threads', true)}
+      />
+      <CpuSpecRow
+        name="Base Frequency"
+        valueKey="frequency"
+        cpus={cpuList}
+        bestValue={findExtremePropertyValue(cpuList, 'frequency', true)}
+      />
+      <CpuSpecRow
+        name="L1 Cache"
+        valueKey="cacheL1"
+        cpus={cpuList}
+        bestValue={0}
+      />
+      <CpuSpecRow
+        name="L2 Cache"
+        valueKey="cacheL2"
+        cpus={cpuList}
+        bestValue={0}
+      />
+      <CpuSpecRow
+        name="L3 Cache"
+        valueKey="cacheL3"
+        cpus={cpuList}
+        bestValue={0}
+      />
+      <CpuSpecRow
+        name="TDP"
+        valueKey="tdp"
+        cpus={cpuList}
+        bestValue={findExtremePropertyValue(cpuList, 'tdp', true)}
+      />
+      <CpuSpecRow
+        name="Launch Date"
+        valueKey="launchDate"
+        cpus={cpuList}
+        bestValue={findExtremePropertyValue(cpuList, 'launchDate', true)}
+      />
+      <CpuSpecRow
+        name="Lithography"
+        valueKey="lithography"
+        cpus={cpuList}
+        bestValue={findExtremePropertyValue(cpuList, 'lithography', false)}
+      />
     </>
   );
 }
 
 // Main page function
 const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
+  // Colours
+  const removeColor = useColorModeValue('red', 'red.800');
+
   // State management
   const [comparedIDs, setComparedIDs] = useCompareCpus();
 
@@ -118,7 +220,10 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
                 {props.comparedCPUData.map((cpu) => {
                   return (
                     <Th key={'CpuRemoveButton' + cpu.id}>
-                      <Button onClick={() => removeComparedID(cpu.id)}>
+                      <Button
+                        onClick={() => removeComparedID(cpu.id)}
+                        colorScheme="red"
+                      >
                         Remove
                       </Button>
                     </Th>

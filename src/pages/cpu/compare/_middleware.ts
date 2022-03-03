@@ -8,7 +8,7 @@ export function middleware(req: NextRequest) {
 
   // If no cpu ids present, redirect to search page
   if (url.pathname === '/cpu/compare') {
-    url.pathname = '/cpu/search';
+    url.pathname = '/cpu/search/0';
     return NextResponse.redirect(url);
   }
 
