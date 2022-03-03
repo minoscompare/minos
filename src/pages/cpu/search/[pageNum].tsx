@@ -50,7 +50,7 @@ const CpuSearchPage: NextPage<PageProps> = (props: PageProps) => {
               {'<--'}
             </Button>
             <Text>
-              {props.currentPage} / {props.maxPage}
+              {props.currentPage + 1} / {props.maxPage + 1}
             </Text>
             <Button size="sm" onClick={() => updatePage(1)}>
               {'-->'}
