@@ -6,6 +6,8 @@ import prisma from '@minos/lib/api/utils/prisma';
 import { Box, Center, Stack, Text, Heading, Button } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import { useRouter } from 'next/router';
+import { Cpu } from '@prisma/client';
+import { prismaCpuToMinosCpu } from '@minos/lib/api/data-access/cpu';
 
 // Props interface
 interface PageProps {
@@ -85,7 +87,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
   const cpus = await prisma.cpu.findMany({
     skip: pageSize * pageIndex,
     take: pageSize,
-    select: { id: true, name: true, brand: true },
+    //select: { id: true, name: true, brand: true },
   });
 
   return {
@@ -95,6 +97,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
         name: `${cpu.brand} ${cpu.name}`,
         pageURL: `/cpu/${cpu.id}`,
         apiURL: `/api/cpu/${cpu.id}`,
+        cpuData: prismaCpuToMinosCpu(cpu),
       })),
       maxPage: maxPageIndex,
       currentPage: pageIndex,

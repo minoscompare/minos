@@ -19,7 +19,7 @@ interface CpuSpecProps {
   value: string | null;
 }
 
-function CpuSpec({ name, value }: CpuSpecProps) {
+export function CpuSpec({ name, value }: CpuSpecProps) {
   return (
     <ListItem>
       <Text as="span" fontWeight="bold">
