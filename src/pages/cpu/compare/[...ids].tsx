@@ -88,16 +88,8 @@ function CpuSpecRow({
       {cpus.map((cpu) => (
         <Td
           key={name + cpu.id}
-          color={
-            parseInt(cpu[prismaCPUValueKey] as string) == bestValue
-              ? 'green.400'
-              : 'red.300'
-          }
-          fontWeight={
-            parseInt(cpu[prismaCPUValueKey] as string) == bestValue
-              ? 'bold'
-              : 'hairline'
-          }
+          color={cpu[prismaCPUValueKey] == bestValue ? 'green.400' : 'red.300'}
+          fontWeight={cpu[prismaCPUValueKey] == bestValue ? 'bold' : 'hairline'}
         >
           {prismaCpuToMinosCpu(cpu).specs[minosCPUValueKey] ?? 'Unknown'}
         </Td>
