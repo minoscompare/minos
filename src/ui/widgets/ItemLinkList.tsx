@@ -84,6 +84,13 @@ function ItemLinkList(props: ComponentProps) {
                       <Text
                         fontSize={{ base: '16px', lg: '18px' }}
                         fontWeight="500"
+                        mb="4"
+                      >
+                        {item.name}
+                      </Text>
+                      <Text
+                        fontSize={{ base: '16px', lg: '18px' }}
+                        fontWeight="500"
                         textTransform="uppercase"
                         mb="4"
                       >
