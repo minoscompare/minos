@@ -289,23 +289,29 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     })
   );
 
+  console.log('AAAA');
   let cpus: (Cpu | null)[];
-
+  console.log('AAAA2');
   try {
     // Awaits all promises at the same time, fails if one fails
+    console.log('AAAA3');
     cpus = await Promise.all(promises);
+    console.log('AAAA4');
   } catch (err) {
+    console.log('AAAA5');
     return { notFound: true };
   }
-
+  console.log('AAAA6');
   // If one or more cpus are falsy (i.e. cpu does not exist), then redirect to not found
   if (cpus.some((cpu) => !cpu)) {
+    console.log('AAAA7');
     return { notFound: true };
   }
 
+  console.log('AAAA8');
   return {
     props: {
-      comparedCPUData: cpus,
+      comparedCPUData: cpus as Cpu[],
     },
   };
 };
