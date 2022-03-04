@@ -2,9 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
 };
+const { withSuperjson } = require('next-superjson');
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = withSuperjson()(withBundleAnalyzer(nextConfig));
