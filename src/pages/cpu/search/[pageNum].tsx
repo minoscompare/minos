@@ -17,7 +17,7 @@ interface PageProps {
 }
 
 // Constants
-const pageSize = 10;
+const pageSize = 15;
 
 // Main page function
 const CpuSearchPage: NextPage<PageProps> = (props: PageProps) => {
@@ -36,7 +36,7 @@ const CpuSearchPage: NextPage<PageProps> = (props: PageProps) => {
   // Returns HTML
   return (
     <Layout title="Search CPUs">
-      <Stack spacing={{ base: 6, md: 10 }} direction="column">
+      <Stack spacing={{ base: 6, md: 10 }} direction="column" align="center">
         <Box as="header">
           <Heading
             lineHeight={1.1}
@@ -46,7 +46,7 @@ const CpuSearchPage: NextPage<PageProps> = (props: PageProps) => {
             CPU List
           </Heading>
         </Box>
-        <Stack direction="column" w={[300, 400, 500]}>
+        <Stack direction="column" w={[200, 400, 700]} align="inherit">
           <Stack direction="row">
             <Button size="sm" onClick={() => updatePage(-1)}>
               {'<--'}
@@ -58,7 +58,7 @@ const CpuSearchPage: NextPage<PageProps> = (props: PageProps) => {
               {'-->'}
             </Button>
           </Stack>
-          <Box>
+          <Box alignContent="space-between" w="inherit">
             <ItemLinkList listItems={props.componentLinks} />
           </Box>
         </Stack>
