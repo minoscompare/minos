@@ -133,21 +133,21 @@ function displayCpuSpecRows(cpuList: Cpu[]) {
         prismaCPUValueKey="cacheL1"
         minosCPUValueKey="cacheL1"
         cpus={cpuList}
-        bestValue={0}
+        bestValue={findExtremePropertyValue(cpuList, 'cacheL1', true)}
       />
       <CpuSpecRow
         name="L2 Cache"
         prismaCPUValueKey="cacheL2"
         minosCPUValueKey="cacheL2"
         cpus={cpuList}
-        bestValue={0}
+        bestValue={findExtremePropertyValue(cpuList, 'cacheL2', true)}
       />
       <CpuSpecRow
         name="L3 Cache"
         prismaCPUValueKey="cacheL3"
         minosCPUValueKey="cacheL3"
         cpus={cpuList}
-        bestValue={0}
+        bestValue={findExtremePropertyValue(cpuList, 'cacheL3', true)}
       />
       <CpuSpecRow
         name="TDP"
@@ -289,26 +289,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     })
   );
 
-  console.log('AAAA');
   let cpus: (Cpu | null)[];
-  console.log('AAAA2');
+
   try {
     // Awaits all promises at the same time, fails if one fails
-    console.log('AAAA3');
     cpus = await Promise.all(promises);
-    console.log('AAAA4');
   } catch (err) {
-    console.log('AAAA5');
     return { notFound: true };
   }
-  console.log('AAAA6');
   // If one or more cpus are falsy (i.e. cpu does not exist), then redirect to not found
   if (cpus.some((cpu) => !cpu)) {
-    console.log('AAAA7');
     return { notFound: true };
   }
 
-  console.log('AAAA8');
   return {
     props: {
       comparedCPUData: cpus as Cpu[],
