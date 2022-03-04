@@ -124,7 +124,7 @@ const CustomSearchBox = connectSearchBox(
   )
 ) as ComponentClass<CustomSearchBoxProps & SearchBoxExposed, any>;
 
-export default function ComponentsSearchBar() {
+function CPUSearchBar() {
   const ref = useRef<HTMLDivElement>(null);
   const menu = useDisclosure();
 
@@ -180,9 +180,13 @@ const SearchableCPUSearch: NextPage = () => {
             CPU Searching
           </Heading>
         </Box>
-        <Stack direction="column" w={[200, 400, 700]} align="inherit"></Stack>
+        <Stack direction="column" w={[200, 400, 700]} align="inherit">
+          <CPUSearchBar />
+        </Stack>
       </Stack>
       <br />
     </Layout>
   );
 };
+
+export default SearchableCPUSearch;
