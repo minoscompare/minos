@@ -10,9 +10,7 @@ import {
   Th,
   Tbody,
   Td,
-  Center,
   Button,
-  propNames,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
@@ -20,12 +18,8 @@ import prisma from '@minos/lib/api/utils/prisma';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { MinosCpu } from '@minos/lib/types';
-import {
-  getCpuById,
-  prismaCpuToMinosCpu,
-} from '@minos/lib/api/data-access/cpu';
+import { prismaCpuToMinosCpu } from '@minos/lib/api/data-access/cpu';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
-import { cpuUsage } from 'process';
 import { Cpu } from '@prisma/client';
 
 interface CpuSpecRowProps {

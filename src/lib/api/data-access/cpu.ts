@@ -44,21 +44,32 @@ export async function createCpu(
   return prismaCpuToMinosCpu(cpu);
 }
 
-export async function getCpuById(prisma: PrismaClient, id: number) {
+export async function getCpuByIdUnformatted(prisma: PrismaClient, id: number) {
   const cpu = await prisma.cpu.findUnique({ where: { id } });
+  return cpu;
+}
 
-  if (!cpu) {
-    return null;
-  }
+export async function getCpuById(prisma: PrismaClient, id: number) {
+  const cpu = await getCpuByIdUnformatted(prisma, id);
+
+  if (!cpu) return null;
 
   return prismaCpuToMinosCpu(cpu);
+}
+
+export async function getManyCpusUnformatted(
+  prisma: PrismaClient,
+  args: Prisma.CpuFindManyArgs
+) {
+  const cpus = await prisma.cpu.findMany(args);
+  return cpus;
 }
 
 export async function getManyCpus(
   prisma: PrismaClient,
   args: Prisma.CpuFindManyArgs
 ) {
-  const cpus = await prisma.cpu.findMany(args);
+  const cpus = await getManyCpusUnformatted(prisma, args);
   return cpus.map(prismaCpuToMinosCpu);
 }
 
