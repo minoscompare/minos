@@ -18,7 +18,10 @@ import prisma from '@minos/lib/api/utils/prisma';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { MinosCpu } from '@minos/lib/types';
-import { prismaCpuToMinosCpu } from '@minos/lib/api/data-access/cpu';
+import {
+  getManyCpusUnformatted,
+  prismaCpuToMinosCpu,
+} from '@minos/lib/api/data-access/cpu';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 import { Cpu } from '@prisma/client';
 
@@ -274,32 +277,21 @@ const CpuComparison: NextPage<PageProps> = (props: PageProps) => {
 // GetServerSideProps to get the list of compared components before page render
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get array of cpu ids from query params
-  const cpuIds = (context.query.ids ?? []) as string[];
+  const cpuIdStrings = (context.query.ids ?? []) as string[];
+  const cpuIds = cpuIdStrings.map((id) => parseInt(id, 10));
 
   // Creates an array of promises to fetch all individual cpus
-  const promises = cpuIds.map((id) =>
-    prisma.cpu.findUnique({
-      where: { id: parseInt(id) },
-    })
-  );
+  const cpus = await getManyCpusUnformatted(prisma, {
+    where: { id: { in: cpuIds } },
+  });
 
-  let cpus: (Cpu | null)[];
-
-  try {
-    // Awaits all promises at the same time, fails if one fails
-    cpus = await Promise.all(promises);
-  } catch (err) {
-    return { notFound: true };
-  }
-  // If one or more cpus are falsy (i.e. cpu does not exist), then redirect to not found
-  if (cpus.some((cpu) => !cpu)) {
+  if (cpus.length !== cpuIds.length) {
+    // Show not found if one cpu does not exist
     return { notFound: true };
   }
 
   return {
-    props: {
-      comparedCPUData: cpus as Cpu[],
-    },
+    props: { comparedCPUData: cpus },
   };
 };
 export default CpuComparison;
