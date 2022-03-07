@@ -36,14 +36,6 @@ export function prismaCpuToMinosCpu(cpu: PrismaCpu): MinosCpu {
   };
 }
 
-export async function createCpu(
-  prisma: PrismaClient,
-  data: Prisma.CpuCreateInput
-) {
-  const cpu = await prisma.cpu.create({ data });
-  return prismaCpuToMinosCpu(cpu);
-}
-
 export async function getCpuByIdUnformatted(prisma: PrismaClient, id: number) {
   const cpu = await prisma.cpu.findUnique({ where: { id } });
   return cpu;
@@ -71,32 +63,4 @@ export async function getManyCpus(
 ) {
   const cpus = await getManyCpusUnformatted(prisma, args);
   return cpus.map(prismaCpuToMinosCpu);
-}
-
-export async function updateCpuById(
-  prisma: PrismaClient,
-  id: number,
-  data: Prisma.CpuUpdateInput
-) {
-  const cpu = await prisma.cpu.update({ where: { id }, data });
-  return prismaCpuToMinosCpu(cpu);
-}
-
-export async function updateCpu(
-  prisma: PrismaClient,
-  args: Prisma.CpuUpdateArgs
-) {
-  const cpu = await prisma.cpu.update(args);
-  return prismaCpuToMinosCpu(cpu);
-}
-
-export async function deleteCpuById(prisma: PrismaClient, id: number) {
-  await prisma.cpu.delete({ where: { id } });
-}
-
-export async function deleteCpu(
-  prisma: PrismaClient,
-  args: Prisma.CpuDeleteArgs
-) {
-  await prisma.cpu.delete(args);
 }
