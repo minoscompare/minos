@@ -75,16 +75,8 @@ function CpuSpecRow({ name, valueKey, cpus, bestValue }: CpuSpecRowProps) {
       {cpus.map((cpu) => (
         <Td
           key={name + cpu.id}
-          color={
-            parseInt(cpu.specs[valueKey] as string) == bestValue
-              ? 'green.400'
-              : 'red.300'
-          }
-          fontWeight={
-            parseInt(cpu.specs[valueKey] as string) == bestValue
-              ? 'bold'
-              : 'hairline'
-          }
+          color={cpu[prismaCPUValueKey] == bestValue ? 'green.400' : 'red.300'}
+          fontWeight={cpu[prismaCPUValueKey] == bestValue ? 'bold' : 'hairline'}
         >
           {cpu.specs[valueKey] ?? 'Unknown'}
         </Td>
@@ -124,19 +116,19 @@ function displayCpuSpecRows(cpuList: MinosCpu[]) {
         name="L1 Cache"
         valueKey="cacheL1"
         cpus={cpuList}
-        bestValue={0}
+        bestValue={findExtremePropertyValue(cpuList, 'cacheL1', true)}
       />
       <CpuSpecRow
         name="L2 Cache"
         valueKey="cacheL2"
         cpus={cpuList}
-        bestValue={0}
+        bestValue={findExtremePropertyValue(cpuList, 'cacheL2', true)}
       />
       <CpuSpecRow
         name="L3 Cache"
         valueKey="cacheL3"
         cpus={cpuList}
-        bestValue={0}
+        bestValue={findExtremePropertyValue(cpuList, 'cacheL3', true)}
       />
       <CpuSpecRow
         name="TDP"
@@ -275,7 +267,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   } catch (err) {
     return { notFound: true };
   }
-
   // If one or more cpus are falsy (i.e. cpu does not exist), then redirect to not found
   if (cpus.some((cpu) => !cpu)) {
     return { notFound: true };
@@ -283,7 +274,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      comparedCPUData: cpus,
+      comparedCPUData: cpus as Cpu[],
     },
   };
 };
