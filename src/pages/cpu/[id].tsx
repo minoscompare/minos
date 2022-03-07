@@ -21,7 +21,7 @@ interface CpuSpecProps {
 
 export function CpuSpec({ name, value }: CpuSpecProps) {
   return (
-    <ListItem>
+    <ListItem key={name + value}>
       <Text as="span" fontWeight="bold">
         {name}
       </Text>{' '}
