@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
   Box,
   Stack,
@@ -145,12 +144,6 @@ function CpuCompare({ cpus, comparison }: CpuCompareProps) {
     setComparedIDs(newComparedIDs);
     updatePageQuery(comparedIDs);
   }
-
-  useEffect(() => {
-    if (cpus.length === 0 && comparedIDs.length !== 0) {
-      updatePageQuery(comparedIDs);
-    }
-  });
 
   // Returns HTML
   return (
