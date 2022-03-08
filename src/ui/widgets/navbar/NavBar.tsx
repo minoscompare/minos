@@ -101,10 +101,7 @@ export default function NavBar() {
             display={{ sm: isSearchShown ? 'none' : 'block', md: 'none' }}
           />
           <Box display={{ sm: isSearchShown ? 'block' : 'none', md: 'block' }}>
-            <NavBarSearchBar
-              searchRef={searchRef}
-              onBlur={setSearchShown.off}
-            />
+            <NavBarSearchBar searchRef={searchRef} />
           </Box>
           <IconButton
             icon={

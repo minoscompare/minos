@@ -17,14 +17,14 @@ import NavBarSearchResults, {
 } from './NavBarSearchResults';
 import mergeRefs from '@minos/lib/utils/merge-refs';
 
-interface InputPropsWithRef extends InputProps {
+interface SearchRefProps {
   /**
    * React Ref that gets passed to the Chakra Input element
    */
   searchRef?: Ref<HTMLInputElement>;
 }
 
-interface CustomSearchBoxProps extends InputPropsWithRef {
+interface CustomSearchBoxProps extends SearchRefProps {
   /**
    * Function that hides the results panel.
    */
@@ -39,7 +39,6 @@ function CustomSearchBox({
   hideResults,
   showResults,
   searchRef,
-  ...inputProps
 }: CustomSearchBoxProps) {
   const {
     inputRef,
@@ -82,7 +81,6 @@ function CustomSearchBox({
               showResults();
             }
           }}
-          {...inputProps}
         />
         <InputRightElement>
           {isSearchStalled ? (
@@ -104,7 +102,7 @@ function CustomSearchBox({
   );
 }
 
-export default function NavBarSearchBar(props: InputPropsWithRef) {
+export default function NavBarSearchBar(props: SearchRefProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   const popper = useSearchResultsPopper();
