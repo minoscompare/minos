@@ -10,15 +10,11 @@ import {
   useColorModeValue,
   Stack,
   useColorMode,
-  Input,
-  VStack,
-  Portal,
-  Text,
   Center,
 } from '@chakra-ui/react';
 import { MdBrightness4, MdBrightness7, MdClose, MdMenu } from 'react-icons/md';
 import NextLink from 'next/link';
-import ComponentsSearchBar from './ComponentsSearchBar';
+import ComponentsSearchBar from '@minos/ui/widgets/NavBarSearchBar';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 
 interface NavLinkProps {

@@ -14,9 +14,7 @@ import {
   InstantSearch,
   InstantSearchServerState,
   InstantSearchSSRProvider,
-  useHits,
   usePagination,
-  useSearchBox,
 } from 'react-instantsearch-hooks';
 import { history } from 'instantsearch.js/es/lib/routers/index.js';
 import { searchClient } from '@minos/lib/utils/typesense';
@@ -26,11 +24,13 @@ import ItemLinkList from '@minos/ui/widgets/ItemLinkList';
 import { GetServerSideProps } from 'next';
 import { Layout } from '@minos/ui/components/Layout';
 import { getServerState } from 'react-instantsearch-hooks-server';
-import { Hit } from 'react-instantsearch-core';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import {
+  useCustomSearchBox,
+  useCustomHits,
+} from '@minos/lib/utils/search-hooks';
 
 function CustomHits() {
-  const hits = useHits().hits as unknown as Hit<CpuTypesenseDoc>[];
+  const { hits } = useCustomHits<CpuTypesenseDoc>();
   return (
     <ItemLinkList
       listItems={hits.map((cpu) => ({
@@ -45,38 +45,14 @@ function CustomHits() {
 }
 
 function CustomSearchBox() {
-  const { query, isSearchStalled, refine } = useSearchBox();
-  const [inputValue, setInputValue] = useState(query);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    event.stopPropagation();
-    inputRef.current?.blur();
-  }
-
-  function handleReset() {
-    setInputValue('');
-    inputRef.current?.focus();
-  }
-
-  // Track when the value coming from the React state changes to synchronize
-  // it with InstantSearch.
-  useEffect(() => {
-    if (query !== inputValue) {
-      refine(inputValue);
-    }
-  }, [inputValue, refine]);
-
-  // Track when the InstantSearch query changes to synchronize it with
-  // the React state.
-  useEffect(() => {
-    // Bypass the state update if the input is focused to avoid concurrent
-    // updates when typing.
-    if (document.activeElement !== inputRef.current && query !== inputValue) {
-      setInputValue(query);
-    }
-  }, [query]);
+  const {
+    inputRef,
+    inputValue,
+    setInputValue,
+    isSearchStalled,
+    handleReset,
+    handleSubmit,
+  } = useCustomSearchBox();
 
   return (
     <form noValidate action="" role="search" onSubmit={handleSubmit}>
@@ -92,7 +68,7 @@ function CustomSearchBox() {
         <InputRightElement>
           {isSearchStalled ? (
             <CircularProgress isIndeterminate size="1em" />
-          ) : query === '' ? (
+          ) : inputValue === '' ? (
             <MdSearch />
           ) : (
             <MdClose onClick={handleReset} cursor="pointer" />

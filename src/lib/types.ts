@@ -44,7 +44,7 @@ export interface CpuComparison {
   };
 }
 
-export interface CpuTypesenseDoc {
+export type CpuTypesenseDoc = {
   id: string;
   brand: CpuBrand;
   name: string;
@@ -60,4 +60,4 @@ export interface CpuTypesenseDoc {
   cacheL3: number | null;
   tdp: number | null;
   lithography: number | null;
-}
+};

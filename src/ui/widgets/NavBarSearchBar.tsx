@@ -1,4 +1,4 @@
-import { useRef, KeyboardEventHandler, ComponentClass } from 'react';
+import { useRef } from 'react';
 import {
   Box,
   Button,
@@ -8,26 +8,30 @@ import {
   InputGroup,
   InputRightElement,
   Link,
-  Menu,
-  MenuButton,
-  MenuList,
   useColorModeValue,
   useDisclosure,
   useOutsideClick,
+  usePopper,
 } from '@chakra-ui/react';
-import {
-  InstantSearch,
-  connectHits,
-  connectSearchBox,
-} from 'react-instantsearch-dom';
+import { InstantSearch } from 'react-instantsearch-hooks';
 import { searchClient } from '@minos/lib/utils/typesense';
-import NextLink from 'next/link';
 import { MdClose, MdSearch } from 'react-icons/md';
-import { SearchBoxExposed, SearchBoxProvided } from 'react-instantsearch-core';
+import {
+  useCustomHits,
+  useCustomSearchBox,
+} from '@minos/lib/utils/search-hooks';
 import { CpuTypesenseDoc } from '@minos/lib/types';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
+import NextLink from 'next/link';
 
-const CustomHits = connectHits<CpuTypesenseDoc>(({ hits }) => {
+function useSearchResultsPopper() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { popperRef, referenceRef } = usePopper({ placement: 'bottom-start' });
+  return { isOpen, onOpen, onClose, popperRef, referenceRef };
+}
+
+function CustomHits() {
+  const { hits } = useCustomHits<CpuTypesenseDoc>();
   // Gets CPU Ids atom and creates a function to modify them
   const [comparedIDs, setComparedIDs] = useCompareCpus();
 
@@ -43,7 +47,7 @@ const CustomHits = connectHits<CpuTypesenseDoc>(({ hits }) => {
       {hits.map((hit) => (
         <Box key={hit.id} flex={1} mx={3} my={2}>
           <HStack>
-            <NextLink href={`/cpu/${hit.id}`}>
+            <NextLink href={`/cpu/${hit.id}`} passHref>
               <Link flex={1} isTruncated>
                 {hit.fullName}
               </Link>
@@ -62,30 +66,34 @@ const CustomHits = connectHits<CpuTypesenseDoc>(({ hits }) => {
       ))}
     </>
   );
-});
+}
 
 interface CustomSearchBoxProps {
   onClose: () => void;
   onOpen: () => void;
 }
 
-const CustomSearchBox = connectSearchBox(
-  ({
-    currentRefinement,
+function CustomSearchBox({ onClose, onOpen }: CustomSearchBoxProps) {
+  const {
+    inputRef,
+    inputValue,
+    setInputValue,
     isSearchStalled,
-    refine,
-    onClose,
-    onOpen,
-  }: CustomSearchBoxProps & SearchBoxProvided) => (
-    <form noValidate action="" role="search">
+    handleReset,
+    handleSubmit,
+  } = useCustomSearchBox();
+
+  return (
+    <form noValidate action="" role="search" onSubmit={handleSubmit}>
       <InputGroup paddingInlineStart={0}>
         <Input
+          ref={inputRef}
           variant="outline"
           placeholder="Search"
           type="search"
-          value={currentRefinement}
+          value={inputValue}
           onChange={(event) => {
-            refine(event.currentTarget.value);
+            setInputValue(event.currentTarget.value);
             if (event.currentTarget.value === '') {
               onClose();
             }
@@ -95,52 +103,57 @@ const CustomSearchBox = connectSearchBox(
         <InputRightElement>
           {isSearchStalled ? (
             <CircularProgress isIndeterminate size="1em" />
-          ) : currentRefinement === '' ? (
+          ) : inputValue === '' ? (
             <MdSearch />
           ) : (
             <MdClose
               onClick={() => {
-                refine('');
+                handleReset();
                 onClose();
               }}
+              cursor="pointer"
             />
           )}
         </InputRightElement>
       </InputGroup>
     </form>
-  )
-) as ComponentClass<CustomSearchBoxProps & SearchBoxExposed, any>;
+  );
+}
 
 export default function ComponentsSearchBar() {
   const ref = useRef<HTMLDivElement>(null);
-  const menu = useDisclosure();
+
+  const popper = useSearchResultsPopper();
 
   useOutsideClick({
-    ref,
-    handler: menu.onClose,
+    ref: ref,
+    handler: popper.onClose,
   });
+
+  const popperBg = useColorModeValue('#fff', 'gray.700');
+  const popperShadow = useColorModeValue('sm', 'dark-lg');
 
   return (
     <InstantSearch indexName="cpu" searchClient={searchClient}>
       <Box ref={ref}>
-        <Menu isOpen={menu.isOpen}>
-          <MenuButton
-            mx={1}
-            py={[1, 2, 2]}
-            // px={4}
-            borderRadius={5}
-            _hover={{ bg: useColorModeValue('gray.100', 'gray.700') }}
-            aria-label="Search Bar"
-            fontWeight="normal"
+        <Box ref={popper.referenceRef} pointerEvents="all">
+          <CustomSearchBox onOpen={popper.onOpen} onClose={popper.onClose} />
+        </Box>
+        {popper.isOpen && (
+          <Box
+            ref={popper.popperRef}
+            w={{ sm: 260, lg: 360 }}
+            bg={popperBg}
+            boxShadow={popperShadow}
+            color="inherit"
+            py={2}
+            zIndex={1}
+            borderRadius="md"
+            borderWidth="1px"
           >
-            <Box pointerEvents="all">
-              <CustomSearchBox onOpen={menu.onOpen} onClose={menu.onClose} />
-            </Box>
-          </MenuButton>
-          <MenuList w={[100, 260, 300, 460]}>
             <CustomHits />
-          </MenuList>
-        </Menu>
+          </Box>
+        )}
       </Box>
     </InstantSearch>
   );
