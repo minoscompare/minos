@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import NextLink from 'next/link';
 import {
   Button,
@@ -63,8 +63,8 @@ function ItemLinkList(props: ComponentProps) {
       <Divider />
       {props.listItems.map((item) => {
         return (
-          <>
-            <Stack key={item.id} spacing={5} direction="row" align="center">
+          <Fragment key={item.id}>
+            <Stack spacing={5} direction="row" align="center">
               <Text isTruncated flex={1}>
                 {item.name}
               </Text>
@@ -180,7 +180,7 @@ function ItemLinkList(props: ComponentProps) {
               ></IconButton>{' '}
             </Stack>
             <Divider />
-          </>
+          </Fragment>
         );
       })}
     </Stack>
