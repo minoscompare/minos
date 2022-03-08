@@ -153,8 +153,10 @@ function CpuSearch({ searchState, url }: CpuSearchProps) {
         }}
       >
         <CustomSearchBox />
-        <CustomHits />
+        <br />
         <CustomPagination />
+        <br />
+        <CustomHits />
       </InstantSearch>
     </InstantSearchSSRProvider>
   );
@@ -170,12 +172,11 @@ function SearchPage({ searchState, url }: CpuSearchProps) {
             fontWeight={500}
             fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
           >
-            CPU List
+            CPU Search
           </Heading>
         </Box>
         <Center></Center>
-        <Box width="2xl">
-          Select a CPU:
+        <Box width={[300, 500, 700]}>
           <CpuSearch searchState={searchState} url={url} />
         </Box>
       </Stack>

@@ -73,21 +73,21 @@ function ItemLinkList({ listItems }: Props) {
                       aria-label="Preview Data"
                       colorScheme={detailsColor}
                       icon={<InfoOutlineIcon />}
-                    ></IconButton>
+                    />
                   </PopoverTrigger>
                   <PopoverContent>
                     <PopoverArrow />
                     <PopoverCloseButton />
                     <PopoverBody>
                       <Text
-                        fontSize={{ base: '16px', lg: '18px' }}
+                        fontSize={{ base: '14px', lg: '16px' }}
                         fontWeight="500"
                         mb="4"
                       >
                         {cpu.model}
                       </Text>
                       <Text
-                        fontSize={{ base: '16px', lg: '18px' }}
+                        fontSize={{ base: '14px', lg: '16px' }}
                         fontWeight="500"
                         textTransform="uppercase"
                         mb="4"
@@ -132,6 +132,13 @@ function ItemLinkList({ listItems }: Props) {
                   >
                     View
                   </Button>
+                  <IconButton
+                    colorScheme={detailsColor}
+                    variant="solid"
+                    aria-label="Open in new page"
+                    display={{ base: 'flex', md: 'none' }}
+                    icon={<ExternalLinkIcon />}
+                  />
                 </a>
               </NextLink>
               <Button
@@ -156,7 +163,7 @@ function ItemLinkList({ listItems }: Props) {
                 }}
                 display={{ base: 'flex', sm: 'none' }}
                 icon={<PlusSquareIcon />}
-              ></IconButton>{' '}
+              />{' '}
             </Stack>
             <Divider />
           </Fragment>

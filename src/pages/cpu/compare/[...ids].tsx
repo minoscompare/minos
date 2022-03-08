@@ -29,6 +29,7 @@ interface CpuSpecRowProps {
 function CpuSpecRow({ name, valueKey, cpus, comparison }: CpuSpecRowProps) {
   const green = useColorModeValue('green.400', 'green.600');
   const red = useColorModeValue('red.300', 'red.500');
+  const gray = useColorModeValue('gray.300', 'gray.500');
   return (
     <Tr>
       <Td>{name}</Td>
@@ -37,7 +38,7 @@ function CpuSpecRow({ name, valueKey, cpus, comparison }: CpuSpecRowProps) {
         return (
           <Td
             key={cpu.id}
-            color={isBestValue ? green : red}
+            color={isBestValue ? green : cpu.specs[valueKey] ? red : gray}
             fontWeight={isBestValue ? 'bold' : 'hairline'}
           >
             {cpu.specs[valueKey] ?? 'Unknown'}
