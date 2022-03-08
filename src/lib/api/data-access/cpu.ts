@@ -1,10 +1,8 @@
-import { MinosCpu } from '@minos/lib/types';
-import {
-  Cpu as PrismaCpu,
-  CpuBrand,
-  Prisma,
-  PrismaClient,
-} from '@prisma/client';
+import { CpuComparison, MinosCpu } from '@minos/lib/types';
+import { Cpu as PrismaCpu, Prisma, PrismaClient } from '@prisma/client';
+import createHttpError from 'http-errors';
+import { groupBy, mapValues } from 'lodash';
+import { argMaxWithNull, argMinWithNull } from '../utils/arg-max';
 
 export function prismaCpuToMinosCpu(cpu: PrismaCpu): MinosCpu {
   return {
@@ -63,4 +61,61 @@ export async function getManyCpus(
 ) {
   const cpus = await getManyCpusUnformatted(prisma, args);
   return cpus.map(prismaCpuToMinosCpu);
+}
+
+export async function compareCpus(
+  prisma: PrismaClient,
+  cpuIds: number[]
+): Promise<CpuComparison> {
+  const cpus = await getManyCpusUnformatted(prisma, {
+    where: { id: { in: cpuIds } },
+  });
+
+  // Cpu mismatch: did not find all cpus in cpuIds
+  if (cpus.length !== cpuIds.length) {
+    throw new createHttpError.NotFound();
+  }
+
+  // Return null if there is nothing to compare
+  if (cpus.length <= 1) {
+    return {
+      bestIndex: {
+        cores: null,
+        threads: null,
+        frequency: null,
+        cacheL1: null,
+        cacheL2: null,
+        cacheL3: null,
+        tdp: null,
+        launchDate: null,
+        lithography: null,
+      },
+    };
+  }
+
+  return {
+    bestIndex: {
+      cores: argMaxWithNull(cpus.map((cpu) => cpu.cores)),
+      threads: argMaxWithNull(cpus.map((cpu) => cpu.threads)),
+      frequency: argMaxWithNull(cpus.map((cpu) => cpu.frequency)),
+      cacheL1: argMaxWithNull(cpus.map((cpu) => cpu.cacheL1)),
+      cacheL2: argMaxWithNull(cpus.map((cpu) => cpu.cacheL2)),
+      cacheL3: argMaxWithNull(cpus.map((cpu) => cpu.cacheL3)),
+      tdp: argMaxWithNull(cpus.map((cpu) => cpu.tdp)),
+      launchDate: argMaxWithNull(
+        // Finds index of cpu with most recent date (also takes launchQuarter into account)
+        cpus.map((cpu) => {
+          if (cpu.launchYear) {
+            let dateNum = cpu.launchYear * 10;
+            if (cpu.launchQuarter) {
+              dateNum += { Q1: 0, Q2: 1, Q3: 2, Q4: 3 }[cpu.launchQuarter];
+            }
+            return dateNum;
+          }
+          return null;
+        })
+      ),
+      lithography: argMinWithNull(cpus.map((cpu) => cpu.lithography)),
+    },
+  };
 }

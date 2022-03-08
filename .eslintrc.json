@@ -1,4 +1,7 @@
 {
   "extends": ["next", "plugin:@next/next/recommended", "prettier"],
-  "ignorePatterns": ["docs/*"]
+  "ignorePatterns": ["docs/*"],
+  "rules": {
+    "eqeqeq": "warn"
+  }
 }

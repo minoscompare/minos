@@ -25,6 +25,27 @@ export interface MinosCpu {
   updatedAt: string;
 }
 
+/**
+ * Cpu comparison object
+ */
+export interface CpuComparison {
+  /**
+   * Indexes of cpus with best values for a given spec key.
+   * Values are null if no cpus have better specs.
+   */
+  bestIndex: {
+    cores: number | null;
+    threads: number | null;
+    frequency: number | null;
+    cacheL1: number | null;
+    cacheL2: number | null;
+    cacheL3: number | null;
+    tdp: number | null;
+    launchDate: number | null;
+    lithography: number | null;
+  };
+}
+
 export interface CpuTypesenseDoc {
   id: string;
   brand: CpuBrand;
