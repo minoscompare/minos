@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { MdBrightness4, MdBrightness7, MdClose, MdMenu } from 'react-icons/md';
 import NextLink from 'next/link';
-import ComponentsSearchBar from '@minos/ui/widgets/NavBarSearchBar';
+import NavBarSearchBar from './NavBarSearchBar';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 
 interface NavLinkProps {
@@ -85,7 +85,7 @@ export default function NavBar() {
             </HStack>
           </HStack>
           <HStack>
-            <ComponentsSearchBar />
+            <NavBarSearchBar />
 
             <Button onClick={toggleColorMode}>
               {colorMode === 'light' ? <MdBrightness4 /> : <MdBrightness7 />}

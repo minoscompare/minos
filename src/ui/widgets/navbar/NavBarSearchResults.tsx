@@ -15,7 +15,10 @@ import { Ref } from 'react';
 
 export function useSearchResultsPopper() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { popperRef, referenceRef } = usePopper({ placement: 'bottom-start' });
+  const { popperRef, referenceRef } = usePopper({
+    placement: 'bottom-start',
+    gutter: 0,
+  });
   return { isOpen, onOpen, onClose, popperRef, referenceRef };
 }
 
