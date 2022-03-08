@@ -98,9 +98,11 @@ export default function NavBar() {
             }
             aria-label="Show search bar"
             onClick={setSearchShown.on}
-            display={{ sm: isSearchShown ? 'none' : 'block', md: 'none' }}
+            display={{ base: isSearchShown ? 'none' : 'block', md: 'none' }}
           />
-          <Box display={{ sm: isSearchShown ? 'block' : 'none', md: 'block' }}>
+          <Box
+            display={{ base: isSearchShown ? 'block' : 'none', md: 'block' }}
+          >
             <NavBarSearchBar
               searchRef={searchRef}
               onOutsideClick={setSearchShown.off}
