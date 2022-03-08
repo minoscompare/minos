@@ -9,9 +9,9 @@ export interface MinosCpu {
   fullName: string;
   family: string;
   specs: {
-    cores: string | null;
-    threads: string | null;
-    frequency: string | null;
+    cores: string;
+    threads: string;
+    frequency: string;
     cacheL1: string | null;
     cacheL2: string | null;
     cacheL3: string | null;
@@ -21,8 +21,6 @@ export interface MinosCpu {
     launchQuarter: string | null;
     lithography: string | null;
   };
-  createdAt: string;
-  updatedAt: string;
 }
 
 /**
@@ -54,9 +52,9 @@ export interface CpuTypesenseDoc {
   family: string;
   launchQuarter: LaunchQuarter | null;
   launchYear: number | null;
-  cores: number | null;
-  threads: number | null;
-  frequency: number | null;
+  cores: number;
+  threads: number;
+  frequency: number;
   cacheL1: number | null;
   cacheL2: number | null;
   cacheL3: number | null;

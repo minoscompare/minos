@@ -1,7 +1,6 @@
 import { CpuComparison, MinosCpu } from '@minos/lib/types';
 import { Cpu as PrismaCpu, Prisma, PrismaClient } from '@prisma/client';
 import createHttpError from 'http-errors';
-import { groupBy, mapValues } from 'lodash';
 import {
   argMaxWithNull,
   argMinWithNull,
@@ -32,8 +31,6 @@ export function prismaCpuToMinosCpu(cpu: PrismaCpu): MinosCpu {
       launchQuarter: cpu.launchQuarter ? cpu.launchQuarter.toString() : null,
       launchYear: cpu.launchYear ? cpu.launchYear.toString() : null,
     },
-    createdAt: cpu.createdAt.toISOString(),
-    updatedAt: cpu.createdAt.toISOString(),
   };
 }
 

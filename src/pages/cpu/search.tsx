@@ -36,6 +36,7 @@ function CustomHits() {
       listItems={hits.map((cpu) => ({
         id: parseInt(cpu.id),
         name: cpu.fullName,
+        cpuData: cpu,
         pageURL: `/cpu/${cpu.id}`,
         apiURL: `/api/cpu/${cpu.id}`,
       }))}
@@ -106,7 +107,7 @@ function CustomPagination() {
   const { currentRefinement, nbPages, refine } = usePagination();
   const currentPage = currentRefinement + 1;
   return (
-    <Center direction="row">
+    <Center dir="row">
       <Button
         size="sm"
         onClick={() => refine(currentRefinement - 1)}
