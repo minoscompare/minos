@@ -1,10 +1,9 @@
-import { FocusEventHandler, Ref, useRef } from 'react';
+import { Ref, useRef } from 'react';
 import {
   Box,
   CircularProgress,
   Input,
   InputGroup,
-  InputProps,
   InputRightElement,
   useOutsideClick,
 } from '@chakra-ui/react';
@@ -102,12 +101,28 @@ function CustomSearchBox({
   );
 }
 
-export default function NavBarSearchBar(props: SearchRefProps) {
+interface NavBarSearchBarProps extends SearchRefProps {
+  /**
+   * Runs when the user clicks outside of the search bar & search results.
+   */
+  onOutsideClick?: () => unknown;
+}
+
+export default function NavBarSearchBar({
+  onOutsideClick,
+  ...props
+}: NavBarSearchBarProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   const popper = useSearchResultsPopper();
 
-  useOutsideClick({ ref, handler: popper.onClose });
+  useOutsideClick({
+    ref,
+    handler: () => {
+      popper.onClose();
+      onOutsideClick?.();
+    },
+  });
 
   return (
     <InstantSearch indexName="cpu" searchClient={searchClient}>
