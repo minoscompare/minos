@@ -5,14 +5,11 @@ import {
   Text,
   Stack,
   useColorModeValue,
-  Spacer,
   Popover,
   PopoverTrigger,
   PopoverContent,
-  PopoverHeader,
   PopoverBody,
   List,
-  Box,
   PopoverArrow,
   PopoverCloseButton,
   IconButton,
@@ -20,28 +17,28 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
-import { Cpu } from '@prisma/client';
 import { CpuSpec } from '@minos/pages/cpu/[id]';
-import { MinosCpu } from '@minos/lib/types';
+import { CpuTypesenseDoc, MinosCpu } from '@minos/lib/types';
 import {
   ExternalLinkIcon,
   InfoOutlineIcon,
   PlusSquareIcon,
 } from '@chakra-ui/icons';
+import { typesenseCpuToMinosCpu } from '@minos/lib/utils/cpu';
 
 export interface SearchListItem {
   id: number;
   name: string;
   apiURL: string;
   pageURL: string;
-  cpuData: MinosCpu;
+  cpuData: CpuTypesenseDoc;
 }
 
-interface ComponentProps {
+interface Props {
   listItems: SearchListItem[];
 }
 
-function ItemLinkList(props: ComponentProps) {
+function ItemLinkList({ listItems }: Props) {
   // Sets color scheme data
   const detailsColor = useColorModeValue('blue', 'gray');
   const compareColor = useColorModeValue('purple', 'gray');
@@ -61,12 +58,13 @@ function ItemLinkList(props: ComponentProps) {
   return (
     <Stack spacing={1}>
       <Divider />
-      {props.listItems.map((item) => {
+      {listItems.map((item) => {
+        const cpu = typesenseCpuToMinosCpu(item.cpuData);
         return (
           <Fragment key={item.id}>
             <Stack spacing={5} direction="row" align="center">
               <Text isTruncated flex={1}>
-                {item.name}
+                {cpu.fullName}
               </Text>
               <Flex display={{ base: 'none', md: 'flex' }}>
                 <Popover placement="right-end">
@@ -86,7 +84,7 @@ function ItemLinkList(props: ComponentProps) {
                         fontWeight="500"
                         mb="4"
                       >
-                        {item.name}
+                        {cpu.model}
                       </Text>
                       <Text
                         fontSize={{ base: '16px', lg: '18px' }}
@@ -97,38 +95,26 @@ function ItemLinkList(props: ComponentProps) {
                         Specifications
                       </Text>
                       <List spacing={2}>
-                        <CpuSpec
-                          name="# of Cores"
-                          value={item.cpuData.specs.cores}
-                        />
+                        <CpuSpec name="# of Cores" value={cpu.specs.cores} />
                         <CpuSpec
                           name="# of Threads"
-                          value={item.cpuData.specs.threads}
+                          value={cpu.specs.threads}
                         />
                         <CpuSpec
                           name="Base Frequency"
-                          value={item.cpuData.specs.frequency}
+                          value={cpu.specs.frequency}
                         />
-                        <CpuSpec
-                          name="L1 Cache"
-                          value={item.cpuData.specs.cacheL1}
-                        />
-                        <CpuSpec
-                          name="L2 Cache"
-                          value={item.cpuData.specs.cacheL2}
-                        />
-                        <CpuSpec
-                          name="L3 Cache"
-                          value={item.cpuData.specs.cacheL3}
-                        />
-                        <CpuSpec name="TDP" value={item.cpuData.specs.tdp} />
+                        <CpuSpec name="L1 Cache" value={cpu.specs.cacheL1} />
+                        <CpuSpec name="L2 Cache" value={cpu.specs.cacheL2} />
+                        <CpuSpec name="L3 Cache" value={cpu.specs.cacheL3} />
+                        <CpuSpec name="TDP" value={cpu.specs.tdp} />
                         <CpuSpec
                           name="Launch Date"
-                          value={item.cpuData.specs.launchDate}
+                          value={cpu.specs.launchDate}
                         />
                         <CpuSpec
                           name="Lithography"
-                          value={item.cpuData.specs.lithography}
+                          value={cpu.specs.lithography}
                         />
                       </List>
                     </PopoverBody>
@@ -141,18 +127,11 @@ function ItemLinkList(props: ComponentProps) {
                     colorScheme={detailsColor}
                     variant="solid"
                     aria-label="Open in new page"
-                    rightIcon={<ExternalLinkIcon />}
                     display={{ base: 'none', md: 'flex' }}
+                    rightIcon={<ExternalLinkIcon />}
                   >
                     View
                   </Button>
-                  <IconButton
-                    colorScheme={detailsColor}
-                    variant="solid"
-                    aria-label="Open in new page"
-                    icon={<ExternalLinkIcon />}
-                    display={{ base: 'flex', md: 'none' }}
-                  ></IconButton>
                 </a>
               </NextLink>
               <Button
