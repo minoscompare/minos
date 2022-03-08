@@ -1,9 +1,10 @@
-import { useRef } from 'react';
+import { FocusEventHandler, Ref, useRef } from 'react';
 import {
   Box,
   CircularProgress,
   Input,
   InputGroup,
+  InputProps,
   InputRightElement,
   useOutsideClick,
 } from '@chakra-ui/react';
@@ -14,13 +15,32 @@ import { useCustomSearchBox } from '@minos/lib/utils/search-hooks';
 import NavBarSearchResults, {
   useSearchResultsPopper,
 } from './NavBarSearchResults';
+import mergeRefs from '@minos/lib/utils/merge-refs';
 
-interface CustomSearchBoxProps {
-  onClose: () => void;
-  onOpen: () => void;
+interface InputPropsWithRef extends InputProps {
+  /**
+   * React Ref that gets passed to the Chakra Input element
+   */
+  searchRef?: Ref<HTMLInputElement>;
 }
 
-function CustomSearchBox({ onClose, onOpen }: CustomSearchBoxProps) {
+interface CustomSearchBoxProps extends InputPropsWithRef {
+  /**
+   * Function that hides the results panel.
+   */
+  hideResults: () => void;
+  /**
+   * Function that shows the results panel.
+   */
+  showResults: () => void;
+}
+
+function CustomSearchBox({
+  hideResults,
+  showResults,
+  searchRef,
+  ...inputProps
+}: CustomSearchBoxProps) {
   const {
     inputRef,
     inputValue,
@@ -30,11 +50,21 @@ function CustomSearchBox({ onClose, onOpen }: CustomSearchBoxProps) {
     handleSubmit,
   } = useCustomSearchBox();
 
+  const ref = searchRef ? mergeRefs(inputRef, searchRef) : inputRef;
+
   return (
-    <form noValidate action="" role="search" onSubmit={handleSubmit}>
+    <form
+      noValidate
+      action=""
+      role="search"
+      onSubmit={(event) => {
+        handleSubmit(event);
+        hideResults();
+      }}
+    >
       <InputGroup paddingInlineStart={0}>
         <Input
-          ref={inputRef}
+          ref={ref}
           variant="outline"
           placeholder="Search"
           type="search"
@@ -42,16 +72,17 @@ function CustomSearchBox({ onClose, onOpen }: CustomSearchBoxProps) {
           onChange={(event) => {
             setInputValue(event.currentTarget.value);
             if (event.currentTarget.value === '') {
-              onClose();
+              hideResults();
             } else {
-              onOpen();
+              showResults();
             }
           }}
           onFocus={(event) => {
             if (event.currentTarget.value !== '') {
-              onOpen();
+              showResults();
             }
           }}
+          {...inputProps}
         />
         <InputRightElement>
           {isSearchStalled ? (
@@ -62,7 +93,7 @@ function CustomSearchBox({ onClose, onOpen }: CustomSearchBoxProps) {
             <MdClose
               onClick={() => {
                 handleReset();
-                onClose();
+                hideResults();
               }}
               cursor="pointer"
             />
@@ -73,21 +104,22 @@ function CustomSearchBox({ onClose, onOpen }: CustomSearchBoxProps) {
   );
 }
 
-export default function ComponentsSearchBar() {
+export default function NavBarSearchBar(props: InputPropsWithRef) {
   const ref = useRef<HTMLDivElement>(null);
 
   const popper = useSearchResultsPopper();
 
-  useOutsideClick({
-    ref: ref,
-    handler: popper.onClose,
-  });
+  useOutsideClick({ ref, handler: popper.onClose });
 
   return (
     <InstantSearch indexName="cpu" searchClient={searchClient}>
       <Box ref={ref}>
         <Box ref={popper.referenceRef} pointerEvents="all">
-          <CustomSearchBox onOpen={popper.onOpen} onClose={popper.onClose} />
+          <CustomSearchBox
+            showResults={popper.onOpen}
+            hideResults={popper.onClose}
+            {...props}
+          />
         </Box>
         {popper.isOpen && <NavBarSearchResults popperRef={popper.popperRef} />}
       </Box>

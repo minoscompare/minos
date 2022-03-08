@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import {
   Box,
   Flex,
@@ -11,11 +11,21 @@ import {
   Stack,
   useColorMode,
   Center,
+  useMediaQuery,
+  useBoolean,
+  Text,
 } from '@chakra-ui/react';
-import { MdBrightness4, MdBrightness7, MdClose, MdMenu } from 'react-icons/md';
+import {
+  MdBrightness4,
+  MdBrightness7,
+  MdClose,
+  MdMenu,
+  MdSearch,
+} from 'react-icons/md';
 import NextLink from 'next/link';
 import NavBarSearchBar from './NavBarSearchBar';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
+import { MOBILE_MEDIA_QUERY } from '@minos/lib/utils/media-queries';
 
 interface NavLinkProps {
   children: ReactNode;
@@ -54,53 +64,70 @@ function NavBarLinks() {
 }
 
 export default function NavBar() {
+  const searchRef = useRef<HTMLInputElement>(null);
   const drawer = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const [isSearchShown, setSearchShown] = useBoolean(false);
+
+  useEffect(() => {
+    if (isSearchShown) {
+      searchRef.current?.focus();
+    }
+  }, [isSearchShown]);
+
   return (
-    <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
-        <Flex h={16} alignItems="center" justifyContent="space-between">
+    <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+      <Flex h={16} alignItems="center" justifyContent="space-between">
+        <IconButton
+          size="md"
+          icon={<Center>{drawer.isOpen ? <MdClose /> : <MdMenu />}</Center>}
+          aria-label="Open Menu"
+          display={{ md: 'none' }}
+          onClick={drawer.isOpen ? drawer.onClose : drawer.onOpen}
+        />
+        <HStack spacing={8} alignItems="center">
+          <Text>Minos</Text>
+          <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
+            <NavBarLinks />
+          </HStack>
+        </HStack>
+        <HStack>
           <IconButton
-            size="md"
             icon={
-              drawer.isOpen ? (
-                <Center>
-                  <MdClose />
-                </Center>
-              ) : (
-                <Center>
-                  <MdMenu />
-                </Center>
-              )
+              <Center>
+                <MdSearch />
+              </Center>
             }
-            aria-label="Open Menu"
-            display={{ md: 'none' }}
-            onClick={drawer.isOpen ? drawer.onClose : drawer.onOpen}
+            aria-label="Show search bar"
+            onClick={setSearchShown.on}
+            display={{ sm: isSearchShown ? 'none' : 'block', md: 'none' }}
           />
-          <HStack spacing={8} alignItems="center">
-            <Box>Minos</Box>
-            <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
-              <NavBarLinks />
-            </HStack>
-          </HStack>
-          <HStack>
-            <NavBarSearchBar />
-
-            <Button onClick={toggleColorMode}>
-              {colorMode === 'light' ? <MdBrightness4 /> : <MdBrightness7 />}
-            </Button>
-          </HStack>
-        </Flex>
-
-        {drawer.isOpen ? (
-          <Box pb={4} display={{ md: 'none' }}>
-            <Stack as="nav" spacing={4}>
-              <NavBarLinks />
-            </Stack>
+          <Box display={{ sm: isSearchShown ? 'block' : 'none', md: 'block' }}>
+            <NavBarSearchBar
+              searchRef={searchRef}
+              onBlur={setSearchShown.off}
+            />
           </Box>
-        ) : null}
-      </Box>
-    </>
+          <IconButton
+            icon={
+              <Center>
+                {colorMode === 'light' ? <MdBrightness4 /> : <MdBrightness7 />}
+              </Center>
+            }
+            aria-label="Toggle Dark Mode"
+            onClick={toggleColorMode}
+          />
+        </HStack>
+      </Flex>
+
+      {drawer.isOpen ? (
+        <Box pb={4} display={{ md: 'none' }}>
+          <Stack as="nav" spacing={4}>
+            <NavBarLinks />
+          </Stack>
+        </Box>
+      ) : null}
+    </Box>
   );
 }
