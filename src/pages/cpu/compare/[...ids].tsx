@@ -21,7 +21,7 @@ import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 
 interface CpuSpecRowProps {
   name: string;
-  valueKey: keyof CpuComparison['bestIndex'];
+  valueKey: keyof CpuComparison['bestIndices'];
   cpus: MinosCpu[];
   comparison: CpuComparison;
 }
@@ -33,7 +33,7 @@ function CpuSpecRow({ name, valueKey, cpus, comparison }: CpuSpecRowProps) {
     <Tr>
       <Td>{name}</Td>
       {cpus.map((cpu, idx) => {
-        const isBestValue = comparison.bestIndex[valueKey].includes(idx);
+        const isBestValue = comparison.bestIndices[valueKey].includes(idx);
         return (
           <Td
             key={cpu.id}

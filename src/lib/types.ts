@@ -33,7 +33,7 @@ export interface CpuComparison {
    * Indices of cpus with best values for a given spec key.
    * Empty array if all cpus are equal.
    */
-  bestIndex: {
+  bestIndices: {
     cores: number[];
     threads: number[];
     frequency: number[];
