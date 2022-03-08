@@ -5,13 +5,11 @@ import {
   HStack,
   Link,
   IconButton,
-  Button,
   useDisclosure,
   useColorModeValue,
   Stack,
   useColorMode,
   Center,
-  useMediaQuery,
   useBoolean,
   Text,
 } from '@chakra-ui/react';
@@ -25,7 +23,6 @@ import {
 import NextLink from 'next/link';
 import NavBarSearchBar from './NavBarSearchBar';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
-import { MOBILE_MEDIA_QUERY } from '@minos/lib/utils/media-queries';
 
 interface NavLinkProps {
   children: ReactNode;
