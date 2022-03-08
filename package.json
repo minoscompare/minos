@@ -15,13 +15,13 @@
   "dependencies": {
     "@babel/runtime": "^7.17.0",
     "@chakra-ui/icons": "^1.1.7",
-    "@chakra-ui/react": "^1.8.1",
+    "@chakra-ui/react": "^1.8.6",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@next/bundle-analyzer": "^12.1.0",
     "@prisma/client": "^3.10.0",
     "dotenv": "^16.0.0",
-    "framer-motion": "^6.2.8",
+    "framer-motion": "^6",
     "got-cjs": "^12.0.1",
     "http-errors": "^2.0.0",
     "jotai": "^1.6.0",
@@ -55,5 +55,6 @@
     "ts-node": "^10.4.0",
     "typescript": "4.6.2",
     "zod-prisma": "^0.5.4"
-  }
+  },
+  "sideEffects": false
 }

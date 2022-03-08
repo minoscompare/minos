@@ -669,7 +669,7 @@
   dependencies:
     "@chakra-ui/utils" "^1.10.4"
 
-"@chakra-ui/react@^1.8.1":
+"@chakra-ui/react@^1.8.6":
   version "1.8.6"
   resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/react-1.8.6.tgz#e37b9df24fa2ec7d91d2baaa00fd617e3a1bd80c"
   integrity sha512-FEh/KG0uPeNOMQuIlyPfGjHvGB7LN1AAhkdFefqzNt0zNy8Giv4p1PKY7wdCh5QEFor++A83L1wIWvTGQVJ2vQ==
@@ -2395,7 +2395,7 @@ formdata-polyfill@^4.0.10:
   dependencies:
     fetch-blob "^3.1.2"
 
-framer-motion@^6.2.8:
+framer-motion@^6:
   version "6.2.8"
   resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-6.2.8.tgz#02abb529191af7e2df444185fe27e932215b715d"
   integrity sha512-4PtBWFJ6NqR350zYVt9AsFDtISTqsdqna79FvSYPfYDXuuqFmiKtZdkTnYPslnsOMedTW0pEvaQ7eqjD+sA+HA==
