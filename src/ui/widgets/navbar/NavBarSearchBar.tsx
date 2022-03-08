@@ -43,9 +43,15 @@ function CustomSearchBox({ onClose, onOpen }: CustomSearchBoxProps) {
             setInputValue(event.currentTarget.value);
             if (event.currentTarget.value === '') {
               onClose();
+            } else {
+              onOpen();
             }
           }}
-          onKeyDown={onOpen}
+          onFocus={(event) => {
+            if (event.currentTarget.value !== '') {
+              onOpen();
+            }
+          }}
         />
         <InputRightElement>
           {isSearchStalled ? (

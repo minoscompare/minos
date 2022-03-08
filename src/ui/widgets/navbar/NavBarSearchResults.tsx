@@ -2,7 +2,9 @@ import {
   Box,
   Button,
   HStack,
+  IconButton,
   Link,
+  Tooltip,
   useColorModeValue,
   useDisclosure,
   usePopper,
@@ -12,12 +14,14 @@ import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 import { useCustomHits } from '@minos/lib/utils/search-hooks';
 import NextLink from 'next/link';
 import { Ref } from 'react';
+import { MdAdd, MdCompareArrows } from 'react-icons/md';
 
 export function useSearchResultsPopper() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { popperRef, referenceRef } = usePopper({
     placement: 'bottom-start',
     gutter: 0,
+    matchWidth: true,
   });
   return { isOpen, onOpen, onClose, popperRef, referenceRef };
 }
@@ -44,15 +48,15 @@ function CustomHits() {
                 {hit.fullName}
               </Link>
             </NextLink>
-            <NextLink href="/cpu/compare">
-              <Button
+            <Tooltip label="Add to comparison" aria-label="Comparison tooltip">
+              <IconButton
                 size="xs"
                 isDisabled={comparedIDs.includes(parseInt(hit.id))}
                 onClick={() => addComparedID(parseInt(hit.id))}
-              >
-                Compare
-              </Button>
-            </NextLink>
+                icon={<MdAdd />}
+                aria-label="Compare"
+              />
+            </Tooltip>
           </HStack>
         </Box>
       ))}
@@ -70,13 +74,11 @@ function NavBarSearchResults({ popperRef }: NavbarSearchResultsProps) {
   return (
     <Box
       ref={popperRef}
-      w={{ sm: 260, lg: 360 }}
       bg={popperBg}
       boxShadow={popperShadow}
       color="inherit"
-      py={2}
       zIndex={1}
-      borderRadius="md"
+      borderBottomRadius="md"
       borderWidth="1px"
     >
       <CustomHits />
