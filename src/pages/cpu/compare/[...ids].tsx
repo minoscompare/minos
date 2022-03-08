@@ -34,7 +34,7 @@ function CpuSpecRow({ name, valueKey, cpus, comparison }: CpuSpecRowProps) {
     <Tr>
       <Td>{name}</Td>
       {cpus.map((cpu, idx) => {
-        const isBestValue = idx === comparison.bestIndex[valueKey];
+        const isBestValue = comparison.bestIndex[valueKey].includes(idx);
         return (
           <Td
             key={cpu.id}

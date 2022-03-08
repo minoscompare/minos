@@ -30,19 +30,19 @@ export interface MinosCpu {
  */
 export interface CpuComparison {
   /**
-   * Indexes of cpus with best values for a given spec key.
-   * Values are null if no cpus have better specs.
+   * Indices of cpus with best values for a given spec key.
+   * Empty array if all cpus are equal.
    */
   bestIndex: {
-    cores: number | null;
-    threads: number | null;
-    frequency: number | null;
-    cacheL1: number | null;
-    cacheL2: number | null;
-    cacheL3: number | null;
-    tdp: number | null;
-    launchDate: number | null;
-    lithography: number | null;
+    cores: number[];
+    threads: number[];
+    frequency: number[];
+    cacheL1: number[];
+    cacheL2: number[];
+    cacheL3: number[];
+    tdp: number[];
+    launchDate: number[];
+    lithography: number[];
   };
 }
 

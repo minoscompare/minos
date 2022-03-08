@@ -2,7 +2,7 @@ import { CpuComparison, MinosCpu } from '@minos/lib/types';
 import { Cpu as PrismaCpu, Prisma, PrismaClient } from '@prisma/client';
 import createHttpError from 'http-errors';
 import { groupBy, mapValues } from 'lodash';
-import { argMaxWithNull, argMinWithNull } from '../utils/arg-max';
+import { argMaxWithNull, argMinWithNull } from '@minos/lib/api/utils/arg-minmax';
 
 export function prismaCpuToMinosCpu(cpu: PrismaCpu): MinosCpu {
   return {
@@ -80,15 +80,15 @@ export async function compareCpus(
   if (cpus.length <= 1) {
     return {
       bestIndex: {
-        cores: null,
-        threads: null,
-        frequency: null,
-        cacheL1: null,
-        cacheL2: null,
-        cacheL3: null,
-        tdp: null,
-        launchDate: null,
-        lithography: null,
+        cores: [],
+        threads: [],
+        frequency: [],
+        cacheL1: [],
+        cacheL2: [],
+        cacheL3: [],
+        tdp: [],
+        launchDate: [],
+        lithography: [],
       },
     };
   }
