@@ -125,7 +125,6 @@ export default function ComponentsSearchBar() {
       <Box ref={ref}>
         <Menu isOpen={menu.isOpen}>
           <MenuButton
-            variant="ghost"
             mx={1}
             py={[1, 2, 2]}
             // px={4}
