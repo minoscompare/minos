@@ -33,13 +33,7 @@ on Windows for a better developer experience.
    yarn
    ```
 
-3. Copy development env file
-
-   ```bash
-   cp .env.example .env
-   ```
-
-4. Start docker containers
+3. Start docker containers
 
    ```bash
    docker-compose up
@@ -52,19 +46,19 @@ on Windows for a better developer experience.
 
    :::
 
-5. Sync database schema with Postgres
+4. Sync database schema with Postgres
 
    ```bash
    npx prisma db push
    ```
 
-6. Seed database and typesense
+5. Seed database and typesense
 
    ```bash
    yarn sync
    ```
 
-7. Start the development server
+6. Start the development server
    ```bash
    yarn dev
    ```
