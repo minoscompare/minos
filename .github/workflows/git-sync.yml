@@ -5,10 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Sync Repository
-        uses: wei/git-sync@v3
-        with:
-          source_repo: "https://github.com/minoscompare/minos.git"
-          source_branch: "refs/remotes/source/*"
-          destination_repo: "git@github.com:minoscompare-deployments/minos.git"
-          destination_branch: "refs/heads/*"
-          ssh_private_key: ${{ secrets.DESTINATION_SSH_PRIVATE_KEY }}
+        run: |
+          chmod +x "${GITHUB_WORKSPACE}/.github/script.sh"
+          export DESTINATION_SSH_PRIVATE_KEY=${{ secrets.DESTINATION_SSH_PRIVATE_KEY }}
+          "${GITHUB_WORKSPACE}/.github/script.sh"
