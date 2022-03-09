@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Sync Repository
+        uses: actions/checkout@v3
         run: |
           chmod +x "${GITHUB_WORKSPACE}/.github/workflows/sync-repo.sh"
           export DESTINATION_SSH_PRIVATE_KEY=${{ secrets.DESTINATION_SSH_PRIVATE_KEY }}
