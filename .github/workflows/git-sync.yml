@@ -4,8 +4,9 @@ jobs:
     if: github.repository == 'minoscompare/minos'
     runs-on: ubuntu-latest
     steps:
-      - name: Sync Repository
+      - name: Clone Repository
         uses: actions/checkout@v3
+      - name: Sync Repository
         run: |
           chmod +x "${GITHUB_WORKSPACE}/.github/workflows/sync-repo.sh"
           export DESTINATION_SSH_PRIVATE_KEY=${{ secrets.DESTINATION_SSH_PRIVATE_KEY }}
