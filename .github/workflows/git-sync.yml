@@ -5,10 +5,10 @@ jobs:
     steps:
       - name: Sync Repository
         uses: wei/git-sync@v3
+        if: github.repository == 'minoscompare/minos'
         with:
           source_repo: "https://github.com/minoscompare/minos.git"
           source_branch: "refs/remotes/source/*"
           destination_repo: "git@github.com:minoscompare-deployments/minos.git"
           destination_branch: "refs/heads/*"
           ssh_private_key: ${{ secrets.DESTINATION_SSH_PRIVATE_KEY }}
-        if: ${{ github.repository }} != 'minoscompare-deployments/minos'
