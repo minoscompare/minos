@@ -9,5 +9,5 @@ jobs:
           fetch-depth: 0
       - uses: pixta-dev/repository-mirroring-action@v1
         with:
-          target_repo_url: git@gitgub.com:minoscompare-deployments/minos.git
+          target_repo_url: git@github.com:minoscompare-deployments/minos.git
           ssh_private_key: ${{ secrets.DESTINATION_SSH_PRIVATE_KEY }}
