@@ -12,5 +12,7 @@ jobs:
           node-version: "16.x"
       - name: Install dependencies
         run: yarn
+      - name: Generate Prisma Client
+        run: yarn gen
       - name: Run Build
         run: yarn build
