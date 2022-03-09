@@ -3,7 +3,7 @@ jobs:
   git-sync:
     runs-on: ubuntu-latest
     steps:
-      - name: git-sync
+      - name: Sync Repository
         uses: wei/git-sync@v3
         with:
           source_repo: "https://github.com/minoscompare/minos.git"
@@ -11,3 +11,4 @@ jobs:
           destination_repo: "git@github.com:minoscompare-deployments/minos.git"
           destination_branch: "refs/heads/*"
           ssh_private_key: ${{ secrets.DESTINATION_SSH_PRIVATE_KEY }}
+        if: ${{ github.repository }} != 'minoscompare-deployments/minos'
