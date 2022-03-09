@@ -4,10 +4,10 @@ jobs:
     if: github.repository == 'minoscompare/minos'
     runs-on: ubuntu-latest
     steps:
-      - name: Clone Repository
-        uses: actions/checkout@v3
-      - name: Sync Repository
-        run: |
-          chmod +x "${GITHUB_WORKSPACE}/.github/workflows/sync-repo.sh"
-          export DESTINATION_SSH_PRIVATE_KEY="${{ secrets.DESTINATION_SSH_PRIVATE_KEY }}"
-          "${GITHUB_WORKSPACE}/.github/workflows/sync-repo.sh"
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: git@gitgub.com:minoscompare-deployments/minos.git
+          ssh_private_key: ${{ secrets.DESTINATION_SSH_PRIVATE_KEY }}
