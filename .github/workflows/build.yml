@@ -33,4 +33,14 @@ jobs:
       - uses: net-engine/github-repository-sync-action@v1
         with:
           ssh_private_key: ${{ secrets.DESTINATION_SSH_PRIVATE_KEY }}
-          target_repo_url: git@github.com:minoscompare-deployments/minos.git
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - uses: wei/git-sync@v3
+        with:
+          source_repo: "https://github.com/minoscompare/minos.git"
+          source_branch: ${{ steps.extract_branch.outputs.branch }}
+          destination_repo: git@github.com:minoscompare-deployments/minos.git
+          destination_branch: ${{ steps.extract_branch.outputs.branch }}
+          destination_ssh_private_key: ${{ secrets.DESTINATION_SSH_PRIVATE_KEY }} # optional, will override `SSH_PRIVATE_KEY`
