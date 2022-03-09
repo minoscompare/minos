@@ -1,11 +1,11 @@
 on: push
 jobs:
   git-sync:
+    if: github.repository == 'minoscompare/minos'
     runs-on: ubuntu-latest
     steps:
       - name: Sync Repository
         uses: wei/git-sync@v3
-        if: github.repository == 'minoscompare/minos'
         with:
           source_repo: "https://github.com/minoscompare/minos.git"
           source_branch: "refs/remotes/source/*"
