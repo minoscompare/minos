@@ -146,7 +146,6 @@ function CpuCompare({ cpus, comparison }: CpuCompareProps) {
     updatePageQuery(comparedIDs);
   }
 
-  // Returns HTML
   return (
     <Layout title="Compare CPUs">
       <Stack spacing={{ base: 6, md: 10 }} direction="column">
