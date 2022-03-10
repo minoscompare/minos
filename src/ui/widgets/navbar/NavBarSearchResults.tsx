@@ -28,16 +28,9 @@ export function useSearchResultsPopper() {
 
 function CustomHits() {
   const { hits } = useCustomHits<CpuTypesenseDoc>();
-  // Gets CPU Ids atom and creates a function to modify them
-  const [comparedIDs, setComparedIDs] = useCompareCpus();
 
-  function addComparedID(newID: number) {
-    if (!comparedIDs.includes(newID)) {
-      setComparedIDs([...comparedIDs, newID]);
-    }
-  }
+  const comparedCpus = useCompareCpus();
 
-  // Returns HTML
   return (
     <>
       {hits.map((hit) => (
@@ -51,8 +44,8 @@ function CustomHits() {
             <Tooltip label="Add to comparison" aria-label="Comparison tooltip">
               <IconButton
                 size="xs"
-                isDisabled={comparedIDs.includes(parseInt(hit.id))}
-                onClick={() => addComparedID(parseInt(hit.id))}
+                isDisabled={comparedCpus.ids.includes(parseInt(hit.id))}
+                onClick={() => comparedCpus.addId(parseInt(hit.id))}
                 icon={<MdAdd />}
                 aria-label="Compare"
               />

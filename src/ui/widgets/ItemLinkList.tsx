@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 import { CpuSpec } from '@minos/pages/cpu/[id]';
-import { CpuTypesenseDoc, MinosCpu } from '@minos/lib/types';
+import { CpuTypesenseDoc } from '@minos/lib/types';
 import {
   ExternalLinkIcon,
   InfoOutlineIcon,
@@ -39,22 +39,11 @@ interface Props {
 }
 
 function ItemLinkList({ listItems }: Props) {
-  // Sets color scheme data
   const detailsColor = useColorModeValue('blue', 'gray');
   const compareColor = useColorModeValue('purple', 'gray');
 
-  // Gets atoms and their functions
-  const [comparedIDs, setComparedIDs] = useCompareCpus();
+  const comparedCpus = useCompareCpus();
 
-  // Creates function to add a new ID to comparison
-  function addComparedID(addedID: number) {
-    if (!comparedIDs.includes(addedID)) {
-      setComparedIDs([...comparedIDs, addedID]);
-      console.log('Added ID: ' + addedID);
-    }
-  }
-
-  // Returns JSX
   return (
     <Stack spacing={1}>
       <Divider />
@@ -144,11 +133,9 @@ function ItemLinkList({ listItems }: Props) {
               <Button
                 colorScheme={compareColor}
                 variant="solid"
-                isDisabled={comparedIDs.includes(item.id)}
+                isDisabled={comparedCpus.ids.includes(item.id)}
                 aria-label="Add to comparison"
-                onClick={() => {
-                  addComparedID(item.id);
-                }}
+                onClick={() => comparedCpus.addId(item.id)}
                 display={{ base: 'none', sm: 'flex' }}
               >
                 Compare
@@ -156,11 +143,9 @@ function ItemLinkList({ listItems }: Props) {
               <IconButton
                 colorScheme={compareColor}
                 variant="solid"
-                isDisabled={comparedIDs.includes(item.id)}
+                isDisabled={comparedCpus.ids.includes(item.id)}
                 aria-label="Add to comparison"
-                onClick={() => {
-                  addComparedID(item.id);
-                }}
+                onClick={() => comparedCpus.addId(item.id)}
                 display={{ base: 'flex', sm: 'none' }}
                 icon={<PlusSquareIcon />}
               />{' '}

@@ -48,12 +48,12 @@ function NavLink({ children, href }: NavLinkProps) {
 }
 
 function NavBarLinks() {
-  const [comparedCpuIds] = useCompareCpus();
+  const { ids: cpuIds } = useCompareCpus();
   return (
     <>
       <NavLink href="/">Home</NavLink>
       <NavLink href="/cpu/search">Search CPUs</NavLink>
-      <NavLink href={`/cpu/compare/${comparedCpuIds.join('/')}`}>
+      <NavLink href={`/cpu/compare/${cpuIds.join('/')}`}>
         View Comparison
       </NavLink>
     </>

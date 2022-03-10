@@ -6,5 +6,16 @@ export const comparedCPUs = atom<MinosCpu[]>([]);
 export const comparedCPUIds = atom<number[]>([]);
 
 export function useCompareCpus() {
-  return useAtom(comparedCPUIds);
+  const [ids, setIds] = useAtom(comparedCPUIds);
+
+  function addId(cpuId: number) {
+    if (ids.includes(cpuId)) return;
+    setIds([...ids, cpuId]);
+  }
+
+  function removeId(cpuId: number) {
+    setIds(ids.filter((id) => id !== cpuId));
+  }
+
+  return { ids, addId, removeId };
 }

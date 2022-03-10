@@ -18,6 +18,7 @@ import { GetServerSideProps } from 'next';
 import { CpuComparison, MinosCpu } from '@minos/lib/types';
 import { compareCpus, getManyCpus } from '@minos/lib/api/data-access/cpu';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
+import { useEffect } from 'react';
 
 interface CpuSpecRowProps {
   name: string;
@@ -126,25 +127,14 @@ type CpuCompareProps = { cpus: MinosCpu[]; comparison: CpuComparison };
 // Main page function
 function CpuCompare({ cpus, comparison }: CpuCompareProps) {
   // State management
-  const [comparedIDs, setComparedIDs] = useCompareCpus();
+  const comparedCpus = useCompareCpus();
 
   // Routing
   const router = useRouter();
 
-  function updatePageQuery(newComparedIDs: number[]) {
-    router.push(`/cpu/compare/${newComparedIDs.join('/')}`);
-  }
-
-  // Function for removing components
-  function removeComparedID(cpuID: number) {
-    let newComparedIDs = comparedIDs;
-    let index = newComparedIDs.indexOf(cpuID);
-    if (index > -1) {
-      newComparedIDs.splice(index, 1);
-    }
-    setComparedIDs(newComparedIDs);
-    updatePageQuery(comparedIDs);
-  }
+  useEffect(() => {
+    router.push(`/cpu/compare/${comparedCpus.ids.join('/')}`);
+  }, [comparedCpus.ids]);
 
   return (
     <Layout title="Compare CPUs">
@@ -172,7 +162,7 @@ function CpuCompare({ cpus, comparison }: CpuCompareProps) {
                 {cpus.map((cpu) => (
                   <Th key={cpu.id}>
                     <Button
-                      onClick={() => removeComparedID(cpu.id)}
+                      onClick={() => comparedCpus.removeId(cpu.id)}
                       colorScheme="red"
                     >
                       Remove
