@@ -3088,6 +3088,11 @@ next-connect@^0.12.2:
   dependencies:
     trouter "^3.2.0"
 
+next-seo@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/next-seo/-/next-seo-5.1.0.tgz#aa9fd6249a11bf93e6da06fa2a6bc89268936edf"
+  integrity sha512-ampuQfNTOi1x+xtRIb6CZGunIo6rQXtMo2Tyu861d5GjJFIwfOXsA4lzCa4+e2rLkyXDyVpavNNUZWa3US9ELw==
+
 next-superjson@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/next-superjson/-/next-superjson-0.0.2.tgz#446b4c2bc014d668a55a0b41bafe0746a20eac18"
