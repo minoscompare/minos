@@ -4,18 +4,15 @@ import NavBar from '@minos/ui/widgets/navbar/NavBar';
 import { Center } from '@chakra-ui/react';
 
 interface LayoutProps {
-  title: string;
   variant?: WrapperVariant;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, variant, title }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, variant }) => {
   return (
     <>
       <NavBar />
       <Center>
-        <Wrapper title={title} variant={variant}>
-          {children}
-        </Wrapper>
+        <Wrapper variant={variant}>{children}</Wrapper>
       </Center>
     </>
   );

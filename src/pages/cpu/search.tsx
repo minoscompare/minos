@@ -28,6 +28,7 @@ import {
   useCustomSearchBox,
   useCustomHits,
 } from '@minos/lib/utils/search-hooks';
+import { NextSeo } from 'next-seo';
 
 function CustomHits() {
   const { hits } = useCustomHits<CpuTypesenseDoc>();
@@ -140,7 +141,11 @@ function CpuSearch({ searchState, url }: CpuSearchProps) {
 
 function SearchPage({ searchState, url }: CpuSearchProps) {
   return (
-    <Layout title="Search CPUs">
+    <Layout>
+      <NextSeo
+        title="Search CPUs - Minos"
+        description="Search AMD or Intel CPUs to compare"
+      />
       <Stack spacing={{ base: 6, md: 10 }} direction="column">
         <Box as="header">
           <Heading

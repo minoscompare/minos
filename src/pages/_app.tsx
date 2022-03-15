@@ -3,6 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import theme from '@minos/ui/theme';
 import Head from 'next/head';
 import { Provider as JotaiProvider } from 'jotai';
+import { DefaultSeo } from 'next-seo';
 
 // App function
 function MyApp({ Component, pageProps }: AppProps) {
@@ -15,6 +16,15 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <JotaiProvider>
         <ChakraProvider theme={theme}>
+          <DefaultSeo
+            openGraph={{
+              type: 'websiite',
+              locale: 'en_IE',
+              url: 'https://www.minoscompare.com/',
+              site_name: 'Minoscompare',
+            }}
+            defaultTitle="Minoscompare"
+          />
           <Component {...pageProps} />
         </ChakraProvider>
       </JotaiProvider>

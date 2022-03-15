@@ -12,10 +12,15 @@ import {
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import { MdLink } from 'react-icons/md';
+import { NextSeo } from 'next-seo';
 
 const Home: NextPage = () => {
   return (
-    <Layout title="Minoscompare Home">
+    <Layout>
+      <NextSeo
+        title="Minosompare Home - Minos"
+        description="Minoscompare: Search and compare Intel and AMD CPUs."
+      />
       <Stack spacing={{ base: 6, md: 10 }} padding="4">
         <Box as="header" w={[300, 400, 500]}>
           <Heading
@@ -29,7 +34,7 @@ const Home: NextPage = () => {
         </Box>
 
         <Grid templateColumns="repeat(2,5fr)" gap={5}>
-          <NextLink href="/cpu/search">
+          <NextLink href="/cpu/search" passHref>
             <Button h="20" variant="solid" size="sm">
               <VStack>
                 <Text>Search CPUs&rarr;</Text>
@@ -37,15 +42,7 @@ const Home: NextPage = () => {
               </VStack>
             </Button>
           </NextLink>
-          <NextLink href="/">
-            <Button h="20" isDisabled={true} variant="solid" size="sm">
-              <VStack>
-                <Text>Search GPUs&rarr;</Text>
-                <Text>View details or compare.</Text>
-              </VStack>
-            </Button>
-          </NextLink>
-          <NextLink href="/cpu/compare">
+          <NextLink href="/cpu/compare" passHref>
             <Button h="20" variant="solid" size="sm">
               <VStack>
                 <Text>Compare Page&rarr;</Text>

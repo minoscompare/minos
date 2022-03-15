@@ -110,8 +110,8 @@ function ItemLinkList({ listItems }: Props) {
                   </PopoverContent>
                 </Popover>
               </Flex>
-              <NextLink href={item.pageURL}>
-                <a target="_blank">
+              <NextLink href={item.pageURL} passHref>
+                <a>
                   <Button
                     colorScheme={detailsColor}
                     variant="solid"

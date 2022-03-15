@@ -13,6 +13,7 @@ import {
 import { Layout } from '@minos/ui/components/Layout';
 import { MinosCpu } from '@minos/lib/types';
 import { getCpuById } from '@minos/lib/api/data-access/cpu';
+import { NextSeo } from 'next-seo';
 
 interface CpuSpecProps {
   name: string;
@@ -36,7 +37,11 @@ interface CpuPageProps {
 
 const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
   return (
-    <Layout title="Search CPUs">
+    <Layout>
+      <NextSeo
+        title={`${cpu.fullName} - Minos`}
+        description="Minoscompare: Search and compare Intel and AMD CPUs."
+      />
       <Stack spacing={{ base: 6, md: 10 }}>
         <Box as="header">
           <Heading

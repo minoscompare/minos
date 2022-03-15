@@ -19,6 +19,7 @@ import { CpuComparison, MinosCpu } from '@minos/lib/types';
 import { compareCpus, getManyCpus } from '@minos/lib/api/data-access/cpu';
 import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
 import { useEffect } from 'react';
+import { NextSeo } from 'next-seo';
 
 interface CpuSpecRowProps {
   name: string;
@@ -137,7 +138,11 @@ function CpuCompare({ cpus, comparison }: CpuCompareProps) {
   }, [comparedCpus.ids]);
 
   return (
-    <Layout title="Compare CPUs">
+    <Layout>
+      <NextSeo
+        title="Compare CPUs - Minos"
+        description={`Compare CPUs (${comparedCpus.ids})`}
+      />
       <Stack spacing={{ base: 6, md: 10 }} direction="column">
         <Box as="header" key="HeaderBox">
           <Heading
