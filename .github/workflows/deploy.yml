@@ -32,6 +32,8 @@ jobs:
         run: yarn gen
       - name: Build
         run: yarn build
+      - name: List files
+        run: ls
       - name: Deploy to Staging
         id: deploy-vercel-staging
         if: github.event_name == 'push' && github.ref != 'refs/heads/prod'
