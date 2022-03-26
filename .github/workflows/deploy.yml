@@ -1,26 +1,21 @@
 name: Deploy
 on: [push, pull_request]
 jobs:
-  build:
+  deploy:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: Cache Dependencies
+      - name: Cache dependencies
         uses: actions/cache@v2
-        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
-      - name: Setup Node 16
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Setup Node 14
         uses: actions/setup-node@v2
         with:
-          node-version: "16.x"
+          node-version: "14.x"
       - name: Create .env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
@@ -58,4 +53,4 @@ jobs:
           vercel-args: '--prod'
       - name: Preview URL
         run: |
-          echo ${{ steps.vercel-action.outputs.preview-url }}
+          echo ${{ steps.deploy-vercel-staging.outputs.preview-url }}
