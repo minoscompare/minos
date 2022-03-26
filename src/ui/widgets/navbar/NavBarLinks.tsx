@@ -29,7 +29,6 @@ export default function NavBarLinks() {
   const { ids: cpuIds } = useCompareCpus();
   return (
     <>
-      <NavLink href="/">Home</NavLink>
       <NavLink href="/cpu/search">Search CPUs</NavLink>
       <NavLink href={`/cpu/compare/${cpuIds.join('/')}`}>
         View Comparison
