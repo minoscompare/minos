@@ -5,6 +5,8 @@ import Head from 'next/head';
 import { Provider as JotaiProvider } from 'jotai';
 import { DefaultSeo } from 'next-seo';
 
+import defaultSeoConfig from 'next-seo.config';
+
 // App function
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -32,19 +34,14 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0566ac" />
         <meta name="msapplication-TileColor" content="#0566ac" />
         <meta name="theme-color" content="#ffffff" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
+        />
       </Head>
+      <DefaultSeo {...defaultSeoConfig} />
       <JotaiProvider>
         <ChakraProvider theme={theme}>
-          <DefaultSeo
-            openGraph={{
-              type: 'websiite',
-              locale: 'en_IE',
-              url: 'https://www.minoscompare.com/',
-              site_name: 'Minoscompare',
-            }}
-            defaultTitle="Minoscompare"
-          />
           <Component {...pageProps} />
         </ChakraProvider>
       </JotaiProvider>

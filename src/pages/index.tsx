@@ -17,10 +17,7 @@ import { NextSeo } from 'next-seo';
 const Home: NextPage = () => {
   return (
     <Layout>
-      <NextSeo
-        title="Minosompare Home - Minos"
-        description="Minoscompare: Search and compare Intel and AMD CPUs."
-      />
+      <NextSeo title="Home" />
       <Stack spacing={{ base: 6, md: 10 }} padding="4">
         <Box as="header" w={[300, 400, 500]}>
           <Heading
