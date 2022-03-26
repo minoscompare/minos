@@ -65,7 +65,6 @@ function CustomSearchBox({
           ref={ref}
           variant="outline"
           placeholder="Search"
-          type="search"
           value={inputValue}
           onChange={(event) => {
             setInputValue(event.currentTarget.value);
