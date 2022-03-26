@@ -142,10 +142,7 @@ function CpuSearch({ searchState, url }: CpuSearchProps) {
 function SearchPage({ searchState, url }: CpuSearchProps) {
   return (
     <Layout>
-      <NextSeo
-        title="Search CPUs - Minos"
-        description="Search AMD or Intel CPUs to compare"
-      />
+      <NextSeo title="Search" />
       <Stack spacing={{ base: 6, md: 10 }} direction="column">
         <Box as="header">
           <Heading

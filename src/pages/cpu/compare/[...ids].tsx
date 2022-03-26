@@ -140,8 +140,7 @@ function CpuCompare({ cpus, comparison }: CpuCompareProps) {
   return (
     <Layout>
       <NextSeo
-        title="Compare CPUs - Minos"
-        description={`Compare CPUs (${comparedCpus.ids})`}
+        title={`${cpus.map((cpu) => cpu.fullName).join(' vs ')} - Minos`}
       />
       <Stack spacing={{ base: 6, md: 10 }} direction="column">
         <Box as="header" key="HeaderBox">

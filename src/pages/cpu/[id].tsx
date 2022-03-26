@@ -38,10 +38,7 @@ interface CpuPageProps {
 const CpuPage: NextPage<CpuPageProps> = ({ cpu }) => {
   return (
     <Layout>
-      <NextSeo
-        title={`${cpu.fullName} - Minos`}
-        description="Minoscompare: Search and compare Intel and AMD CPUs."
-      />
+      <NextSeo title={cpu.fullName} />
       <Stack spacing={{ base: 6, md: 10 }}>
         <Box as="header">
           <Heading
