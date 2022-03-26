@@ -1,16 +1,24 @@
-name: Build & Deploy
-on: push
+name: Deploy
+on: [push, pull_request]
 jobs:
   build:
-    if: github.repository == 'minoscompare/minos'
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Cache Dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+      - name: Setup Node 16
+        uses: actions/setup-node@v2
         with:
           node-version: "16.x"
-      - uses: SpicyPizza/create-envfile@v1.3
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
           envkey_NEXT_PUBLIC_TYPESENSE_CLIENT_API_KEY: ${{ secrets.NEXT_PUBLIC_TYPESENSE_CLIENT_API_KEY }}
@@ -20,23 +28,30 @@ jobs:
           envkey_TYPESENSE_ADMIN_API_KEY: ${{ secrets.TYPESENSE_ADMIN_API_KEY }}
           fail_on_empty: true
       - name: Install dependencies
-        run: yarn
+        run: yarn install --frozen-lockfile
       - name: Generate Prisma Client
         run: yarn gen
-      - name: Run Build
+      - name: Build
         run: yarn build
-  deploy:
-    if: github.repository == 'minoscompare/minos'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-      - uses: wei/git-sync@v3
+      - name: Deploy to Staging
+        id: deploy-vercel-staging
+        if: github.event_name == 'push' && github.ref != 'refs/heads/prod'
+        uses: amondnet/vercel-action@v20
         with:
-          source_repo: "https://github.com/minoscompare/minos.git"
-          source_branch: ${{ steps.extract_branch.outputs.branch }}
-          destination_repo: git@github.com:minoscompare-deployments/minos.git
-          destination_branch: ${{ steps.extract_branch.outputs.branch }}
-          destination_ssh_private_key: ${{ secrets.DESTINATION_SSH_PRIVATE_KEY }} # optional, will override `SSH_PRIVATE_KEY`
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+      - name: Deploy to Production
+        id: deploy-vercel-production
+        if: github.event_name == 'push' && github.ref == 'refs/heads/prod'
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-args: '--prod'
+      - name: Preview URL
+        run: |
+          echo ${{ steps.vercel-action.outputs.preview-url }}
