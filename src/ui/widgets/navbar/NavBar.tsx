@@ -1,9 +1,8 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   Box,
   Flex,
   HStack,
-  Link,
   IconButton,
   useDisclosure,
   useColorModeValue,
@@ -11,7 +10,6 @@ import {
   useColorMode,
   Center,
   useBoolean,
-  Text,
 } from '@chakra-ui/react';
 import {
   MdBrightness4,
@@ -20,45 +18,9 @@ import {
   MdMenu,
   MdSearch,
 } from 'react-icons/md';
-import NextLink from 'next/link';
 import NavBarSearchBar from './NavBarSearchBar';
-import { useCompareCpus } from '@minos/lib/utils/atoms/compare-cpus';
-
-interface NavLinkProps {
-  children: ReactNode;
-  href: string;
-}
-
-function NavLink({ children, href }: NavLinkProps) {
-  return (
-    <NextLink href={href}>
-      <Link
-        px={2}
-        py={1}
-        rounded={'md'}
-        _hover={{
-          textDecoration: 'none',
-          bg: useColorModeValue('gray.200', 'gray.700'),
-        }}
-      >
-        {children}
-      </Link>
-    </NextLink>
-  );
-}
-
-function NavBarLinks() {
-  const { ids: cpuIds } = useCompareCpus();
-  return (
-    <>
-      <NavLink href="/">Home</NavLink>
-      <NavLink href="/cpu/search">Search CPUs</NavLink>
-      <NavLink href={`/cpu/compare/${cpuIds.join('/')}`}>
-        View Comparison
-      </NavLink>
-    </>
-  );
-}
+import NavBarLinks from './NavBarLinks';
+import NavBarAppIcon from './NavBarAppIcon';
 
 export default function NavBar() {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -84,8 +46,8 @@ export default function NavBar() {
           onClick={drawer.isOpen ? drawer.onClose : drawer.onOpen}
         />
         <HStack spacing={8} alignItems="center">
-          <Text>Minos</Text>
           <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
+            <NavBarAppIcon />
             <NavBarLinks />
           </HStack>
         </HStack>

@@ -2,6 +2,7 @@
   "extends": ["next", "plugin:@next/next/recommended", "prettier"],
   "ignorePatterns": ["docs/*"],
   "rules": {
-    "eqeqeq": "warn"
+    "eqeqeq": "warn",
+    "react/display-name": "off"
   }
 }

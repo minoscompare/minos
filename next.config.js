@@ -1,11 +1,18 @@
+const withPlugins = require('next-compose-plugins');
+const { withSuperjson } = require('next-superjson');
+const withBundleAnalyzer = require('@next/bundle-analyzer');
+const optimizedImages = require('next-optimized-images');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
 };
-const { withSuperjson } = require('next-superjson');
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
-
-module.exports = withSuperjson()(withBundleAnalyzer(nextConfig));
+module.exports = withPlugins(
+  [
+    withSuperjson(),
+    withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' }),
+    [optimizedImages, {}],
+  ],
+  nextConfig
+);
