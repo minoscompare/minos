@@ -14,10 +14,6 @@ const defaultSEOConfig = {
     images: [],
     site_name: 'MinosCompare',
   },
-  twitter: {
-    handle: '@sozonome',
-    cardType: 'summary_large_image',
-  },
 };
 
 export default defaultSEOConfig;
