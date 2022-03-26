@@ -7,25 +7,18 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
-  useColorMode,
   Center,
   useBoolean,
 } from '@chakra-ui/react';
-import {
-  MdBrightness4,
-  MdBrightness7,
-  MdClose,
-  MdMenu,
-  MdSearch,
-} from 'react-icons/md';
+import { MdClose, MdMenu, MdSearch } from 'react-icons/md';
 import NavBarSearchBar from './NavBarSearchBar';
 import NavBarLinks from './NavBarLinks';
 import NavBarAppIcon from './NavBarAppIcon';
+import ThemeToggle from '@minos/ui/components/ThemeToggle';
 
 export default function NavBar() {
   const searchRef = useRef<HTMLInputElement>(null);
   const drawer = useDisclosure();
-  const { colorMode, toggleColorMode } = useColorMode();
 
   const [isSearchShown, setSearchShown] = useBoolean(false);
 
@@ -70,15 +63,7 @@ export default function NavBar() {
               onOutsideClick={setSearchShown.off}
             />
           </Box>
-          <IconButton
-            icon={
-              <Center>
-                {colorMode === 'light' ? <MdBrightness4 /> : <MdBrightness7 />}
-              </Center>
-            }
-            aria-label="Toggle Dark Mode"
-            onClick={toggleColorMode}
-          />
+          <ThemeToggle />
         </HStack>
       </Flex>
 
