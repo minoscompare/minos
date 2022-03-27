@@ -1,10 +1,8 @@
 import { Box, Heading, Text, Button } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
-import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 
 export default function NotFound() {
-  const router = useRouter();
-
   return (
     <Layout>
       <Box textAlign="center" py={10} px={6}>
@@ -15,12 +13,14 @@ export default function NotFound() {
           Page Not Found
         </Text>
         <Text color="gray.500" mb={6}>
-          The page you're looking for does not seem to exist
+          The page you&apos;re looking for does not seem to exist
         </Text>
 
-        <Button variant="solid" onClick={() => router.push('/')}>
-          Go to Home
-        </Button>
+        <NextLink href="/" passHref>
+          <Button as="a" variant="solid">
+            Go to Home
+          </Button>
+        </NextLink>
       </Box>
     </Layout>
   );
