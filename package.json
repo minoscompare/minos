@@ -45,6 +45,7 @@
     "superjson": "^1.8.1",
     "typesense": "^1.1.3",
     "typesense-instantsearch-adapter": "^2.2.0",
+    "utility-types": "^3.10.0",
     "zod": "^3.11.6"
   },
   "devDependencies": {

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Wrapper, WrapperVariant } from './Wrapper';
 import NavBar from '@minos/ui/widgets/navbar/NavBar';
-import { Center } from '@chakra-ui/react';
+import { Box, Flex, VStack } from '@chakra-ui/react';
+import { Wrapper, WrapperVariant } from './Wrapper';
+import Footer from '@minos/ui/widgets/Footer';
 
 interface LayoutProps {
   variant?: WrapperVariant;
@@ -10,10 +11,13 @@ interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({ children, variant }) => {
   return (
     <>
-      <NavBar />
-      <Center>
-        <Wrapper variant={variant}>{children}</Wrapper>
-      </Center>
+      <Flex flexDir="column" minH="100vh">
+        <NavBar />
+        <Box py={4} flex={1}>
+          <Wrapper variant={variant}>{children}</Wrapper>
+        </Box>
+        <Footer />
+      </Flex>
     </>
   );
 };
