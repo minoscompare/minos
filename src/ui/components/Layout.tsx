@@ -16,8 +16,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, variant }) => {
         <Box py={4} flex={1}>
           <Wrapper variant={variant}>{children}</Wrapper>
         </Box>
-        <Footer />
       </Flex>
+      <Footer />
     </>
   );
 };

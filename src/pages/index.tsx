@@ -19,16 +19,14 @@ const Home: NextPage = () => {
     <Layout>
       <NextSeo title="Home" />
       <Stack spacing={{ base: 6, md: 10 }} padding="4">
-        <Box as="header" w={[300, 400, 500]}>
-          <Heading
-            lineHeight={1.1}
-            fontWeight={500}
-            fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
-            justifySelf="center"
-          >
-            Welcome to MinosCompare!{' '}
-          </Heading>
-        </Box>
+        <Heading
+          lineHeight={1.1}
+          fontWeight={500}
+          fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
+          justifySelf="center"
+        >
+          Welcome to MinosCompare!{' '}
+        </Heading>
 
         <Grid templateColumns="repeat(2,5fr)" gap={5}>
           <NextLink href="/cpu/search" passHref>

@@ -57,6 +57,7 @@ export default function Footer() {
           </Stack>
           <Stack align="flex-start">
             <Button
+              colorScheme="gray"
               leftIcon={colorMode === 'light' ? <RiMoonFill /> : <RiSunLine />}
               onClick={toggleColorMode}
             >

@@ -1,28 +1,27 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import styles from '@minos/ui/styles/Home.module.css';
-import Link from 'next/link';
+import { Box, Heading, Text, Button } from '@chakra-ui/react';
+import { Layout } from '@minos/ui/components/Layout';
+import { useRouter } from 'next/router';
 
-const NotFound: NextPage = () => {
+export default function NotFound() {
+  const router = useRouter();
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>404 - Page Not Found</title>
-        <meta name="description" content="Minoscompare" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={styles.main}>
-        <h1 className={styles.title}>Error 404</h1>
-        <p className={styles.description}>
-          (The page you are looking for could not be found)
-          <br />
-          <Link href="/">
-            <a>Return to Home</a>
-          </Link>
-        </p>
-      </main>
-    </div>
-  );
-};
+    <Layout>
+      <Box textAlign="center" py={10} px={6}>
+        <Heading display="inline-block" as="h2" size="2xl">
+          404
+        </Heading>
+        <Text fontSize="18px" mt={3} mb={2}>
+          Page Not Found
+        </Text>
+        <Text color="gray.500" mb={6}>
+          The page you're looking for does not seem to exist
+        </Text>
 
-export default NotFound;
+        <Button variant="solid" onClick={() => router.push('/')}>
+          Go to Home
+        </Button>
+      </Box>
+    </Layout>
+  );
+}
