@@ -41,7 +41,6 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           scope: ${{ secrets.VERCEL_ORG_ID }}
-          working-directory: .next
       - name: Deploy to Production
         id: deploy-vercel-production
         if: github.event_name == 'push' && github.ref == 'refs/heads/prod'
