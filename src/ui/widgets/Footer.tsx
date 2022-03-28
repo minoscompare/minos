@@ -34,7 +34,7 @@ export default function Footer() {
     >
       <Container as={Stack} maxW="container.lg" py={10}>
         <SimpleGrid
-          templateColumns={{ sm: '1fr 1fr', md: '1fr 1fr 1fr' }}
+          templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 1fr 1fr' }}
           spacing={8}
         >
           <Stack spacing={6}>
@@ -45,11 +45,17 @@ export default function Footer() {
           </Stack>
           <Stack align="flex-start">
             <ListHeader>Resources</ListHeader>
-            <RouteLink href="https://github.com/minoscompare/minos">
-              GitHub
-            </RouteLink>
             <RouteLink href="https://github.com/minoscompare/minos/blob/main/LICENSE.md">
               License
+            </RouteLink>
+            <RouteLink href="https://analytics.minoscompare.com/minoscompare.com">
+              Analytics
+            </RouteLink>
+          </Stack>
+          <Stack align="flex-start">
+            <ListHeader>Open-Source</ListHeader>
+            <RouteLink href="https://github.com/minoscompare/minos">
+              GitHub
             </RouteLink>
             <RouteLink href="https://github.com/minoscompare/component-data">
               Component Data
