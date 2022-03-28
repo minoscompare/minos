@@ -4,6 +4,7 @@ import theme from '@minos/ui/theme';
 import Head from 'next/head';
 import { Provider as JotaiProvider } from 'jotai';
 import { DefaultSeo } from 'next-seo';
+import PlausibleProvider from 'next-plausible';
 
 import defaultSeoConfig from 'next-seo.config';
 
@@ -40,11 +41,17 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
       </Head>
       <DefaultSeo {...defaultSeoConfig} />
-      <JotaiProvider>
-        <ChakraProvider theme={theme}>
-          <Component {...pageProps} />
-        </ChakraProvider>
-      </JotaiProvider>
+      <PlausibleProvider
+        domain="minoscompare.com"
+        customDomain={process.env.NEXT_PUBLIC_PLAUSIBLE_URL}
+        selfHosted
+      >
+        <JotaiProvider>
+          <ChakraProvider theme={theme}>
+            <Component {...pageProps} />
+          </ChakraProvider>
+        </JotaiProvider>
+      </PlausibleProvider>
     </>
   );
 }
