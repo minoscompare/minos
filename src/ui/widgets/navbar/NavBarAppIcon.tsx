@@ -6,7 +6,7 @@ export default function NavBarAppIcon() {
   return (
     <NextLink href="/" passHref>
       <Center as="a">
-        <MinosIconText height={40} width={187} />
+        <MinosIconText height={32} width={150} />
       </Center>
     </NextLink>
   );

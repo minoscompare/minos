@@ -12,23 +12,23 @@ const config: ThemeConfig = {
 };
 
 const colors: Colors = {
-  minos: {
-    50: '#ddf6ff',
-    100: '#b0e0ff',
-    200: '#81c9fc',
-    300: '#52b3fa',
-    400: '#269ef8',
-    500: '#1284de',
-    600: '#0567ad',
-    700: '#00497d',
-    800: '#002c4d',
-    900: '#00101f',
+  blue: {
+    50: '#EAF3FA',
+    100: '#C5DCF1',
+    200: '#A0C6E8',
+    300: '#7BAFE0',
+    400: '#5698D7',
+    500: '#3182CE',
+    600: '#2768A5',
+    700: '#1D4E7C',
+    800: '#143452',
+    900: '#0A1A29',
   },
 };
 
 const theme = extendTheme(
   { config, colors },
-  withDefaultColorScheme({ colorScheme: 'minos' })
+  withDefaultColorScheme({ colorScheme: 'blue' })
 );
 
 export default theme;
