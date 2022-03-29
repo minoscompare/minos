@@ -6,7 +6,6 @@ import {
   Heading,
   Stack,
   Text,
-  useBreakpointValue,
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
 import RouteButton from '@minos/ui/components/RouteButton';
@@ -38,7 +37,7 @@ function Home() {
               >
                 Search for a CPU
               </RouteButton>
-              <Button rounded="full">How It Works</Button>
+              {/* <Button rounded="full">How It Works</Button> */}
             </Stack>
           </Stack>
         </Flex>
