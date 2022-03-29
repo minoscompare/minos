@@ -48,7 +48,7 @@ function Home() {
               width="100%"
               height="100%"
               layout="responsive"
-              src={require('@minos/const/images/undraw_performance_overview.svg')}
+              src="/static/images/undraw_performance_overview.svg"
             />
           </Box>
         </Center>

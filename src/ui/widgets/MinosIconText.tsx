@@ -9,8 +9,8 @@ type MinosIconTextProps = Required<
 
 export default function MinosIconText(props: MinosIconTextProps) {
   const icon = useColorModeValue(
-    require('@minos/const/images/minos-icon-text.svg'),
-    require('@minos/const/images/minos-icon-text-dark.svg')
+    '/static/images/minos-icon-text.svg',
+    '/static/images/minos-icon-text-dark.svg'
   );
   return <Image src={icon} alt="Minos Compare" {...props} />;
 }
