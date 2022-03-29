@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <Layout>
       <Box textAlign="center" py={10} px={6}>
-        <Heading display="inline-block" as="h2" size="2xl">
+        <Heading display="inline-block" as="h2" size="2xl" color="brand.500">
           404
         </Heading>
         <Text fontSize="18px" mt={3} mb={2}>
