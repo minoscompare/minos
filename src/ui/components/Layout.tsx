@@ -13,7 +13,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, variant }) => {
     <>
       <Flex flexDir="column" minH="100vh">
         <NavBar />
-        <Flex py={4} flex={1}>
+        <Flex py={10} flex={1}>
           <Wrapper variant={variant}>{children}</Wrapper>
         </Flex>
       </Flex>

@@ -45,19 +45,24 @@ export default function Footer() {
           </Stack>
           <Stack align="flex-start">
             <ListHeader>Resources</ListHeader>
-            <RouteLink href="https://github.com/minoscompare/minos/blob/main/LICENSE.md">
-              License
-            </RouteLink>
-            <RouteLink href="https://analytics.minoscompare.com/minoscompare.com">
+            <RouteLink href="/about">About us</RouteLink>
+            <RouteLink href="/licenses">Licenses</RouteLink>
+            <RouteLink
+              href="https://analytics.minoscompare.com/minoscompare.com"
+              isExternal
+            >
               Analytics
             </RouteLink>
           </Stack>
           <Stack align="flex-start">
             <ListHeader>Open-Source</ListHeader>
-            <RouteLink href="https://github.com/minoscompare/minos">
+            <RouteLink href="https://github.com/minoscompare/minos" isExternal>
               GitHub
             </RouteLink>
-            <RouteLink href="https://github.com/minoscompare/component-data">
+            <RouteLink
+              href="https://github.com/minoscompare/component-data"
+              isExternal
+            >
               Component Data
             </RouteLink>
           </Stack>
