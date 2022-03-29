@@ -16,7 +16,6 @@ import {
   InstantSearchSSRProvider,
   usePagination,
 } from 'react-instantsearch-hooks';
-import { history } from 'instantsearch.js/es/lib/routers/index.js';
 import { searchClient } from '@minos/lib/utils/typesense';
 import { MdClose, MdSearch } from 'react-icons/md';
 import { CpuTypesenseDoc } from '@minos/lib/types';
@@ -29,6 +28,9 @@ import {
   useCustomHits,
 } from '@minos/lib/utils/search-hooks';
 import { NextSeo } from 'next-seo';
+import { history } from 'instantsearch.js/es/lib/routers';
+import { singleIndex } from 'instantsearch.js/es/lib/stateMappings';
+import { StateMapping, UiState } from 'instantsearch.js/es/types';
 
 function CustomHits() {
   const { hits } = useCustomHits<CpuTypesenseDoc>();
@@ -118,6 +120,7 @@ function CpuSearch({ searchState, url }: CpuSearchProps) {
         indexName="cpu"
         searchClient={searchClient}
         routing={{
+          stateMapping: singleIndex('cpu') as StateMapping<UiState, UiState>,
           router: history({
             getLocation() {
               if (typeof window === 'undefined') {
