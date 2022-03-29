@@ -44,8 +44,8 @@ function CustomHits() {
             <Tooltip label="Add to comparison" aria-label="Comparison tooltip">
               <IconButton
                 size="xs"
-                isDisabled={comparedCpus.ids.includes(parseInt(hit.id))}
-                onClick={() => comparedCpus.addId(parseInt(hit.id))}
+                isDisabled={comparedCpus.ids.includes(parseInt(hit.id, 10))}
+                onClick={() => comparedCpus.addId(parseInt(hit.id, 10))}
                 icon={<MdAdd />}
                 aria-label="Compare"
               />

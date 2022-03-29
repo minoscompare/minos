@@ -91,7 +91,7 @@ export const getStaticProps: GetStaticProps<CpuPageProps> = async (context) => {
   }
 
   try {
-    const cpu = await getCpuById(prisma, parseInt(id));
+    const cpu = await getCpuById(prisma, parseInt(id, 10));
 
     if (!cpu) {
       return { notFound: true };

@@ -2,7 +2,7 @@ import { CpuTypesenseDoc, MinosCpu } from '@minos/lib/types';
 
 export function typesenseCpuToMinosCpu(cpu: CpuTypesenseDoc): MinosCpu {
   return {
-    id: parseInt(cpu.id),
+    id: parseInt(cpu.id, 10),
     brand: cpu.brand,
     model: cpu.name,
     fullName: `${cpu.brand} ${cpu.name}`,

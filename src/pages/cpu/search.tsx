@@ -37,7 +37,7 @@ function CustomHits() {
   return (
     <ItemLinkList
       listItems={hits.map((cpu) => ({
-        id: parseInt(cpu.id),
+        id: parseInt(cpu.id, 10),
         name: cpu.fullName,
         cpuData: cpu,
         pageURL: `/cpu/${cpu.id}`,
