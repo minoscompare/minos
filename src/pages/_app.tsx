@@ -8,7 +8,6 @@ import PlausibleProvider from 'next-plausible';
 
 import defaultSeoConfig from 'next-seo.config';
 
-// App function
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>

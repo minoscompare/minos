@@ -13,9 +13,9 @@ export const Layout: React.FC<LayoutProps> = ({ children, variant }) => {
     <>
       <Flex flexDir="column" minH="100vh">
         <NavBar />
-        <Box py={4} flex={1}>
+        <Flex py={4} flex={1}>
           <Wrapper variant={variant}>{children}</Wrapper>
-        </Box>
+        </Flex>
       </Flex>
       <Footer />
     </>

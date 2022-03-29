@@ -1,65 +1,61 @@
-import type { NextPage } from 'next';
-import NextLink from 'next/link';
 import {
   Box,
-  Text,
-  Grid,
   Button,
-  Stack,
+  Center,
+  Flex,
   Heading,
-  Link,
-  VStack,
+  Stack,
+  Text,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { Layout } from '@minos/ui/components/Layout';
-import { MdLink } from 'react-icons/md';
+import RouteButton from '@minos/ui/components/RouteButton';
 import { NextSeo } from 'next-seo';
+import Image from 'next/image';
 
-const Home: NextPage = () => {
+function Home() {
   return (
     <Layout>
       <NextSeo title="Home" />
-      <Stack spacing={{ base: 6, md: 10 }} padding="4">
-        <Heading
-          lineHeight={1.1}
-          fontWeight={500}
-          fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
-          justifySelf="center"
-        >
-          Welcome to MinosCompare!{' '}
-        </Heading>
-
-        <Grid templateColumns="repeat(2,5fr)" gap={5}>
-          <NextLink href="/cpu/search" passHref>
-            <Button h="20" variant="solid" size="sm">
-              <VStack>
-                <Text>Search CPUs&rarr;</Text>
-                <Text>View details or compare.</Text>
-              </VStack>
-            </Button>
-          </NextLink>
-          <NextLink href="/cpu/compare" passHref>
-            <Button h="20" variant="solid" size="sm">
-              <VStack>
-                <Text>Compare Page&rarr;</Text>
-                <Text>View current comparisons.</Text>
-              </VStack>
-            </Button>
-          </NextLink>
-          <Link href="https://github.com/minoscompare" w="100%">
-            <Button
-              h="20"
-              w="100%"
-              variant="solid"
-              rightIcon={<MdLink />}
-              size="sm"
-            >
-              Github
-            </Button>
-          </Link>
-        </Grid>
+      <Stack minH="100%" direction={{ base: 'column', md: 'row' }}>
+        <Flex p={8} flex={1} align="center" justify="center">
+          <Stack spacing={6} w="full" maxW="lg">
+            <Heading fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}>
+              <Text as="span">Find and compare</Text>
+              <br />{' '}
+              <Text as="span" color="brand.500">
+                CPUs
+              </Text>{' '}
+            </Heading>
+            <Text fontSize={{ base: 'md', lg: 'lg' }} color="gray.500">
+              View and compare cpu specifications
+            </Text>
+            <Stack direction={{ base: 'column', sm: 'row' }} spacing={4}>
+              <RouteButton
+                href="/cpu/search"
+                colorScheme="brand"
+                rounded="full"
+              >
+                Search for a CPU
+              </RouteButton>
+              <Button rounded="full">How It Works</Button>
+            </Stack>
+          </Stack>
+        </Flex>
+        <Center flex={1}>
+          <Box w={{ base: 400, md: '100%' }}>
+            <Image
+              alt="Login Image"
+              width="100%"
+              height="100%"
+              layout="responsive"
+              src={require('@minos/const/images/undraw_performance_overview.svg')}
+            />
+          </Box>
+        </Center>
       </Stack>
     </Layout>
   );
-};
+}
 
 export default Home;

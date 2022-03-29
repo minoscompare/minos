@@ -34,7 +34,6 @@ export default function NavBar() {
           <HStack gap={2}>
             <IconButton
               size="md"
-              colorScheme="gray"
               icon={drawer.isOpen ? <MdClose /> : <MdMenu />}
               aria-label="Open Menu"
               display={{ md: 'none', base: 'inline-flex' }}
@@ -52,7 +51,6 @@ export default function NavBar() {
           <HStack>
             <IconButton
               icon={<MdSearch />}
-              colorScheme="gray"
               aria-label="Show search bar"
               onClick={setSearchShown.on}
               display={{

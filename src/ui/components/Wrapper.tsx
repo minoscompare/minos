@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, Container } from '@chakra-ui/react';
-import Head from 'next/head';
+import { Container } from '@chakra-ui/react';
 
 export type WrapperVariant = 'large' | 'regular';
 
@@ -9,11 +8,14 @@ interface WrapperProps {
 }
 
 export const Wrapper: React.FC<WrapperProps> = ({
-  children,
   variant = 'regular',
+  children,
 }) => {
   return (
-    <Container maxW={variant === 'large' ? 'container.xl' : 'container.lg'}>
+    <Container
+      maxW={variant === 'large' ? 'container.xl' : 'container.lg'}
+      minH="100%"
+    >
       {children}
     </Container>
   );
