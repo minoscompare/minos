@@ -16,7 +16,7 @@ export function prismaCpuToMinosCpu(cpu: PrismaCpu): MinosCpu {
     specs: {
       cores: cpu.cores.toString(),
       threads: cpu.threads.toString(),
-      frequency: `${cpu.frequency * 10e-2} GHz`,
+      frequency: `${(cpu.frequency * 10e-3).toFixed(2)} GHz`,
       cacheL1: cpu.cacheL1 ? `${cpu.cacheL1} MB` : null,
       cacheL2: cpu.cacheL2 ? `${cpu.cacheL2} MB` : null,
       cacheL3: cpu.cacheL3 ? `${cpu.cacheL3} MB` : null,
